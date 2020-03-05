@@ -24,7 +24,6 @@ def get_js(url):
 
 
 def scrape(name, url):
-
     data = []
 
     for n in range(len(url)):
@@ -67,10 +66,10 @@ def scrape(name, url):
                 wait_time = 2.75
                 while error:
                     try:
-                        new_soup = get_html("https://www.smokingpipes.com"+cat.find("a").get("href"))
+                        new_soup = get_html("https://www.smokingpipes.com" + cat.find("a").get("href"))
                         error = False
                     except:
-                        print("An Error Occurred: sleeping "+str(wait_time)+"s")
+                        print("An Error Occurred: sleeping " + str(wait_time) + "s")
                         time.sleep(wait_time)
                         wait_time = wait_time + 1
                         pass
@@ -88,7 +87,7 @@ def scrape(name, url):
                                 stock = "In Stock"
                             if " ".join(element.get("class")) == "imgDiv":
                                 for items in element.find_all("a"):
-                                    link = "https://www.smokingpipes.com"+items.get("href")
+                                    link = "https://www.smokingpipes.com" + items.get("href")
                         if element.get("src") and not element.get("class"):
                             item = element.get("alt")
                     data.append({"store": name[n], "item": item, "price": price, "stock": stock, "link": link,
@@ -112,16 +111,16 @@ def scrape(name, url):
                         wait_time = wait_time + 1
                     pass
                     for product in new_soup.find_all('div', class_="wsite-com-category-product-wrap"):
-                        if product.find("div" ,\
-                            class_="wsite-com-category-product-name wsite-com-link-text"):
-                            item = product.find("div" , \
-                            class_="wsite-com-category-product-name wsite-com-link-text").get_text().strip()
+                        if product.find("div",
+                                        class_="wsite-com-category-product-name wsite-com-link-text"):
+                            item = product.find("div",
+                                                class_="wsite-com-category-product-name wsite-com-link-text").get_text().strip()
                         link = "https://www.thepipenook.com" + product.find("a").get("href")
                         if product.find("div", class_="wsite-com-price"):
                             price = product.find("div", class_="wsite-com-price").get_text().strip()
                         stock = "In Stock"
                         if product.find_all("p", class_="category__out-of-stock-badge"):
-                            stock ="Out of stock"
+                            stock = "Out of stock"
 
                         data.append({"store": name[n], "item": item, "price": price, "stock": stock, "link": link,
                                      "time": datetime.now().strftime("%m/%d/%Y %H:%M")})
@@ -183,7 +182,7 @@ def scrape(name, url):
             pn = 0
             while next_page:
                 pn = pn + 1
-                js_soup = get_js(str(url[n])+str(pn))
+                js_soup = get_js(str(url[n]) + str(pn))
                 if "There are no results for your current search" in str(js_soup):
                     next_page = False
                     continue
@@ -212,8 +211,8 @@ def scrape(name, url):
                 if element.get_text().startswith("var WTF"):
                     json_data = json.loads(re.match("var WTF=({.+});", element.get_text()).group(1))
                     for product in json_data["page"]["products"]:
-                        item = product["fullName"]+" "+product["pack"]
-                        price = r"$"+str(product["price"])
+                        item = product["fullName"] + " " + product["pack"]
+                        price = r"$" + str(product["price"])
                         stock = product["availability"]
                         if stock == "Out of Stock":
                             stock = "Out of stock"
@@ -255,43 +254,43 @@ def scrape(name, url):
             soup = get_html(url[n])
             for cat in soup.find_all(class_="contentCat"):
                 for stuff in cat.find_all("li"):
-                    #print(stuff)
+                    # print(stuff)
                     error = True
                     wait_time = 2.75
                     while error:
                         try:
-                            new_soup = get_html("https://iwanries.com/"+stuff.find("a").get("href"))
-                            #print(new_soup)
+                            new_soup = get_html("https://iwanries.com/" + stuff.find("a").get("href"))
+                            # print(new_soup)
                             wait_time = 2.75
                             error = False
                         except:
                             time.sleep(wait_time)
-                            print("An Error Occurred: sleeping "+str(wait_time)+"s")
+                            print("An Error Occurred: sleeping " + str(wait_time) + "s")
                             wait_time = wait_time + 1
                         pass
-                    for table in new_soup.find_all('table', attrs={'align':'center'}):
-                        for product in table.find_all("td", attrs={'width':'33%'})[:-2]:
-                            #print(product)
-                            for element in product.find_all("a", attrs={'class':'productName'}):
-                                #print(element)
+                    for table in new_soup.find_all('table', attrs={'align': 'center'}):
+                        for product in table.find_all("td", attrs={'width': '33%'})[:-2]:
+                            # print(product)
+                            for element in product.find_all("a", attrs={'class': 'productName'}):
+                                # print(element)
                                 itemraw = element.get("title")
                                 item, sep, tail = itemraw.partition(" -")
                                 link = element.get("href")
                             for element in product.find_all("label", class_="productMSRP"):
-                                #print(element)
+                                # print(element)
                                 priceraw = element.get_text()
                                 head, sep, price = priceraw.partition(": ")
                             for element in product.find_all(class_="productMSRP"):
-                                #print(element)
+                                # print(element)
                                 stockraw = element.get_text()
                                 stock, sep, head = stockraw.partition(": ")
-                                if stock =="Your Price":
+                                if stock == "Your Price":
                                     stock = "In Stock"
                                 else:
                                     stock = "Out of stock"
 
                             data.append({"store": name[n], "item": item, "price": price, "stock": stock, "link": link,
-                                    "time": datetime.now().strftime("%m/%d/%Y %H:%M")})
+                                         "time": datetime.now().strftime("%m/%d/%Y %H:%M")})
                             print([name[n], item, price, stock, link, datetime.now().strftime("%m/%d/%Y %H:%M")])
                             item, price, stock, link = ["", "", "", ""]
 
@@ -322,7 +321,7 @@ def scrape(name, url):
 
         if name[n] == "smokershaven":
             soup = get_html(url[n])
-            for product in soup.find_all(True, {"class":["Even wow fadeInUp", "Odd wow fadeInUp"]}):
+            for product in soup.find_all(True, {"class": ["Even wow fadeInUp", "Odd wow fadeInUp"]}):
                 for element in product.find_all():
                     if element.get("class"):
                         if " ".join(element.get("class")) == "p-price":
@@ -355,7 +354,7 @@ def scrape(name, url):
                                 if element.get_text().strip() == "Out of stock":
                                     stock = element.get_text().strip()
                             if stock != "Out of stock":
-                                    stock = "In Stock"
+                                stock = "In Stock"
 
                     data.append({"store": name[n], "item": item, "price": price, "stock": stock, "link": link,
                                  "time": datetime.now().strftime("%m/%d/%Y %H:%M")})
@@ -396,14 +395,14 @@ def scrape(name, url):
                             if element.find("a", class_="_2zTHN"):
                                 link = element.find("a", class_="_2zTHN").get("href")
                             if element.find("span", class_="_23ArP"):
-                                price= element.find("span", class_="_23ArP").get_text().strip()
+                                price = element.find("span", class_="_23ArP").get_text().strip()
                             if element.find("span", class_="_3DJ-f"):
-                                stock= element.find("span", class_="_3DJ-f").get_text().strip()
+                                stock = element.find("span", class_="_3DJ-f").get_text().strip()
                             if stock != "Out of stock":
-                                stock= "In Stock"
+                                stock = "In Stock"
 
                             data.append({"store": name[n], "item": item, "price": price, "stock": stock, "link": link,
-                                    "time": datetime.now().strftime("%m/%d/%Y %H:%M")})
+                                         "time": datetime.now().strftime("%m/%d/%Y %H:%M")})
                             print([name[n], item, price, stock, link, datetime.now().strftime("%m/%d/%Y %H:%M")])
                             item, price, stock, link = ["", "", "", ""]
 
@@ -423,7 +422,7 @@ def scrape(name, url):
                                 if element.get_text().strip() == "Out of stock":
                                     stock = element.get_text().strip()
                             if stock != "Out of stock":
-                                    stock = "In Stock"
+                                stock = "In Stock"
 
                     data.append({"store": name[n], "item": item, "price": price, "stock": stock, "link": link,
                                  "time": datetime.now().strftime("%m/%d/%Y %H:%M")})
@@ -470,7 +469,7 @@ def scrape(name, url):
             next_page = True
             while next_page:
                 for product in soup.find_all("div", class_="product"):
-                    #print(product)
+                    # print(product)
                     for element in product.find_all():
                         if element.get("class"):
                             if " ".join(element.get("class")) == "price":
@@ -497,7 +496,7 @@ def scrape(name, url):
         if name[n] == "mccranies":
             soup = get_html(url[n])
             for cat in soup.find_all(class_="categoryListBoxContents"):
-                #print(cat)
+                # print(cat)
                 error = True
                 wait_time = 2.75
                 while error:
@@ -510,8 +509,8 @@ def scrape(name, url):
                         print("An Error Occurred: sleeping " + str(wait_time) + "s")
                         wait_time = wait_time + 1
                         pass
-                for product in new_soup.find_all("tr", {"class":["productListing-even", "productListing-odd"]}):
-                    #print(product)
+                for product in new_soup.find_all("tr", {"class": ["productListing-even", "productListing-odd"]}):
+                    # print(product)
                     for element in product.find_all():
                         if element.find("h3", class_="itemTitle"):
                             item = (brand + " " + element.find("a").get_text())
@@ -537,7 +536,7 @@ def scrape(name, url):
                             if " ".join(element.get("class")) == "price":
                                 priceraw = element.get_text()
                                 head, sep, price = priceraw.partition(":")
-                                price=price.strip()
+                                price = price.strip()
                             if " ".join(element.get("class")) == "status":
                                 stock = element.get_text().strip()
                             if " ".join(element.get("class")) == "name":
@@ -551,8 +550,8 @@ def scrape(name, url):
                     print([name[n], item, price, stock, link, datetime.now().strftime("%m/%d/%Y %H:%M")])
                     item, price, stock, link = ["", "", "", ""]
                 for page in soup.find_all(class_="paging"):
-                    if page.find("a", string = "Next Page"):
-                        next_url = ("http://www.thebriary.com/" + page.find("a", string = "Next Page").get("href"))
+                    if page.find("a", string="Next Page"):
+                        next_url = ("http://www.thebriary.com/" + page.find("a", string="Next Page").get("href"))
                         soup = get_html(next_url)
                     else:
                         next_page = False
@@ -573,7 +572,7 @@ def scrape(name, url):
                                 print("An Error Occurred: sleeping " + str(wait_time) + "s")
                                 wait_time = wait_time + 1
                                 pass
-                        for product in new_soup.find_all("div",class_="product-item-details"):
+                        for product in new_soup.find_all("div", class_="product-item-details"):
                             for element in product.find_all():
                                 if element.get("class"):
                                     if " ".join(element.get("class")) == "price-value-wrapper":
@@ -594,7 +593,7 @@ def scrape(name, url):
         if name[n] == "marscigars":
             soup = get_html(url[n])
             for bar in soup.find_all("table", class_="category-list"):
-                #print(bar)
+                # print(bar)
                 for cat in bar.find_all("div", class_="category-list-item-head"):
                     error = True
                     wait_time = 2.75
@@ -608,21 +607,21 @@ def scrape(name, url):
                             print("An Error Occurred: sleeping " + str(wait_time) + "s")
                             wait_time = wait_time + 1
                             pass
-                    for product in new_soup.find_all("div",class_="product-list-item"):
+                    for product in new_soup.find_all("div", class_="product-list-item"):
                         for element in product.find_all():
                             if element.get("class"):
                                 if " ".join(element.get("class")) == "product-list-cost-value":
                                     priceraw = element.get_text().strip()
                                     if len(priceraw) < 7:
-                                        price= priceraw
+                                        price = priceraw
                                     else:
-                                        head,sep,price = priceraw.partition("m ")
+                                        head, sep, price = priceraw.partition("m ")
                                 if " ".join(element.get("class")) == "product-list-options":
                                     item = element.find("a").get_text().strip()
                                     link = ("http://www.marscigars.com" + element.find("a").get("href"))
                                 if " ".join(element.get("class")) == "product-list-control":
                                     if element.find("input"):
-                                        stock= "In Stock"
+                                        stock = "In Stock"
                         sub_soup = get_html(link)
                         if sub_soup.find(class_="prod-detail-stock") and not stock == "In Stock":
                             stock = sub_soup.find(class_="prod-detail-stock").get_text()
@@ -650,7 +649,7 @@ def scrape(name, url):
                         stock = "In Stock"
 
                     data.append({"store": name[n], "item": item, "price": price, "stock": stock, "link": link,
-                         "time": datetime.now().strftime("%m/%d/%Y %H:%M")})
+                                 "time": datetime.now().strftime("%m/%d/%Y %H:%M")})
                     print([name[n], item, price, stock, link, datetime.now().strftime("%m/%d/%Y %H:%M")])
                     item, price, stock, link = ["", "", "", ""]
 
@@ -674,13 +673,14 @@ def scrape(name, url):
                         element.click()
                         style = element.get_attribute("style")
                         while style == "display: none;":
-                            style = browser.find_element_by_id(r'''sb-infinite-scroll-load-more''').get_attribute("style")
+                            style = browser.find_element_by_id(r'''sb-infinite-scroll-load-more''').get_attribute(
+                                "style")
                         element = browser.find_element_by_id(r'''sb-infinite-scroll-load-more''')
                     soup = BeautifulSoup(browser.page_source.encode('utf8'), "lxml")
                 finally:
-                    #tidy-up
+                    # tidy-up
                     browser.quit()
-                    display.stop() # ignore any output from this.
+                    display.stop()  # ignore any output from this.
 
                 for product in soup.find_all("li", class_="type-product"):
                     item = product.find("h2", class_="woocommerce-loop-product__title").get_text()
@@ -688,7 +688,7 @@ def scrape(name, url):
                     link = product.find("a", class_="woocommerce-LoopProduct-link").get("href")
                     stock = "In Stock"
                     data.append({"store": "boswell", "item": item, "price": price, "stock": stock, "link": link,
-                                                 "time": datetime.now().strftime("%m/%d/%Y %H:%M")})
+                                 "time": datetime.now().strftime("%m/%d/%Y %H:%M")})
                     print([name[n], item, price, stock, link, datetime.now().strftime("%m/%d/%Y %H:%M")])
                     item, price, stock, link = ["", "", "", ""]
 
