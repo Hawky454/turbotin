@@ -66,6 +66,6 @@ def update_website():
         start = datetime.now()
         log.write("[TR Reviews] Start time: " + start.strftime("%m/%d/%Y %H:%M"))
         review_data = get_reviews("https://www.tobaccoreviews.com/browse")
-
+        pickle.dump(review_data, open(r"review_data.p", "wb"))
         end = datetime.now()
         log.write(", End time: " + end.strftime("%m/%d/%Y %H:%M") + ", Total time: " + str(end - start) + "\n")
