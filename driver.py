@@ -34,20 +34,16 @@ def update_website():
                     {"name": "marscigars", "url": "http://www.marscigars.com/pipetobacco.aspx"},
                     {"name": "wilke", "url": "https://www.wilkepipetobacco.com/tincellar"}]
 
-    df = pd.DataFrame
+    df = pd.DataFrame()
     log = open("log.txt", "w")
     for website in website_list:
 
         try:
             start = datetime.now()
             log.write("[" + website["name"] + "] Start time: " + start.strftime("%m/%d/%Y %H:%M"))
-            data = pd.DataFrame(scrape(name=[website["name"]], url=[website["url"]]))
-            if df.empty:
-                df = data
-            else:
-                df.concat(data)
+            df = pd.concat([df, pd.DataFrame(scrape(name=[website["name"]], url=[website["url"]]))])
             print(df)
-            pickle.dump(data, open(r"product_data.p", "wb"))
+            pickle.dump(df, open(r"product_data.p", "wb"))
             end = datetime.now()
             log.write(", End time: " + end.strftime("%m/%d/%Y %H:%M") + ", Total time: " + str(end - start) + "\n")
         except Exception as e:
