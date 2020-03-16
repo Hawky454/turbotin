@@ -1,6 +1,6 @@
 from scrape_methods import get_html
 from datetime import datetime
-
+import re
 
 def scrape():
     item, price, stock, link = ["", "", "", ""]
