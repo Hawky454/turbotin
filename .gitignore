@@ -3,5 +3,5 @@
 /product_data.p
 /refactor.py
 /template.py
-/__pycache__
-/.idea
+/__pycache__/
+/.idea/
