@@ -1,4 +1,4 @@
-from scrape_methods import get_html
+from product_scrapers.scrape_methods import get_html
 from datetime import datetime
 import re
 
