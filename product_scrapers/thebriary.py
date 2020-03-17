@@ -28,7 +28,6 @@ def scrape():
 
             data.append({"store": name, "item": item, "price": price, "stock": stock, "link": link,
                          "time": datetime.now().strftime("%m/%d/%Y %H:%M")})
-            print([name, item, price, stock, link, datetime.now().strftime("%m/%d/%Y %H:%M")])
             item, price, stock, link = ["", "", "", ""]
         for page in soup.find_all(class_="paging"):
             if page.find("a", string="Next Page"):

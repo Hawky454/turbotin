@@ -29,7 +29,6 @@ def scrape():
                             link = items.get("href")
             data.append({"store": name, "item": item, "price": price, "stock": stock, "link": link,
                          "time": datetime.now().strftime("%m/%d/%Y %H:%M")})
-            print([name, item, price, stock, link, datetime.now().strftime("%m/%d/%Y %H:%M")])
             item, price, stock, link = ["", "", "", ""]
         if soup.find("link", rel="next"):
             soup = get_html(soup.find("link", rel="next").get("href"))

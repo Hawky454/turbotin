@@ -34,7 +34,7 @@ def update_website():
     df = pd.DataFrame()
 
     # Scrape all product data
-    for name in os.listdir("product_scrapers"):
+    for name in tqdm(os.listdir("product_scrapers"), desc="Scraping products"):
         if name.startswith("__"):
             continue
         try:

@@ -1,6 +1,7 @@
 from product_scrapers.scrape_methods import get_html
 from datetime import datetime
 import re
+import time
 
 
 def scrape():
@@ -18,7 +19,6 @@ def scrape():
                 new_soup = get_html("https://www.smokingpipes.com" + cat.find("a").get("href"))
                 error = False
             except:
-                print("An Error Occurred: sleeping " + str(wait_time) + "s")
                 time.sleep(wait_time)
                 wait_time = wait_time + 1
                 pass
@@ -41,7 +41,6 @@ def scrape():
                     item = element.get("alt")
             data.append({"store": name, "item": item, "price": price, "stock": stock, "link": link,
                          "time": datetime.now().strftime("%m/%d/%Y %H:%M")})
-            print([name, item, price, stock, link, datetime.now().strftime("%m/%d/%Y %H:%M")])
             item, price, stock, link = ["", "", "", ""]
 
     return data
