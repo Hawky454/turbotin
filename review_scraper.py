@@ -12,7 +12,7 @@ def get_html(url):
 def get_reviews(url):
     review_data = []
     soup = get_html(url)
-    for tr in tqdm(soup.find_all("tr")):
+    for tr in tqdm(soup.find_all("tr"), desc="Getting reviews"):
         if tr.find("a"):
             sub_soup = get_html(r"https://www.tobaccoreviews.com" + tr.find("a").get("href"))
             for sub_tr in sub_soup.find_all("tr"):
