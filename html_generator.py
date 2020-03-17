@@ -73,8 +73,7 @@ def generate_html(df, plot_data):
         string = string.replace("<!--BLEND NAME-->", blend[0][1])
         string = string.replace("<!--TITLE-->", "Turbotin - "+blend[0][1])
         list_string = ""
-        item_data = blend[1].T.to_dict().values()
-        print(item_data)
+        item_data = blend[1].reset_index().T.to_dict().values()
         for row in item_data:
             try:
                 row["real-price"] = float(row["price"][1:])
