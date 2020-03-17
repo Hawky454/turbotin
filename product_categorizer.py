@@ -38,7 +38,7 @@ def categorize(filename):
     product_data["brand"] = ""
     product_data["blend"] = ""
 
-    for index, row in tqdm(product_data.iterrows(), total=product_data.shape[0], desc="Categorizing: "+filename):
+    for index, row in tqdm(product_data.iterrows(), total=product_data.shape[0], desc="Categorizing tobacco"):
         tobacco, contains_item = get_category(row["item"], cat_data, review_data)
         product_data.at[index, "brand"] = tobacco["brand"]
         product_data.at[index, "blend"] = tobacco["blend"]
