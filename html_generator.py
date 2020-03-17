@@ -2,6 +2,7 @@ import pickle
 import pandas as pd
 from datetime import datetime
 from slugify import slugify
+from tqdm import tqdm
 
 href_path = r""
 save_path = r"html_pages/"
@@ -28,15 +29,15 @@ def generate_index(df):
     counter = 0
     for brand in sorted(brands, key=lambda i: i[0]):
         counter = counter + 1
-        custom_id = slugify(str(counter)+" "+brand[0])
-        temp_string = brand_string.replace("<!--BRAND-->", brand[0])\
-            .replace("<!--PARENT-->", custom_id)\
+        custom_id = slugify(str(counter) + " " + brand[0])
+        temp_string = brand_string.replace("<!--BRAND-->", brand[0]) \
+            .replace("<!--PARENT-->", custom_id) \
             .replace("<!--NUM-->", str(counter))
         sub_temp_string = ""
         for blend in sorted(brand[1].blend.unique()):
-            sub_temp_string = sub_temp_string + blend_string\
-                .replace("<!--LINK-->", href_path + slugify(brand[0]+" "+blend)+".html")\
-                .replace("<!--BLEND-->", blend)\
+            sub_temp_string = sub_temp_string + blend_string \
+                .replace("<!--LINK-->", href_path + slugify(brand[0] + " " + blend) + ".html") \
+                .replace("<!--BLEND-->", blend) \
                 .replace("<!--PARENT-->", custom_id)
         temp_string = temp_string.replace("<!--BLENDS-->", sub_temp_string)
         main_string = main_string + "\n" + temp_string
@@ -67,18 +68,18 @@ def generate_html(df, plot_data):
                     ["<!--STORE-->", "store"]]
 
     data = df.groupby(['brand', 'blend'])
-    for blend in data:
-        url = slugify(blend[0][0]+" "+blend[0][1])
+    for blend in tqdm(data, desc="Generating html"):
+        url = slugify(blend[0][0] + " " + blend[0][1])
         string = open("templates/main_template.html", "r").read()
         string = string.replace("<!--BLEND NAME-->", blend[0][1])
-        string = string.replace("<!--TITLE-->", "Turbotin - "+blend[0][1])
+        string = string.replace("<!--TITLE-->", "Turbotin - " + blend[0][1])
         list_string = ""
         item_data = blend[1].reset_index().T.to_dict().values()
         for row in item_data:
             try:
                 row["real-price"] = float(row["price"][1:])
             except:
-                row["real-price"] = float(9*10**9)
+                row["real-price"] = float(9 * 10 ** 9)
 
         for row in sorted(item_data, key=lambda i: i['real-price']):
             temp_string = item_card
@@ -90,7 +91,7 @@ def generate_html(df, plot_data):
         string = string.replace("<!--ITEM LIST-->", list_string)
         string = string.replace("<!--PLOT-->", generate_plot(plot_data, blend[0][0], blend[0][1]))
         string = string.replace("<!--LIST-->", index_string)
-        open(save_path+url+".html", "w").write(string)
+        open(save_path + url + ".html", "w").write(string)
 
 
 def generate_plot(data, brand, blend):
@@ -103,41 +104,21 @@ def generate_plot(data, brand, blend):
         string = string + col_string.replace("<!--STORE-->", store)
 
     data_string = ""
-    for date in df.date.unique():
-        df_date = df[df.date == date]
-        temp_string = "[new Date("+date+")"
+    for time in df["time"].unique():
+        df_time = df[df["time"] == time]
+        temp_string = "[new Date(" + datetime.strptime(time, "%m/%d/%Y %H:%M").strftime("%Y, %m, %d") + ")"
         for store in stores:
-            if True:
-                temp_string = temp_string + ","
-                try:
-                    price = str(float(df_date[df_date.store == store].price.iloc[0][1:]))
-                    temp_string = temp_string + "{v:" + price + ", f: '$" + price + "'}"
-                except:
-                    temp_string = temp_string + "null"
-                    pass
+            temp_string = temp_string + ","
+            try:
+                price = str(float(df_time[df_time.store == store].price.iloc[0][1:]))
+                temp_string = temp_string + "{v:" + price + ", f: '$" + price + "'}"
+            except:
+                temp_string = temp_string + "null"
+                pass
         data_string = data_string + temp_string + "],"
-    data_string = "data.addRows([" + data_string[:len(data_string)-1] + "]);"
+    data_string = "data.addRows([" + data_string[:len(data_string) - 1] + "]);"
 
     string = string + "\n" + data_string
     return string
 
-
-def get_data(path):
-    store = []
-    brand = []
-    blend = []
-    price = []
-    date = []
-
-    data = pickle.load(open(path, "rb"))
-
-    for archive in data:
-        if archive["stock"] != "Out of stock":
-            store.append(archive["store"])
-            brand.append(archive["brand"])
-            blend.append(archive["blend"])
-            price.append(archive["price"])
-            date.append(datetime.strptime(archive["time"], "%m/%d/%Y %H:%M").strftime("%Y, %m, %d"))
-
-    return pd.DataFrame({"store": store, "brand": brand, "blend": blend, "price": price, "date": date})
 
