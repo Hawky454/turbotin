@@ -31,21 +31,19 @@ def simplify_string(item):
     return string.strip()
 
 
-def categorize():
-    product_data = pickle.load(open(r"product_data.p", "rb"))
+def categorize(filename):
+    product_data = pickle.load(open(filename, "rb"))
     review_data = pickle.load(open(r"review_data.p", "rb"))
     cat_data = pickle.load(open(r"cat_data.p", "rb"))
     product_data["brand"] = ""
     product_data["blend"] = ""
 
-    for index, row in tqdm(product_data.iterrows(), total=product_data.shape[0]):
+    for index, row in tqdm(product_data.iterrows(), total=product_data.shape[0], desc="Categorizing: "+filename):
         tobacco, contains_item = get_category(row["item"], cat_data, review_data)
         product_data.at[index, "brand"] = tobacco["brand"]
         product_data.at[index, "blend"] = tobacco["blend"]
         if not contains_item:
             cat_data = cat_data.append({"item": row["item"], "brand": tobacco["brand"], "blend": tobacco["blend"]},
                                        ignore_index=True)
-
-    pickle.dump(product_data, open(r"product_data.p", "wb"))
-    pickle.dump(product_data, open(r"archive/data"+datetime.now().strftime("_%m_%d_%Y_%H_%M")+".p", "wb"))
+    pickle.dump(product_data, open(filename, "wb"))
     pickle.dump(cat_data, open(r"cat_data.p", "wb"))
