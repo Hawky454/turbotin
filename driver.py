@@ -4,6 +4,8 @@ from datetime import datetime
 import pandas as pd
 import os
 from importlib import import_module
+from product_categorizer import categorize
+from html_generator import generate_html
 
 
 def update_website():
@@ -28,11 +30,15 @@ def update_website():
             print(e)
             print("An error occurred while scraping: " + name)
 
-    pickle.dump(df, open(r"product_data.p", "wb"))
+    pickle.dump(df, open(r"data/product_data.p", "wb"))
 
     start = datetime.now()
     log.write("[TR Reviews] Start time: " + start.strftime("%m/%d/%Y %H:%M"))
     review_data = pd.DataFrame(get_reviews("https://www.tobaccoreviews.com/browse"))
-    pickle.dump(review_data, open(r"review_data.p", "wb"))
+    pickle.dump(review_data, open(r"data/review_data.p", "wb"))
     end = datetime.now()
     log.write(", End time: " + end.strftime("%m/%d/%Y %H:%M") + ", Total time: " + str(end - start) + "\n")
+
+    categorize("data/product_data.p")
+
+

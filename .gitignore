@@ -1,11 +1,10 @@
 /master_tester.py
 /log.txt
-/product_data.p
+/data/product_data.p
 /refactor.py
-/template.py
 /__pycache__/
 /.idea/
-/review_data.p
+/data/review_data.p
 /product_scrapers/__pycache__/
 /cat_product_data.p
 /convert_old_archive.py

@@ -33,8 +33,8 @@ def simplify_string(item):
 
 def categorize(filename):
     product_data = pickle.load(open(filename, "rb"))
-    review_data = pickle.load(open(r"review_data.p", "rb"))
-    cat_data = pickle.load(open(r"cat_data.p", "rb"))
+    review_data = pickle.load(open(r"data/review_data.p", "rb"))
+    cat_data = pickle.load(open(r"data/cat_data.p", "rb"))
     product_data["brand"] = ""
     product_data["blend"] = ""
 
@@ -46,4 +46,4 @@ def categorize(filename):
             cat_data = cat_data.append({"item": row["item"], "brand": tobacco["brand"], "blend": tobacco["blend"]},
                                        ignore_index=True)
     pickle.dump(product_data, open(filename, "wb"))
-    pickle.dump(cat_data, open(r"cat_data.p", "wb"))
+    pickle.dump(cat_data, open(r"data/cat_data.p", "wb"))
