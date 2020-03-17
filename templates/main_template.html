@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><!--TITLE--></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="shortcut icon" type="image/x-icon" href="https://www.turbotin.com/pages/icon.png"/>
+    <link rel="stylesheet" href="turbotin_style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+<div id="header" class="header">
+    <div class="header-body">
+        <img src="https://www.turbotin.com/pages/TurboTinLogoLarge.svg" height="36" width="36"
+             style="padding-right: 5px">
+        <a href="http://turbotin.com/" class="header-text">TurboTin</a>
+        <a href="http://turbotin.com/" class="header-text" id="display"></a>
+        <span></span>
+        <a href="https://www.paypal.com/donate/?token=M0qRKPFdFUuJyzl_e25I3Iz7nYNQMw3qMz5i1b0m9rGKmGh3rqYEtXvHq6MLYe_77CXA9m"
+           class="header-text non-mobile" target="_blank"><i class="fa fa-paypal" style="padding-right: 10px"></i></a>
+        <a href="https://www.instagram.com/turbotinman/" class="header-text non-mobile" target="_blank"><i
+                class="fa fa-instagram"
+                style="padding-right: 10px"></i></a>
+        <a href="mailto:turbotinftw@gmail.com" class="header-text non-mobile" target="_blank"><i
+                class="fa fa-envelope-square"></i></a>
+        <a href="javascript:void(0)" onclick="menuToggle()"><i class="fa fa-bars mobile header-text"></i></a>
+    </div>
+</div>
+
+<div class="sub-header" style="z-index:-1!important">
+</div>
+<div id="sub-header" class="sub-header">
+    <div class="sub-header-text">
+        <a href="https://www.turbotin.com/" class="sub-header-box first-box">Home</a>
+        <a href="#" class="sub-header-box">Full Table</a>
+        <a href="#" class="sub-header-box">FAQ</a>
+    </div>
+</div>
+
+
+<div id="sidebar" class="side-menu non-mobile custom-non-mobile">
+    <!--LIST-->
+</div>
+
+
+<div class="main-container">
+    <div class="main-body">
+        <div class="ad-container">
+            <div class="ad">
+
+            </div>
+        </div>
+        <div class="header-body">
+            <img src="https://www.turbotin.com/pages/TurboTinLogoLarge.svg" class="title-logo">
+            <span class="title-text"><!--BLEND NAME--></span>
+        </div>
+        <div class="item-container">
+            <!--ITEM LIST-->
+        </div>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <div id="chart_div"></div>
+        <div class="bottom-links mobile">
+            <a href="https://www.paypal.com/donate/?token=M0qRKPFdFUuJyzl_e25I3Iz7nYNQMw3qMz5i1b0m9rGKmGh3rqYEtXvHq6MLYe_77CXA9m"
+               class="header-text" target="_blank"><i class="fa fa-paypal" style="padding-right: 10px"></i></a>
+            <a href="https://www.instagram.com/turbotinman/" class="header-text" target="_blank"><i
+                    class="fa fa-instagram"
+                    style="padding-right: 10px"></i></a>
+            <a href="mailto:turbotinftw@gmail.com" class="header-text" target="_blank"><i
+                    class="fa fa-envelope-square"></i></a>
+        </div>
+    </div>
+
+</div>
+<script>
+google.charts.load('current', {packages: ['corechart', 'line']});
+google.charts.setOnLoadCallback(drawBackgroundColor);
+
+function drawBackgroundColor() {
+      var data = new google.visualization.DataTable();
+
+      <!--PLOT-->
+
+      var options = {
+        hAxis: {
+          title: 'Date'
+        },
+        vAxis: {
+          title: 'Price'
+        },
+        'height':400
+      };
+
+      var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+      chart.draw(data, options);
+      adjustHeight;
+    }
+
+
+</script>
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.maxHeight){
+      content.style.maxHeight = null;
+    } else {
+      content.style.maxHeight = content.scrollHeight + "px";
+    }
+  });
+}
+
+
+
+</script>
+<script>
+  function menuToggle() {
+    sidebar = document.getElementById("sidebar");
+    sidebar.classList.remove("non-mobile");
+    if (sidebar.style.display === "block") {
+        sidebar.style.display = "none";
+    } else {
+       sidebar.style.display = "block";
+    }
+    adjustHeight();
+  }
+  function adjustHeight(resize = false) {
+      if (window.scrollY < 48 && getComputedStyle(document.getElementById("sub-header")).display !== "none") {
+        document.getElementById("header").style = "box-shadow: none";
+        document.getElementById("sidebar").style.top = (96-window.scrollY).toString()+"px";
+        document.getElementById("sidebar").style.height = (window.innerHeight-96+window.scrollY).toString()+"px";
+      } else {
+        document.getElementById("header").style = "box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12)";
+        document.getElementById("sidebar").style.height = (window.innerHeight-48).toString()+"px";
+        document.getElementById("sidebar").style.top = "48px";
+      }
+      if (resize) {
+        drawBackgroundColor();
+      }
+  }
+  function saveScroll(text, parent) {
+      var sidebar = document.getElementById("sidebar");
+      var child = document.getElementById(parent+"-child");
+      window.location = text+"?parent="+parent+"&position="+child.getBoundingClientRect().top+"&height="+child.getAttribute("style");
+  }
+  function updateScroll() {
+      var sidebar = document.getElementById("sidebar");
+      sidebar.classList.remove("non-mobile");
+
+      var element = document.getElementById(getQueryVariable("parent"));
+      var num = parseInt(element.getAttribute("data-num"));
+      var height = parseInt(element.parentElement.offsetHeight);
+
+      var id = getQueryVariable("parent")+"-child";
+      var childHeight = parseInt(getQueryVariable("height").replace("%20", " ").replace(/\D/g, ""));
+      document.getElementById(id).classList.add("no-transition");
+      document.getElementById(id).setAttribute("style", "max-height: "+childHeight+"px");
+
+      var element = document.getElementById(getQueryVariable("parent"));
+      var num = element.getAttribute("data-num");
+      var offset = document.getElementById("sidebar").offsetTop;
+      var scroll = -parseInt(getQueryVariable("position"))+parseInt(offset)+(height*num)-12;
+      document.getElementById("sidebar").scrollTo(0, scroll);
+
+      document.getElementById(id).classList.remove("no-transition");
+
+      sidebar.classList.add("non-mobile");
+  }
+  function getQueryVariable(variable) {
+       var query = window.location.search.substring(1);
+       var vars = query.split("&");
+       for (var i=0;i<vars.length;i++) {
+               var pair = vars[i].split("=");
+               if(pair[0] == variable){return pair[1];}
+       }
+       return(false);
+  }
+  window.onload = function() {updateScroll()};
+  window.onscroll = function() {adjustHeight()};
+  window.onresize = function() {adjustHeight(true)};
+
+</script>
+</body>
+</html>

@@ -8,3 +8,6 @@
 /review_data.p
 /product_scrapers/__pycache__/
 /cat_product_data.p
+/convert_old_archive.py
+/archive/
+/html_pages/

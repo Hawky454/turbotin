@@ -3,6 +3,7 @@ import pickle
 import re
 import pandas as pd
 from tqdm import tqdm
+from datetime import datetime
 
 
 def get_category(item, cat_data, review_data):
@@ -45,5 +46,6 @@ def categorize():
             cat_data = cat_data.append({"item": row["item"], "brand": tobacco["brand"], "blend": tobacco["blend"]},
                                        ignore_index=True)
 
-    pickle.dump(product_data, open(r"cat_product_data.p", "wb"))
+    pickle.dump(product_data, open(r"product_data.p", "wb"))
+    pickle.dump(product_data, open(r"archive/data"+datetime.now().strftime("_%m_%d_%Y_%H_%M")+".p", "wb"))
     pickle.dump(cat_data, open(r"cat_data.p", "wb"))
