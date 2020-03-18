@@ -2,7 +2,8 @@ from product_scrapers.scrape_methods import get_html
 from datetime import datetime
 import json
 import re
-import slugify
+from slugify import slugify
+
 
 def scrape():
     item, price, stock, link = ["", "", "", ""]
