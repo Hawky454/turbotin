@@ -120,5 +120,3 @@ def generate_plot(data, brand, blend):
 
     string = string + "\n" + data_string
     return string
-
-
