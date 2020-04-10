@@ -3,7 +3,6 @@ import pickle
 import re
 import pandas as pd
 from tqdm import tqdm
-from datetime import datetime
 
 
 def get_category(item, cat_data, review_data):

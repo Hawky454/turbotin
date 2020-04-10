@@ -34,8 +34,8 @@ def scrape_products(name, df):
 
 
 def review_data():
-    pd.DataFrame(get_reviews("https://www.tobaccoreviews.com/browse"))
-    pickle.dump(review_data, open(r"data/review_data.p", "wb"))
+    data = pd.DataFrame(get_reviews("https://www.tobaccoreviews.com/browse"))
+    pickle.dump(data, open(r"data/review_data.p", "wb"))
 
 
 def update_website():
@@ -56,10 +56,12 @@ def update_website():
     # Categorize products
     run_safely(categorize, "Categorizing products", log, ["data/product_data.p"])
 
-    # Generate the html files
+    # Load old data
     df = pickle.load(open("data/product_data.p", "rb"))
     archive_data = pd.DataFrame()
     for file in tqdm(os.listdir("archive"), desc="Loading archive"):
         df = pickle.load(open("archive/" + file, "rb"))
         archive_data = archive_data.append(df)
+
+    # Generate the html files
     run_safely(generate_html, "Generating HTML", log, [df, archive_data])
