@@ -74,28 +74,30 @@
 
 </div>
 <script>
-google.charts.load('current', {packages: ['corechart', 'line']});
+google.charts.load('current', {
+    packages: ['corechart', 'line']
+});
 google.charts.setOnLoadCallback(drawBackgroundColor);
 
 function drawBackgroundColor() {
-      var data = new google.visualization.DataTable();
+    var data = new google.visualization.DataTable();
 
-      <!--PLOT-->
+    <!--PLOT-->
 
-      var options = {
+    var options = {
         hAxis: {
-          title: 'Date'
+            title: 'Date'
         },
         vAxis: {
-          title: 'Price'
+            title: 'Price'
         },
-        'height':400
-      };
+        'height': 400
+    };
 
-      var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-      chart.draw(data, options);
-      adjustHeight;
-    }
+    var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+    adjustHeight;
+}
 </script>
 <script src="../templates/scripts.js"></script>
 </body>

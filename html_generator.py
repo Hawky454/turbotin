@@ -104,14 +104,18 @@ def generate_html(df, plot_data):
 
 
 def generate_plot(data, brand, blend):
+
+    # Filter DataFrame by blend
     df = data[(data.brand == brand) & (data.blend == blend)]
 
+    # Get list of stores that have sold that blend
     string = ["data.addColumn('date', 'Date');"]
     col_string = "data.addColumn('number', '<!--STORE-->');"
     stores = df.store.unique()
     for store in stores:
         string.append(col_string.replace("<!--STORE-->", store))
 
+    # Loop over each date that blend was in stock and convert price data in google readable format
     strings = []
     value_string = "{v:d, f: '$d'}"
     temp_array = ["null"] * (len(stores) + 1)
@@ -121,6 +125,7 @@ def generate_plot(data, brand, blend):
             temp_array[np.where(stores == row["store"])[0][0]+1] = value_string.replace("d", row["price"])
         strings.append("".join(["[", ",".join(temp_array), "]"]))
 
+    # Create string that will be passed into js on the html page
     string.append("".join(["data.addRows([", ",".join(strings), "]);"]))
     string = "\n\t".join(string)
 
