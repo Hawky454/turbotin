@@ -119,9 +119,9 @@ def generate_plot(data, brand, blend):
         temp_array[0] = "".join(["new Date(", date, ")"])
         for index, row in products.iterrows():
             temp_array[np.where(stores == row["store"])[0][0]+1] = value_string.replace("d", row["price"])
-        strings.append(str(temp_array))
+        strings.append("".join(["[", ",".join(temp_array), "]"]))
 
-    string.append("".join(["data.addRows([", ", ".join(strings), "];"]))
-    string = "\t\n".join(string)
+    string.append("".join(["data.addRows([", ",".join(strings), "]);"]))
+    string = "\n\t".join(string)
 
     return string
