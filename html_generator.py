@@ -88,14 +88,14 @@ def generate_html(df, plot_data):
         for row in sorted(item_data, key=lambda i: i['real-price']):
             temp_string = item_card
             if row["stock"] == "Out of stock":
-                temp_string = temp_string.replace("<!--TIME-->", '''<div class="stock">Out of stock</di v>''')
+                temp_string = temp_string.replace("<!--TIME-->", '''<div class="stock">Out of stock</div>''')
             for n in replace_list:
                 temp_string = temp_string.replace(n[0], row[n[1]])
             list_string = list_string + "\n" + temp_string
         string = string.replace("<!--ITEM LIST-->", list_string)
         string = string.replace("<!--PLOT-->", generate_plot(plot_data, blend[0][0], blend[0][1]))
         string = string.replace("<!--LIST-->", index_string)
-        open(save_path + url + ".html", "w").write(minify(string))
+        open(save_path + url + ".html", "w").write(string)
         files.append(url + ".html")
 
     for file in os.listdir(save_path):
