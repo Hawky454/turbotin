@@ -3,6 +3,9 @@ import pandas as pd
 from datetime import datetime
 from slugify import slugify
 from tqdm import tqdm
+from htmlmin import minify
+import os
+import numpy as np
 
 href_path = r""
 save_path = r"html_pages/"
@@ -68,6 +71,7 @@ def generate_html(df, plot_data):
                     ["<!--STORE-->", "store"]]
 
     data = df.groupby(['brand', 'blend'])
+    files = []
     for blend in tqdm(data, desc="Generating html"):
         url = slugify(blend[0][0] + " " + blend[0][1])
         string = open("templates/main_template.html", "r").read()
@@ -84,39 +88,40 @@ def generate_html(df, plot_data):
         for row in sorted(item_data, key=lambda i: i['real-price']):
             temp_string = item_card
             if row["stock"] == "Out of stock":
-                temp_string = temp_string.replace("<!--TIME-->", '''<div class="stock">Out of stock</div>''')
+                temp_string = temp_string.replace("<!--TIME-->", '''<div class="stock">Out of stock</di v>''')
             for n in replace_list:
                 temp_string = temp_string.replace(n[0], row[n[1]])
             list_string = list_string + "\n" + temp_string
         string = string.replace("<!--ITEM LIST-->", list_string)
         string = string.replace("<!--PLOT-->", generate_plot(plot_data, blend[0][0], blend[0][1]))
         string = string.replace("<!--LIST-->", index_string)
-        open(save_path + url + ".html", "w").write(string)
+        open(save_path + url + ".html", "w").write(minify(string))
+        files.append(url + ".html")
+
+    for file in os.listdir(save_path):
+        if file not in files:
+            os.remove(save_path+file)
 
 
 def generate_plot(data, brand, blend):
-    df = data[(data.brand == brand) & (data.blend == blend) & (data.price != "")]
+    df = data[(data.brand == brand) & (data.blend == blend)]
 
-    string = "data.addColumn('date', 'Date');\n"
-    col_string = "data.addColumn('number', '<!--STORE-->');\n"
+    string = ["data.addColumn('date', 'Date');"]
+    col_string = "data.addColumn('number', '<!--STORE-->');"
     stores = df.store.unique()
     for store in stores:
-        string = string + col_string.replace("<!--STORE-->", store)
+        string.append(col_string.replace("<!--STORE-->", store))
 
-    data_string = ""
-    for time in df["time"].unique():
-        df_time = df[df["time"] == time]
-        temp_string = "[new Date(" + datetime.strptime(time, "%m/%d/%Y %H:%M").strftime("%Y, %m, %d") + ")"
-        for store in stores:
-            temp_string = temp_string + ","
-            try:
-                price = str(float(df_time[df_time.store == store].price.iloc[0][1:]))
-                temp_string = temp_string + "{v:" + price + ", f: '$" + price + "'}"
-            except:
-                temp_string = temp_string + "null"
-                pass
-        data_string = data_string + temp_string + "],"
-    data_string = "data.addRows([" + data_string[:len(data_string) - 1] + "]);"
+    strings = []
+    value_string = "{v:d, f: '$d'}"
+    temp_array = ["null"] * (len(stores) + 1)
+    for date, products in df.groupby("date"):
+        temp_array[0] = "".join(["new Date(", date, ")"])
+        for index, row in products.iterrows():
+            temp_array[np.where(stores == row["store"])[0][0]+1] = value_string.replace("d", row["price"])
+        strings.append(str(temp_array))
 
-    string = string + "\n" + data_string
+    string.append("".join(["data.addRows([", ", ".join(strings), "];"]))
+    string = "\t\n".join(string)
+
     return string
