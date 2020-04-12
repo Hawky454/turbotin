@@ -48,6 +48,15 @@ def generate_index(df):
 
 
 def generate_html(df, plot_data):
+    # Clean up archive data to improve plot generation performance
+    plot_data["date"] = plot_data["time"].str.replace(r'(\d{2})\/(\d{2})\/(\d{4}).+', r'\3, \1, \2')
+    plot_data = plot_data[plot_data["price"].str.contains(r"^\$\d{1,3}\.\d\d$")]
+    plot_data = plot_data.drop_duplicates(subset=plot_data.columns.difference(['time']))
+    plot_data = plot_data[plot_data.price != ""]
+    plot_data = plot_data[["date", "store", "price", "brand", "blend"]]
+    plot_data = plot_data.drop_duplicates(subset=plot_data.columns.difference(['time']))
+    plot_data["price"] = plot_data["price"].str[1:]
+
     index_string = generate_index(df)
     item_card = '''
             <div class="item-card">
@@ -72,13 +81,15 @@ def generate_html(df, plot_data):
 
     data = df.groupby(['brand', 'blend'])
     files = []
+    template_string = open("templates/main_template.html", "r").read()
+    template_string = minify(template_string.replace("<!--LIST-->", index_string))
     for blend in tqdm(data, desc="Generating html"):
         url = slugify(blend[0][0] + " " + blend[0][1])
-        string = open("templates/main_template.html", "r").read()
+        string = template_string
         string = string.replace("<!--BLEND NAME-->", blend[0][1])
         string = string.replace("<!--TITLE-->", "Turbotin - " + blend[0][1])
         list_string = ""
-        item_data = blend[1].reset_index().T.to_dict().values()
+        item_data = blend[1].reset_index(drop=True).T.to_dict().values()
         for row in item_data:
             try:
                 row["real-price"] = float(row["price"][1:])
@@ -94,17 +105,17 @@ def generate_html(df, plot_data):
             list_string = list_string + "\n" + temp_string
         string = string.replace("<!--ITEM LIST-->", list_string)
         string = string.replace("<!--PLOT-->", generate_plot(plot_data, blend[0][0], blend[0][1]))
-        string = string.replace("<!--LIST-->", index_string)
         open(save_path + url + ".html", "w").write(string)
         files.append(url + ".html")
 
+    files.append("full_table.html")
+    generate_table(df)
     for file in os.listdir(save_path):
         if file not in files:
-            os.remove(save_path+file)
+            os.remove(save_path + file)
 
 
 def generate_plot(data, brand, blend):
-
     # Filter DataFrame by blend
     df = data[(data.brand == brand) & (data.blend == blend)]
 
@@ -122,7 +133,7 @@ def generate_plot(data, brand, blend):
     for date, products in df.groupby("date"):
         temp_array[0] = "".join(["new Date(", date, ")"])
         for index, row in products.iterrows():
-            temp_array[np.where(stores == row["store"])[0][0]+1] = value_string.replace("d", row["price"])
+            temp_array[np.where(stores == row["store"])[0][0] + 1] = value_string.replace("d", row["price"])
         strings.append("".join(["[", ",".join(temp_array), "]"]))
 
     # Create string that will be passed into js on the html page
@@ -130,3 +141,14 @@ def generate_plot(data, brand, blend):
     string = "\n\t".join(string)
 
     return string
+
+
+def generate_table(df):
+    template_string = open("templates/table_template.html", "r").read()
+    df["name"] = r'''<a target="blank" href="''' + df["link"] + '''">''' + df["item"] + '''</a>'''
+    df = df[["store", "name", "stock", "price", "time"]]
+    df.columns = [n[0].upper() + n[1:] for n in df.columns]
+    string = template_string.replace("<!--TABLE-->", df.to_html(index=False, justify="left", escape=False))
+    string = string.replace(r'''border="1" class="dataframe"''',
+                            r'''border="0" id="table" class="tablesorter custom-table"''')
+    open("html_pages/full_table.html", "w").write(minify(string))

@@ -36,7 +36,7 @@ def categorize(filename):
     cat_data = pickle.load(open(r"data/cat_data.p", "rb"))
     product_data["brand"] = ""
     product_data["blend"] = ""
-
+    product_data = product_data.reset_index(drop=True)
     for index, row in tqdm(product_data.iterrows(), total=product_data.shape[0], desc="Categorizing tobacco"):
         tobacco, contains_item = get_category(row["item"], cat_data, review_data)
         product_data.at[index, "brand"] = tobacco["brand"]

@@ -66,19 +66,10 @@ def update_website():
     run_safely(categorize, "Categorizing products", log, ["data/product_data.p"])
 
     # Load old data
-    product_data = pickle.load(open("data/product_data.p", "rb"))
     archive_data = pd.DataFrame()
     for file in tqdm(os.listdir("archive"), desc="Loading archive"):
         df = pickle.load(open("archive/" + file, "rb"))
         archive_data = archive_data.append(df)
-
-    # Clean up archive data to improve plot generation performance
-    archive_data["date"] = archive_data["time"].str.replace(r'(\d{2})\/(\d{2})\/(\d{4}).+', r'\3, \1, \2')
-    archive_data = archive_data.drop_duplicates(subset=archive_data.columns.difference(['time']))
-    archive_data = archive_data[archive_data.price != ""]
-    archive_data = archive_data[["date", "store", "price", "brand", "blend"]]
-    archive_data = archive_data.drop_duplicates(subset=archive_data.columns.difference(['time']))
-    archive_data["price"] = archive_data["price"].str[1:]
 
     # Generate the html files
     run_safely(generate_html, "Generating HTML", log, [product_data, archive_data])
