@@ -73,3 +73,7 @@ def update_website():
 
     # Generate the html files
     run_safely(generate_html, "Generating HTML", log, [product_data, archive_data])
+
+
+if __name__ == "__main__":
+    update_website()
