@@ -46,7 +46,7 @@ def update_website():
     path = os.path.dirname(__file__)
 
     # Initializing necessary variables
-    log = open(path + "/" + "log.txt", "w")
+    log = open(os.path.join(path, "log.txt"), "w")
     product_data = pd.DataFrame()
 
     # Scrape all product data
@@ -60,19 +60,19 @@ def update_website():
             log.write(str(df.size) + " products from " + name + "\n")
         product_data = pd.concat([product_data, df])
 
-    pickle.dump(product_data, open(path + "/" + "data/product_data.p", "wb"))
+    pickle.dump(product_data, open(os.path.join(path, "data/product_data.p"), "wb"))
 
     # Scrape review data
     data = run_safely(review_data, "Scraping reviews", log)
-    pickle.dump(data, open(path + "/" + "data/review_data.p", "wb"))
+    pickle.dump(data, open(os.path.join(path, "data/review_data.p"), "wb"))
 
     # Categorize products
-    run_safely(categorize, "Categorizing products", log, [path + "/" + "data/product_data.p"])
+    run_safely(categorize, "Categorizing products", log, [os.path.join(path, "data/product_data.p")])
 
     # Load old data
     archive_data = pd.DataFrame()
     for file in tqdm(os.listdir("archive"), desc="Loading archive"):
-        df = pickle.load(open(path + "/" + "archive/" + file, "rb"))
+        df = pickle.load(open(os.path.join(path, "archive/", file), "rb"))
         archive_data = archive_data.append(df)
 
     # Generate the html files

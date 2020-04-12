@@ -36,8 +36,8 @@ def categorize(filename):
     path = os.path.dirname(__file__)
 
     product_data = pickle.load(open(filename, "rb"))
-    review_data = pickle.load(open(path + "/" + "data/review_data.p", "rb"))
-    cat_data = pickle.load(open(path + "/" + "data/cat_data.p", "rb"))
+    review_data = pickle.load(open(os.path.join(path, "data/review_data.p"), "rb"))
+    cat_data = pickle.load(open(os.path.join(path, "data/cat_data.p"), "rb"))
     product_data["brand"] = ""
     product_data["blend"] = ""
     product_data = product_data.reset_index(drop=True)
@@ -48,5 +48,5 @@ def categorize(filename):
         if not contains_item:
             cat_data = cat_data.append({"item": row["item"], "brand": tobacco["brand"], "blend": tobacco["blend"]},
                                        ignore_index=True)
-    pickle.dump(product_data, open(path + "/" + filename, "wb"))
-    pickle.dump(cat_data, open(path + "/" + "data/cat_data.p", "wb"))
+    pickle.dump(product_data, open(os.path.join(path, filename), "wb"))
+    pickle.dump(cat_data, open(os.path.join(path, "data/cat_data.p"), "wb"))
