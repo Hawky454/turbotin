@@ -24,15 +24,16 @@ def run_safely(func, message, log, args=None):
     except Exception as e:
         log.write(", Error time: " + datetime.now().strftime("%m/%d/%Y %H:%M") + "\n")
         log.write(str(e) + "\n")
+        print()
         print(e)
-        traceback.print_exc()
+        # traceback.print_exc()
         print("An error occurred while running [" + message + "]")
 
 
-def scrape_products(name, df):
+def scrape_products(name, pbar=None):
     module = import_module("product_scrapers." + name.replace(".py", ""))
-    scrape_data = pd.DataFrame(module.scrape())
-    return pd.concat([df, scrape_data])
+    scrape_data = pd.DataFrame(module.scrape(pbar))
+    return scrape_data
 
 
 def review_data():
@@ -43,14 +44,20 @@ def review_data():
 def update_website():
     # Initializing necessary variables
     log = open("log.txt", "w")
-    df = pd.DataFrame()
+    product_data = pd.DataFrame()
 
     # Scrape all product data
-    for name in tqdm(os.listdir("product_scrapers"), desc="Scraping products"):
+    pbar = tqdm(os.listdir("product_scrapers"), desc="Scraping products")
+    for name in pbar:
         if name in ["__init__.py", "scrape_methods.py", "__pycache__"]:
             continue
-        df = run_safely(scrape_products, name, log, [name, df])
-    pickle.dump(df, open(r"data/product_data.p", "wb"))
+        pbar.set_description(name[:-3])
+        df = run_safely(scrape_products, name, log, [name, pbar])
+        if df is not None:
+            log.write(str(df.size) + " products from " + name + "\n")
+        product_data = pd.concat([product_data, df])
+
+    pickle.dump(product_data, open(r"data/product_data.p", "wb"))
 
     # Scrape review data
     run_safely(review_data, "Scraping reviews", log)

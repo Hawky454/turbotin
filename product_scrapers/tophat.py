@@ -1,9 +1,10 @@
 from product_scrapers.scrape_methods import get_html
 from datetime import datetime
 import time
+from tqdm import tqdm
 
 
-def scrape():
+def scrape(pbar=None):
     item, price, stock, link = ["", "", "", ""]
     data = []
     name = "tophat"
@@ -39,6 +40,8 @@ def scrape():
 
                     data.append({"store": name, "item": item, "price": price, "stock": stock, "link": link,
                                  "time": datetime.now().strftime("%m/%d/%Y %H:%M")})
+                    if pbar is not None:
+                        pbar.set_description(", ".join([name, item]))
                     item, price, stock, link = ["", "", "", ""]
 
     return data
