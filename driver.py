@@ -50,7 +50,7 @@ def update_website():
     product_data = pd.DataFrame()
 
     # Scrape all product data
-    pbar = tqdm(os.listdir("product_scrapers"), desc="Scraping products")
+    pbar = tqdm(os.listdir(os.path.join(path, "product_scrapers")), desc="Scraping products")
     for name in pbar:
         if name in ["__init__.py", "scrape_methods.py", "__pycache__"]:
             continue
@@ -71,7 +71,7 @@ def update_website():
 
     # Load old data
     archive_data = pd.DataFrame()
-    for file in tqdm(os.listdir("archive"), desc="Loading archive"):
+    for file in tqdm(os.listdir(os.path.join(path, "archive")), desc="Loading archive"):
         df = pickle.load(open(os.path.join(path, "archive/", file), "rb"))
         archive_data = archive_data.append(df)
 
