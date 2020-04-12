@@ -3,6 +3,7 @@ import pickle
 import re
 import pandas as pd
 from tqdm import tqdm
+import os
 
 
 def get_category(item, cat_data, review_data):
@@ -31,9 +32,12 @@ def simplify_string(item):
 
 
 def categorize(filename):
+    # Variable allowing for relative paths
+    path = os.path.dirname(__file__)
+
     product_data = pickle.load(open(filename, "rb"))
-    review_data = pickle.load(open(r"data/review_data.p", "rb"))
-    cat_data = pickle.load(open(r"data/cat_data.p", "rb"))
+    review_data = pickle.load(open(path + "/" + "data/review_data.p", "rb"))
+    cat_data = pickle.load(open(path + "/" + "data/cat_data.p", "rb"))
     product_data["brand"] = ""
     product_data["blend"] = ""
     product_data = product_data.reset_index(drop=True)
@@ -44,5 +48,5 @@ def categorize(filename):
         if not contains_item:
             cat_data = cat_data.append({"item": row["item"], "brand": tobacco["brand"], "blend": tobacco["blend"]},
                                        ignore_index=True)
-    pickle.dump(product_data, open(filename, "wb"))
-    pickle.dump(cat_data, open(r"data/cat_data.p", "wb"))
+    pickle.dump(product_data, open(path + "/" + filename, "wb"))
+    pickle.dump(cat_data, open(path + "/" + "data/cat_data.p", "wb"))

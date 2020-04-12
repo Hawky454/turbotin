@@ -38,12 +38,15 @@ def scrape_products(name, pbar=None):
 
 def review_data():
     data = pd.DataFrame(get_reviews("https://www.tobaccoreviews.com/browse"))
-    pickle.dump(data, open(r"data/review_data.p", "wb"))
+    return data
 
 
 def update_website():
+    # Variable allowing for relative paths
+    path = os.path.dirname(__file__)
+
     # Initializing necessary variables
-    log = open("log.txt", "w")
+    log = open(path + "/" + "log.txt", "w")
     product_data = pd.DataFrame()
 
     # Scrape all product data
@@ -57,18 +60,19 @@ def update_website():
             log.write(str(df.size) + " products from " + name + "\n")
         product_data = pd.concat([product_data, df])
 
-    pickle.dump(product_data, open(r"data/product_data.p", "wb"))
+    pickle.dump(product_data, open(path + "/" + "data/product_data.p", "wb"))
 
     # Scrape review data
-    run_safely(review_data, "Scraping reviews", log)
+    data = run_safely(review_data, "Scraping reviews", log)
+    pickle.dump(data, open(path + "/" + "data/review_data.p", "wb"))
 
     # Categorize products
-    run_safely(categorize, "Categorizing products", log, ["data/product_data.p"])
+    run_safely(categorize, "Categorizing products", log, [path + "/" + "data/product_data.p"])
 
     # Load old data
     archive_data = pd.DataFrame()
     for file in tqdm(os.listdir("archive"), desc="Loading archive"):
-        df = pickle.load(open("archive/" + file, "rb"))
+        df = pickle.load(open(path + "/" + "archive/" + file, "rb"))
         archive_data = archive_data.append(df)
 
     # Generate the html files

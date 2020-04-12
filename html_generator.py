@@ -1,17 +1,13 @@
 import pickle
 import pandas as pd
-from datetime import datetime
 from slugify import slugify
 from tqdm import tqdm
 from htmlmin import minify
 import os
 import numpy as np
 
-href_path = r""
-save_path = r"html_pages/"
 
-
-def generate_index(df):
+def generate_index(df, href_path):
     brands = df.groupby(["brand"])
     main_string = ""
     brand_string = '''
@@ -48,6 +44,10 @@ def generate_index(df):
 
 
 def generate_html(df, plot_data):
+    # Variable allowing for relative paths
+    path = os.path.dirname(__file__)
+    href_path, save_path = eval(open(path + "/" + "paths.txt", "r").read())
+
     # Clean up archive data to improve plot generation performance
     plot_data["date"] = plot_data["time"].str.replace(r'(\d{2})\/(\d{2})\/(\d{4}).+', r'\3, \1, \2')
     plot_data = plot_data[plot_data["price"].str.contains(r"^\$\d{1,3}\.\d\d$")]
@@ -57,7 +57,7 @@ def generate_html(df, plot_data):
     plot_data = plot_data.drop_duplicates(subset=plot_data.columns.difference(['time']))
     plot_data["price"] = plot_data["price"].str[1:]
 
-    index_string = generate_index(df)
+    index_string = generate_index(df, href_path)
     item_card = '''
             <div class="item-card">
                 <div class="item-body">
@@ -81,7 +81,7 @@ def generate_html(df, plot_data):
 
     data = df.groupby(['brand', 'blend'])
     files = []
-    template_string = open("templates/main_template.html", "r").read()
+    template_string = open(path + "/" + "templates/main_template.html", "r").read()
     template_string = minify(template_string.replace("<!--LIST-->", index_string))
     for blend in tqdm(data, desc="Generating html"):
         url = slugify(blend[0][0] + " " + blend[0][1])
@@ -109,7 +109,7 @@ def generate_html(df, plot_data):
         files.append(url + ".html")
 
     files.append("full_table.html")
-    generate_table(df)
+    generate_table(df, path, save_path)
     for file in os.listdir(save_path):
         if file not in files:
             os.remove(save_path + file)
@@ -143,12 +143,12 @@ def generate_plot(data, brand, blend):
     return string
 
 
-def generate_table(df):
-    template_string = open("templates/table_template.html", "r").read()
+def generate_table(df, path, save_path):
+    template_string = open(path + "/" + "templates/table_template.html", "r").read()
     df["name"] = r'''<a target="blank" href="''' + df["link"] + '''">''' + df["item"] + '''</a>'''
     df = df[["store", "name", "stock", "price", "time"]]
     df.columns = [n[0].upper() + n[1:] for n in df.columns]
     string = template_string.replace("<!--TABLE-->", df.to_html(index=False, justify="left", escape=False))
     string = string.replace(r'''border="1" class="dataframe"''',
                             r'''border="0" id="table" class="tablesorter custom-table"''')
-    open("html_pages/full_table.html", "w").write(minify(string))
+    open(save_path + "/" + "html_pages/full_table.html", "w").write(minify(string))
