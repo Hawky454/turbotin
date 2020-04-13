@@ -54,7 +54,6 @@ def generate_html(df, plot_data):
     plot_data = plot_data.drop_duplicates(subset=plot_data.columns.difference(['time']))
     plot_data = plot_data[plot_data.price != ""]
     plot_data = plot_data[["date", "store", "price", "brand", "blend"]]
-    plot_data = plot_data.drop_duplicates(subset=plot_data.columns.difference(['time']))
     plot_data["price"] = plot_data["price"].str[1:]
 
     index_string = generate_index(df, href_path)

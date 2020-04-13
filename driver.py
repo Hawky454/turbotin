@@ -73,6 +73,8 @@ def update_website():
     archive_data = pd.DataFrame()
     for file in tqdm(os.listdir(os.path.join(path, "archive")), desc="Loading archive"):
         df = pickle.load(open(os.path.join(path, "archive/", file), "rb"))
+        df = df[["time", "store", "price", "brand", "blend"]]
+        df = df.drop_duplicates(subset=df.columns.difference(['time']))
         archive_data = archive_data.append(df)
 
     # Generate the html files
