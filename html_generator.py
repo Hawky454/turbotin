@@ -112,7 +112,7 @@ def generate_html(df, plot_data):
     generate_table(df, path, save_path)
     for file in os.listdir(save_path):
         if file not in files:
-            os.remove(save_path + file)
+            os.remove(os.path.join(save_path, file))
 
 
 def generate_plot(data, brand, blend):
