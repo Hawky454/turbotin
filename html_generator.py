@@ -48,6 +48,14 @@ def generate_html(df, plot_data):
     path = os.path.dirname(__file__)
     href_path, save_path = eval(open(os.path.join(path, "paths.txt"), "r").read()).values()
 
+    # Decrement month by one because google charts dates is silly
+    plot_data["day"] = plot_data["date"].str.extract(r"\d{4}, \d{2}, (\d{2})")
+    plot_data["month"] = plot_data["date"].str.extract(r"\d{4}, (\d{2}), \d{2}")
+    plot_data["month"] = plot_data["month"].astype("int").add(-1)
+    plot_data["year"] = plot_data["date"].str.extract(r"(\d{4}), \d{2}, \d{2}")
+    plot_data["date"] = plot_data["year"] + ", " + plot_data["month"].astype("str") + ", " + plot_data["day"]
+    plot_data = plot_data.drop(["year", "month", "day"], axis=1)
+    
     index_string = generate_index(df, href_path)
     item_card = '''
             <div class="item-card">
