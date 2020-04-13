@@ -46,7 +46,7 @@ def generate_index(df, href_path):
 def generate_html(df, plot_data):
     # Variable allowing for relative paths
     path = os.path.dirname(__file__)
-    href_path, save_path = eval(open(os.path.join(path, "paths.txt"), "r").read())
+    href_path, save_path = eval(open(os.path.join(path, "paths.txt"), "r").read()).values()
 
     # Clean up archive data to improve plot generation performance
     plot_data["date"] = plot_data["time"].str.replace(r'(\d{2})\/(\d{2})\/(\d{4}).+', r'\3, \1, \2')
@@ -105,7 +105,7 @@ def generate_html(df, plot_data):
             list_string = list_string + "\n" + temp_string
         string = string.replace("<!--ITEM LIST-->", list_string)
         string = string.replace("<!--PLOT-->", generate_plot(plot_data, blend[0][0], blend[0][1]))
-        open(os.path.join(save_path, url, ".html"), "w").write(string)
+        open(os.path.join(save_path, url + ".html"), "w").write(string)
         files.append(url + ".html")
 
     files.append("full_table.html")
@@ -151,4 +151,4 @@ def generate_table(df, path, save_path):
     string = template_string.replace("<!--TABLE-->", df.to_html(index=False, justify="left", escape=False))
     string = string.replace(r'''border="1" class="dataframe"''',
                             r'''border="0" id="table" class="tablesorter custom-table"''')
-    open(os.path.join(save_path, "html_pages/full_table.html"), "w").write(minify(string))
+    open(os.path.join(save_path, "full_table.html"), "w").write(minify(string))
