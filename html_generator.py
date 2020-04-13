@@ -8,7 +8,7 @@ import numpy as np
 from bs4 import BeautifulSoup
 
 
-def generate_index(df, href_path):
+def generate_index(df):
     brands = df.groupby(["brand"])
     main_string = ""
     brand_string = '''
@@ -36,7 +36,7 @@ def generate_index(df, href_path):
         sub_temp_string = ""
         for blend in sorted(brand[1].blend.unique()):
             sub_temp_string = sub_temp_string + blend_string \
-                .replace("<!--LINK-->", href_path + slugify(brand[0] + " " + blend) + ".html") \
+                .replace("<!--LINK-->", slugify(brand[0] + " " + blend) + ".html") \
                 .replace("<!--BLEND-->", blend) \
                 .replace("<!--PARENT-->", custom_id)
         temp_string = temp_string.replace("<!--BLENDS-->", sub_temp_string)
@@ -47,11 +47,11 @@ def generate_index(df, href_path):
 def generate_html(df, plot_data):
     # Variable allowing for relative paths
     path = os.path.dirname(__file__)
-    href_path, save_path = eval(open(os.path.join(path, "paths.txt"), "r").read()).values()
+    save_path = eval(open(os.path.join(path, "paths.txt"), "r").read()).values()
 
     plot_data = clean_array(plot_data)
 
-    index_string = generate_index(df, href_path)
+    index_string = generate_index(df)
     item_card = '''
             <div class="item-card">
                 <div class="item-body">
