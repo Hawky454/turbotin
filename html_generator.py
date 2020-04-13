@@ -7,6 +7,7 @@ import os
 import numpy as np
 from bs4 import BeautifulSoup
 
+
 def generate_index(df, href_path):
     brands = df.groupby(["brand"])
     main_string = ""
@@ -55,7 +56,7 @@ def generate_html(df, plot_data):
     plot_data["year"] = plot_data["date"].str.extract(r"(\d{4}), \d{2}, \d{2}")
     plot_data["date"] = plot_data["year"] + ", " + plot_data["month"].astype("str") + ", " + plot_data["day"]
     plot_data = plot_data.drop(["year", "month", "day"], axis=1)
-    
+
     index_string = generate_index(df, href_path)
     item_card = '''
             <div class="item-card">

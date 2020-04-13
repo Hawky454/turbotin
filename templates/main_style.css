@@ -303,7 +303,7 @@ body {
 }
 
 .ad-container {
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: center;
     padding-bottom: 24px;
