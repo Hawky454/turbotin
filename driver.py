@@ -36,7 +36,7 @@ def scrape_products(name, pbar=None):
     return scrape_data
 
 
-def review_data():
+def get_review_data():
     data = pd.DataFrame(get_reviews("https://www.tobaccoreviews.com/browse"))
     return data
 
@@ -60,11 +60,14 @@ def update_website():
             log.write(str(df.size) + " products from " + name + "\n")
         product_data = pd.concat([product_data, df])
 
+    # Delete product data in case it could interfere with memory in remaining code
     pickle.dump(product_data, open(os.path.join(path, "data/product_data.p"), "wb"))
+    product_data = None
 
-    # Scrape review data
-    data = run_safely(review_data, "Scraping reviews", log)
-    pickle.dump(data, open(os.path.join(path, "data/review_data.p"), "wb"))
+    # Scrape review data and delete review_data variable
+    review_data = run_safely(get_review_data, "Scraping reviews", log)
+    pickle.dump(review_data, open(os.path.join(path, "data/review_data.p"), "wb"))
+    review_data = None
 
     # Categorize products
     run_safely(categorize, "Categorizing products", log, [os.path.join(path, "data/product_data.p")])
@@ -73,13 +76,24 @@ def update_website():
     archive_data = pd.DataFrame()
     for file in tqdm(os.listdir(os.path.join(path, "archive")), desc="Loading archive"):
         df = pickle.load(open(os.path.join(path, "archive/", file), "rb"))
-        df = df[["time", "store", "price", "brand", "blend"]]
-        df = df.drop_duplicates(subset=df.columns.difference(['time']))
+        df = clean_archive_data(df)
         archive_data = archive_data.append(df)
+    archive_data = archive_data.drop_duplicates()
 
+    # Reload product data in case archive causes memory errors
     product_data = pickle.load(open(os.path.join(path, "data/product_data.p"), "rb"))
+
     # Generate the html files
     run_safely(generate_html, "Generating HTML", log, [product_data, archive_data])
+
+
+def clean_archive_data(df):
+    df["date"] = df["time"].str.replace(r'(\d{2})\/(\d{2})\/(\d{4}).+', r'\3, \1, \2')
+    df = df[df["price"].str.contains(r"^\$\d{1,3}\.\d\d$")]
+    df = df[df.price != ""]
+    df = df[["date", "store", "price", "brand", "blend"]]
+    df["price"] = df["price"].str[1:]
+    return df
 
 
 if __name__ == "__main__":

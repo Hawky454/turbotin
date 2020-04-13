@@ -48,14 +48,6 @@ def generate_html(df, plot_data):
     path = os.path.dirname(__file__)
     href_path, save_path = eval(open(os.path.join(path, "paths.txt"), "r").read()).values()
 
-    # Clean up archive data to improve plot generation performance
-    plot_data["date"] = plot_data["time"].str.replace(r'(\d{2})\/(\d{2})\/(\d{4}).+', r'\3, \1, \2')
-    plot_data = plot_data[plot_data["price"].str.contains(r"^\$\d{1,3}\.\d\d$")]
-    plot_data = plot_data.drop_duplicates(subset=plot_data.columns.difference(['time']))
-    plot_data = plot_data[plot_data.price != ""]
-    plot_data = plot_data[["date", "store", "price", "brand", "blend"]]
-    plot_data["price"] = plot_data["price"].str[1:]
-
     index_string = generate_index(df, href_path)
     item_card = '''
             <div class="item-card">
