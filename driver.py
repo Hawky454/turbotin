@@ -91,7 +91,7 @@ def clean_archive_data(df):
     df["date"] = df["time"].str.replace(r'(\d{2})\/(\d{2})\/(\d{4}).+', r'\3, \1, \2')
     df = df[df["price"].str.contains(r"^\$\d{1,3}\.\d\d$")]
     df = df[df.price != ""]
-    df = df[["date", "store", "price", "brand", "blend"]]
+    df = df[["date", "store", "price", "brand", "blend", "stock"]]
     df["price"] = df["price"].str[1:]
     return df
 

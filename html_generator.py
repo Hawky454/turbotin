@@ -49,13 +49,7 @@ def generate_html(df, plot_data):
     path = os.path.dirname(__file__)
     href_path, save_path = eval(open(os.path.join(path, "paths.txt"), "r").read()).values()
 
-    # Decrement month by one because google charts dates is silly
-    plot_data["day"] = plot_data["date"].str.extract(r"\d{4}, \d{2}, (\d{2})")
-    plot_data["month"] = plot_data["date"].str.extract(r"\d{4}, (\d{2}), \d{2}")
-    plot_data["month"] = plot_data["month"].astype("int").add(-1)
-    plot_data["year"] = plot_data["date"].str.extract(r"(\d{4}), \d{2}, \d{2}")
-    plot_data["date"] = plot_data["year"] + ", " + plot_data["month"].astype("str") + ", " + plot_data["day"]
-    plot_data = plot_data.drop(["year", "month", "day"], axis=1)
+    plot_data = clean_array(plot_data)
 
     index_string = generate_index(df, href_path)
     item_card = '''
@@ -121,19 +115,18 @@ def generate_plot(data, brand, blend):
 
     # Get list of stores that have sold that blend
     string = ["data.addColumn('date', 'Date');"]
-    col_string = "data.addColumn('number', '<!--STORE-->');"
+    col_string = "data.addColumn('number', '<!--STORE-->');\n\tdata.addColumn({type:'boolean',role:'scope'});"
     stores = df.store.unique()
     for store in stores:
         string.append(col_string.replace("<!--STORE-->", store))
 
     # Loop over each date that blend was in stock and convert price data in google readable format
     strings = []
-    value_string = "{v:d, f: '$d'}"
-    temp_array = ["null"] * (len(stores) + 1)
-    for date, products in df.groupby("date"):
-        temp_array[0] = "".join(["new Date(", date, ")"])
+    temp_array = ["null,false"] * (len(stores) + 1)
+    for date, products in df.groupby("datetime", sort=True):
+        temp_array[0] = "".join(["new Date(", products.iloc[0]["date"], ")"])
         for index, row in products.iterrows():
-            temp_array[np.where(stores == row["store"])[0][0] + 1] = value_string.replace("d", row["price"])
+            temp_array[np.where(stores == row["store"])[0][0] + 1] = row["charts-var"]
         strings.append("".join(["[", ",".join(temp_array), "]"]))
 
     # Create string that will be passed into js on the html page
@@ -159,3 +152,17 @@ def generate_table(df, path, save_path):
             i["class"] = "out-of-stock"
 
     open(os.path.join(save_path, "full_table.html"), "w").write(minify(str(soup)))
+
+
+def clean_array(df):
+    df["datetime"] = pd.to_datetime(df["date"], format=r"%Y, %m, %d")
+    df["day"] = df["date"].str.extract(r"\d{4}, \d{2}, (\d{2})")
+    df["month"] = df["date"].str.extract(r"\d{4}, (\d{2}), \d{2}")
+    df["month"] = df["month"].astype("int").add(-1)
+    df["year"] = df["date"].str.extract(r"(\d{4}), \d{2}, \d{2}")
+    df["date"] = df["year"] + ", " + df["month"].astype("str") + ", " + df["day"]
+    df = df.drop(["year", "month", "day"], axis=1)
+    df["stock"] = df["stock"] != "Out of stock"
+    df["charts-var"] = "{v:"+df["price"]+", f: '$"+df["price"]+"'},"+df["stock"].astype(str).str.lower()
+    df = df.drop(["price", "stock"], axis=1)
+    return df
