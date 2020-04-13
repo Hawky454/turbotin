@@ -77,6 +77,7 @@ def update_website():
         df = df.drop_duplicates(subset=df.columns.difference(['time']))
         archive_data = archive_data.append(df)
 
+    product_data = pickle.load(open(os.path.join(path, "data/product_data.p"), "rb"))
     # Generate the html files
     run_safely(generate_html, "Generating HTML", log, [product_data, archive_data])
 
