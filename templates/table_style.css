@@ -21,7 +21,7 @@
 .custom-table td{
     border: 1px solid rgba(221,221,221,1);
     padding: 5px;
-     font-size: 15px;
+    font-size: 15px;
     color: rgba(0,0,0,.65);
 }
 
@@ -42,6 +42,31 @@
 .custom-table th:hover{
     background-color: rgba(0,200,200,1);
 }
+@media (max-width:700px) {
+    .custom-table tr > *:nth-child(5) {
+        display: none!important;
+    }
 
-th { outline: none; }
+    .custom-table tr > *:nth-child(3) {
+        display: none!important;
+    }
+
+    .custom-table td{
+        padding: 1px;
+        font-size: 12px;
+    }
+
+    .out-of-stock {
+        background-color: rgba(255, 0, 0, 0.25);
+    }
+
+    .out-of-stock:hover {
+        background-color: rgba(255, 0, 0, 0.5)!important;
+    }
+
+}
+
+th {
+    outline: none;
+}
 

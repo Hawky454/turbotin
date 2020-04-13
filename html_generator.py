@@ -5,7 +5,7 @@ from tqdm import tqdm
 from htmlmin import minify
 import os
 import numpy as np
-
+from bs4 import BeautifulSoup
 
 def generate_index(df, href_path):
     brands = df.groupby(["brand"])
@@ -142,4 +142,11 @@ def generate_table(df, path, save_path):
     string = template_string.replace("<!--TABLE-->", df.to_html(index=False, justify="left", escape=False))
     string = string.replace(r'''border="1" class="dataframe"''',
                             r'''border="0" id="table" class="tablesorter custom-table"''')
-    open(os.path.join(save_path, "full_table.html"), "w").write(minify(string))
+
+    # Specify rows that are out of stock
+    soup = BeautifulSoup(string, features="lxml")
+    for i in soup.find_all("tr"):
+        if "Out of stock" in str(i):
+            i["class"] = "out-of-stock"
+
+    open(os.path.join(save_path, "full_table.html"), "w").write(minify(str(soup)))
