@@ -115,7 +115,7 @@ def generate_plot(data, brand, blend):
 
     # Get list of stores that have sold that blend
     string = ["data.addColumn('date', 'Date');"]
-    col_string = "data.addColumn('number', '<!--STORE-->');\n\tdata.addColumn({type:'boolean',role:'scope'});"
+    col_string = "data.addColumn('number', '<!--STORE-->');\n\tdata.addColumn({type:'boolean',role:'certainty'});"
     stores = df.store.unique()
     for store in stores:
         string.append(col_string.replace("<!--STORE-->", store))
