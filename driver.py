@@ -88,7 +88,7 @@ def update_website():
     product_data = pickle.load(open(os.path.join(path, "data/product_data.p"), "rb"))
 
     # Generate the html files
-    run_safely(generate_html, "Generating HTML", log, [product_data, archive_data])
+    run_safely(generate_html, "Generating HTML", log, [product_data, archive_data, path])
 
 
 def clean_archive_data(df):
