@@ -47,7 +47,7 @@ def generate_index(df):
 def generate_html(df, plot_data):
     # Variable allowing for relative paths
     path = os.path.dirname(__file__)
-    save_path = eval(open(os.path.join(path, "paths.txt"), "r").read()).values()
+    save_path = open(os.path.join(path, "paths.txt"), "r").read()
 
     plot_data = clean_array(plot_data)
 

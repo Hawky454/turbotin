@@ -62,7 +62,6 @@ def update_website():
 
     # Delete product data in case it could interfere with memory in remaining code
     pickle.dump(product_data, open(os.path.join(path, "data/product_data.p"), "wb"))
-
     product_data = None
 
     # Scrape review data and delete review_data variable
