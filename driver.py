@@ -62,8 +62,7 @@ def update_website():
 
     # Delete product data in case it could interfere with memory in remaining code
     pickle.dump(product_data, open(os.path.join(path, "data/product_data.p"), "wb"))
-    pickle.dump(product_data,
-                open(os.path.join(path, "archive/", "data" + datetime.now().strftime("_%m_%d_%Y_%H_%M") + ".p"), "wb"))
+
     product_data = None
 
     # Scrape review data and delete review_data variable
@@ -73,6 +72,10 @@ def update_website():
 
     # Categorize products
     run_safely(categorize, "Categorizing products", log, [os.path.join(path, "data/product_data.p")])
+    product_data = pickle.load(open(os.path.join(path, "data/product_data.p"), "rb"))
+    pickle.dump(product_data,
+                open(os.path.join(path, "archive/", "data" + datetime.now().strftime("_%m_%d_%Y_%H_%M") + ".p"), "wb"))
+    product_data = None
 
     # Load old data
     archive_data = pd.DataFrame()
