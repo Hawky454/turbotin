@@ -64,6 +64,24 @@
         background-color: rgba(255, 0, 0, 0.5)!important;
     }
 
+    .loading-img {
+        width:125px!important;
+        height:125px!important;
+    }
+
+    .loading-text {
+        padding-top: 150px;
+        font-size: 15px;
+    }
+
+}
+
+.loading-img {
+    width:275px;
+    height:275px;
+    display:block;
+    margin:auto;
+    transform: translateY(100%);
 }
 
 th {
