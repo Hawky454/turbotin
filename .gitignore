@@ -12,3 +12,6 @@
 /html_pages/
 /paths.txt
 /log1.txt
+/.google-cookie
+/data/google_cat_data.p
+/html_generator/__pycache__/

@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><!--TITLE--></title>
+    <title>FAQ</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <link rel="shortcut icon" type="image/x-icon" href="/pages/TurboTinLogo.png"/>
     <link rel="stylesheet" href="/pages/templates/main_style.css">
+    <link rel="stylesheet" href="/pages/templates/faq_style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
@@ -18,6 +19,9 @@
   gtag('js', new Date());
 
   gtag('config', 'UA-146439186-1');
+
+
+
 </script>
 
 
@@ -52,27 +56,41 @@
 </div>
 
 
-<div id="sidebar" class="side-menu non-mobile custom-non-mobile">
-    <!--LIST-->
-</div>
-
-
-<div class="main-container">
+<div class="main-container-faq">
     <div class="main-body">
         <div class="ad-container">
             <div class="ad">
-
             </div>
         </div>
         <div class="header-body">
             <img src="/pages/TurboTinLogo.png" class="title-logo">
-            <span class="title-text"><!--BLEND NAME--></span>
+            <span class="title-text">FAQ</span>
         </div>
-        <div class="item-container">
-            <!--ITEM LIST-->
+        <div class="item-container faq-container">
+            <div class="faq-title">
+                This is a question
+            </div>
+            <div class="faq-text">
+                Lorem ipsum dolor sit amet, consectetur
+            adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+            ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+            sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </div>
+            <div class="faq-title">
+                This is a question
+            </div>
+            <div class="faq-text">
+                Lorem ipsum dolor sit amet, consectetur
+            adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+            ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+            sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </div>
+
         </div>
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-        <div id="chart_div"></div>
         <div class="bottom-links mobile">
             <a href="https://www.paypal.com/donate/?token=M0qRKPFdFUuJyzl_e25I3Iz7nYNQMw3qMz5i1b0m9rGKmGh3rqYEtXvHq6MLYe_77CXA9m"
                class="header-text" target="_blank"><i class="fa fa-paypal" style="padding-right: 10px"></i></a>
@@ -85,33 +103,7 @@
     </div>
 
 </div>
-<script>
-google.charts.load('current', {
-    packages: ['corechart', 'line']
-});
-google.charts.setOnLoadCallback(drawBackgroundColor);
 
-function drawBackgroundColor() {
-    var data = new google.visualization.DataTable();
-
-    <!--PLOT-->
-
-    var options = {
-        hAxis: {
-            title: 'Date'
-        },
-        vAxis: {
-            title: 'Price'
-        },
-        lineWidth: 2,
-        'height': 600
-    };
-
-    var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-    chart.draw(data, options);
-    adjustHeight;
-}
-</script>
-<script src="/pages/templates/sidebar_scripts.js"></script>
+<script src="/pages/templates/scripts.js"></script>
 </body>
 </html>
