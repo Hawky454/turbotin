@@ -15,8 +15,8 @@ def generate_plot(data, brand, blend):
 
     # Loop over each date that blend was in stock and convert price data in google readable format
     strings = []
-    temp_array = ["null,false"] * (len(stores) + 1)
     for date, products in df.groupby("datetime", sort=True):
+        temp_array = ["null,false"] * (len(stores) + 1)
         temp_array[0] = "".join(["new Date(", products.iloc[0]["date"], ")"])
         for index, row in products.iterrows():
             temp_array[np.where(stores == row["store"])[0][0] + 1] = row["charts-var"]
