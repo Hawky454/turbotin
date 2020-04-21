@@ -15,3 +15,6 @@
 /.google-cookie
 /data/google_cat_data.p
 /html_generator/__pycache__/
+/email_password.txt
+/email_list.json
+/email_list.csv

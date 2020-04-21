@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .custom-table {
+            border-collapse: collapse
+        }
+
+        .custom-table td {
+            border: 1px solid rgba(221, 221, 221, 1);
+            padding: 5px;
+            font-size: 15px;
+            color: rgba(0, 0, 0, .65)
+        }
+
+        .custom-table tr:hover {
+            background-color: rgba(245, 245, 245, 1)
+        }
+
+        .custom-table th {
+            position: sticky;
+            padding: 13.5px 18px;
+            color: rgba(255, 255, 0, 1);
+            font-size: 18px;
+            border-left: 1px solid rgba(255, 255, 0, .5);
+            text-decoration: none;
+            background-color: rgba(0, 210, 210, 1)
+        }
+
+        .custom-table th:hover {
+            background-color: rgba(0, 200, 200, 1)
+        }
+
+        @media (max-width:700px) {
+            .custom-table tr>:nth-child(5) {
+                display: none!important
+            }
+            .custom-table tr>:nth-child(3) {
+                display: none!important
+            }
+            .custom-table td {
+                padding: 3px;
+                font-size: 12px
+            }
+        }
+
+        th {
+            outline: 0
+        }
+
+        .title-logo {
+            width: 100px;
+            height: 100px;
+            padding-right: 24px
+        }
+
+        body {
+            padding: 0;
+            margin: 0;
+            font-family: Montserrat, sans-serif
+        }
+
+        @media (max-width:992px) {
+            .main-container {
+                margin-left: 0!important
+            }
+            .title-logo {
+                width: 50px!important;
+                height: 50px!important;
+                padding-right: 12px!important
+            }
+            .title-text {
+                font-size: 25px!important;
+                color: rgba(0, 0, 0, .65)
+            }
+            .main-body {
+                padding: 24px 0!important
+            }
+            .main-container {
+                padding: 12px!important
+            }
+            .ad {
+                width: 320px;
+                height: 100px;
+                margin-bottom: 12px
+            }
+        }
+
+        @media (min-width:992px) {
+            .ad {
+                width: 728px;
+                height: 90px;
+                margin-bottom: 24px
+            }
+        }
+
+        .header {
+            height: 48px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            font-size: 24px;
+            position: fixed;
+            background-color: rgba(255, 255, 255, 1);
+            box-shadow: none;
+            z-index: 3
+        }
+
+        .header-text {
+            font-variant: small-caps;
+            color: rgba(0, 0, 0, .65);
+            text-decoration: none
+        }
+
+        .header-text:hover {
+            color: rgba(0, 0, 0, .85)
+        }
+
+        .header-body {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 0 24px;
+            padding-bottom: 24px
+        }
+
+        .header-body>span {
+            flex-grow: 1
+        }
+
+        .main-container {
+            padding: 24px
+        }
+
+        .main-body {
+            padding: 24px;
+            margin: auto;
+            max-width: 1000px
+        }
+
+        .title-logo {
+            width: 100px;
+            height: 100px;
+            padding-right: 24px
+        }
+
+        .title-text {
+            font-size: 50px;
+            color: rgba(0, 0, 0, .65)
+        }
+
+        .stock {
+            color: rgba(255, 0, 0, 1)
+        }
+
+        .bottom-links {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            padding-top: 24px
+        }
+
+        .ad-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 24px
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="main-container">
+    <div class="main-body">
+        <div class="ad-container">
+            <div class="ad">
+
+            </div>
+        </div>
+        <div class="header-body">
+            <img src="https://www.turbotin.com//pages/TurboTinLogo.png" class="title-logo">
+            <span class="title-text"><!--BLEND NAME--></span>
+        </div>
+        <!--TABLE-->
+        <div class="bottom-links">
+            <a href="https://www.paypal.com/donate/?token=M0qRKPFdFUuJyzl_e25I3Iz7nYNQMw3qMz5i1b0m9rGKmGh3rqYEtXvHq6MLYe_77CXA9m"
+               class="header-text" target="_blank"><i class="fa fa-paypal" style="padding-right: 10px"></i></a>
+            <a href="https://www.instagram.com/turbotinman/" class="header-text" target="_blank"><i
+                    class="fa fa-instagram"
+                    style="padding-right: 10px"></i></a>
+            <a href="mailto:turbotinftw@gmail.com" class="header-text" target="_blank"><i
+                    class="fa fa-envelope-square"></i></a>
+        </div>
+    </div>
+
+</div>
+</body>
+
+</html>
