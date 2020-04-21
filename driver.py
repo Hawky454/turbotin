@@ -8,7 +8,7 @@ from product_categorizer import categorize
 from html_generator import generate_html
 from tqdm import tqdm
 import traceback
-from email_methods import send_email
+from email_methods import send_email, send_update
 
 
 def run_safely(func, message, log, args=None):
@@ -91,6 +91,10 @@ def update_website():
     # Generate the html files
     run_safely(generate_html, "Generating HTML", log, [product_data, archive_data, path])
 
+    # Send the emil updates
+    run_safely(send_update, "Sending Updates", log)
+
+    # Send results of script
     send_email("turbotinftw@gmail.com", "Website Updated", log)
 
 
