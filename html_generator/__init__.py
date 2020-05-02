@@ -77,7 +77,7 @@ def clean_array(df):
     df["month"] = df["date"].str.extract(r"\d{4}, (\d{2}), \d{2}")
     df["month"] = df["month"].astype("int").add(-1)
     df["year"] = df["date"].str.extract(r"(\d{4}), \d{2}, \d{2}")
-    df["date"] = df["year"] + ", " + df["month"].astype("str") + ", " + df["day"]
+    df["date"] = "new Date(" + df["year"] + ", " + df["month"].astype("str") + ", " + df["day"] + ")"
     df = df.drop(["year", "month", "day"], axis=1)
     df["stock"] = df["stock"] != "Out of stock"
     df["charts-var"] = "{v:"+df["price"]+", f: '$"+df["price"]+"'},"+df["stock"].astype(str).str.lower()
