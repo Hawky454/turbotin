@@ -95,7 +95,8 @@ def update_website():
     run_safely(send_update, "Sending Updates", log)
 
     # Send results of script
-    send_email("turbotinftw@gmail.com", "Website Updated", log)
+    log.close()
+    send_email("turbotinftw@gmail.com", "Website Updated", open(os.path.join(path, "log.txt"), "r").read())
 
 
 def clean_archive_data(df):
