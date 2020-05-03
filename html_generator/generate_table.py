@@ -5,6 +5,9 @@ from htmlmin import minify
 
 def generate_table(df, path, save_path):
     template_string = open(os.path.join(path, "templates/table_template.html"), "r").read()
+    header = open(os.path.join(path, "templates/header.html"), "r").read()
+    template_string = template_string.replace("<!--HEADER-->", header)
+
     df["name"] = r'''<a target="blank" href="''' + df["link"] + '''">''' + df["item"] + '''</a>'''
     df = df[["store", "name", "stock", "price", "time"]]
     df.columns = [n[0].upper() + n[1:] for n in df.columns]

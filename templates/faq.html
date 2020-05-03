@@ -1,61 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>TurboTin - FAQ</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <link rel="shortcut icon" type="image/x-icon" href="/pages/TurboTinLogo.png"/>
-    <link rel="stylesheet" href="/pages/templates/main_style.css">
-    <link rel="stylesheet" href="/pages/templates/faq_style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-</head>
+<!--HEADER-->
 
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-146439186-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-146439186-1');
-
-
-
-</script>
-
-
-<body>
-
-<div id="header" class="header">
-    <div class="header-body">
-        <img src="/pages/TurboTinLogo.png" height="36" width="36"
-             style="padding-right: 5px">
-        <a href="http://turbotin.com/" class="header-text">TurboTin</a>
-        <span></span>
-        <a href="https://www.paypal.com/donate/?token=M0qRKPFdFUuJyzl_e25I3Iz7nYNQMw3qMz5i1b0m9rGKmGh3rqYEtXvHq6MLYe_77CXA9m"
-           class="header-text non-mobile" target="_blank"><i class="fa fa-paypal" style="padding-right: 10px"></i></a>
-        <a href="https://www.instagram.com/turbotinman/" class="header-text non-mobile" target="_blank"><i
-                class="fa fa-instagram"
-                style="padding-right: 10px"></i></a>
-        <a href="mailto:turbotinftw@gmail.com" class="header-text non-mobile" target="_blank"><i
-                class="fa fa-envelope-square"></i></a>
-        <a href="javascript:void(0)" onclick="menuToggle()"><i class="fa fa-bars mobile header-text"></i></a>
-    </div>
-</div>
-
-<div class="sub-header" style="z-index:-1!important">
-</div>
-<div id="sub-header" class="sub-header">
-    <div class="sub-header-text">
-        <a href="/" class="sub-header-box first-box">Home</a>
-        <a href="/pages/html_data/full_table.html" class="sub-header-box">Full Table</a>
-        <a href="/pages/html_data/esoterica-tobacciana-pembroke.html" class="sub-header-box">Individual Blends</a>
-        <a href="/pages/templates/faq.html" class="sub-header-box">FAQ</a>
-    </div>
-</div>
-
-
+<link rel="stylesheet" href="/pages/templates/faq_style.css">
 <div class="main-container-faq">
     <div class="main-body">
         <div class="ad-container">
@@ -68,26 +15,24 @@
         </div>
         <div class="item-container faq-container">
             <div class="faq-title">
-                This is a question
+                Why are some tobacco's not categorized correctly?
             </div>
             <div class="faq-text">
-                Lorem ipsum dolor sit amet, consectetur
-            adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-            ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-            sunt in culpa qui officia deserunt mollit anim id est laborum.
+                We scrape several thousand tobaccos every day and therefore categorizing each one manually would be far
+                too time consuming. Instead we use fuzzy string matching, which is normally very good, especially with
+                tobaccos that have unique names. However, blends with simple names or several different categorizations
+                can cause it to slip up. If you have any feedback on how we could make this process better please let us
+                know by emailing <a href="mailto:turbotinftw@gmail.com" class="header-text non-mobile" target="_blank">turbotinftw@gmail.com</a>
             </div>
             <div class="faq-title">
-                This is a question
+                What does the data in the price history plots mean?
             </div>
+            Each point in the graph represents the price of the tobacco when we scraped it. Dashed lines mean that
+            the tobacco was out of stock at that time whereas a solid line means that it was in stock at that moment in
+            time. This data is by no means complete as we only scrape twice a day and sometimes are unable to get data
+            from a website for a period of time.
             <div class="faq-text">
-                Lorem ipsum dolor sit amet, consectetur
-            adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-            ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-            sunt in culpa qui officia deserunt mollit anim id est laborum.
+
             </div>
 
         </div>

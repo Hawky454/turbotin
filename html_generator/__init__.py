@@ -15,6 +15,21 @@ def generate_html(df, plot_data, path):
     plot_data = clean_array(plot_data)
 
     index_string = generate_index(df)
+
+    # Load in the main template for all the sub pages
+    files = []
+    header = open(os.path.join(path, "templates/header.html"), "r").read()
+    template_string = open(os.path.join(path, "templates/main_template.html"), "r").read()
+    template_string = minify(template_string.replace("<!--LIST-->", index_string))
+    template_string = template_string.replace("<!--HEADER-->", header)
+
+    # Add the headers to each page template and copy it into the html_data folder
+    custom_pages = ["faq", "email_updates"]
+    for page in custom_pages:
+        page_html = open(os.path.join(path, "templates/" + page + ".html"), "r").read().replace("<!--HEADER-->", header)
+        open(os.path.join(path, "html_pages/" + page + ".html"), "w").write(page_html)
+        files.append(page + ".html")
+
     item_card = '''
             <div class="item-card">
                 <div class="item-body">
@@ -35,10 +50,6 @@ def generate_html(df, plot_data, path):
                     ["<!--TIME-->", "time"],
                     ["<!--PRICE-->", "price"],
                     ["<!--STORE-->", "store"]]
-
-    files = []
-    template_string = open(os.path.join(path, "templates/main_template.html"), "r").read()
-    template_string = minify(template_string.replace("<!--LIST-->", index_string))
 
     # Convert prices to numbers and make errors very large so that they are listed last
     df["num-price"] = pd.to_numeric(df["price"].str[1:], errors="coerce").fillna(10 ** 9)
