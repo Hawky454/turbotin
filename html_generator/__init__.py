@@ -28,7 +28,7 @@ def generate_html(df, plot_data, path):
     custom_pages = ["faq", "email_updates"]
     for page in custom_pages:
         page_html = open(os.path.join(path, "templates/" + page + ".html"), "r").read().replace("<!--HEADER-->", header)
-        page_html = page_html.replace("<!--TITLE-->", "TurboTin - " + page_html)
+        page_html = page_html.replace("<!--TITLE-->", "TurboTin")
         open(os.path.join(save_path, page + ".html"), "w").write(page_html)
         files.append(page + ".html")
 
