@@ -22,11 +22,13 @@ def generate_html(df, plot_data, path):
     template_string = open(os.path.join(path, "templates/main_template.html"), "r").read()
     template_string = minify(template_string.replace("<!--LIST-->", index_string))
     template_string = template_string.replace("<!--HEADER-->", header)
+    template_string = template_string.replace("<!--TITLE-->", "TurboTin")
 
     # Add the headers to each page template and copy it into the html_data folder
     custom_pages = ["faq", "email_updates"]
     for page in custom_pages:
         page_html = open(os.path.join(path, "templates/" + page + ".html"), "r").read().replace("<!--HEADER-->", header)
+        page_html.replace("<!--TITLE-->", "TurboTin - " + page_html)
         open(os.path.join(save_path, page + ".html"), "w").write(page_html)
         files.append(page + ".html")
 
@@ -72,7 +74,7 @@ def generate_html(df, plot_data, path):
         url = slugify(brand + " " + blend)
         string = template_string
         string = string.replace("<!--BLEND NAME-->", blend)
-        string = string.replace("<!--TITLE-->", "Turbotin - " + blend)
+        string = string.replace("<!--TITLE-->", "TurboTin - " + blend)
         string = string.replace("<!--ITEM LIST-->", data["item-card"].str.cat(sep="\n"))
         string = string.replace("<!--PLOT-->", generate_plot(plot_data, brand, blend))
         open(os.path.join(save_path, url + ".html"), "w").write(string)
