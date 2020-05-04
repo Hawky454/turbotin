@@ -71,6 +71,7 @@ def generate_html(df, plot_data, path):
     # Create the actual html page from the template
     for index, data in tqdm(df.groupby(['brand', 'blend']), desc="Generating html"):
         brand, blend = index
+        data = data.sort_values("num-price")
         url = slugify(brand + " " + blend)
         string = template_string
         string = string.replace("<!--BLEND NAME-->", blend)
