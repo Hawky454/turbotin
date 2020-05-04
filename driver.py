@@ -8,27 +8,26 @@ from product_categorizer import categorize
 from html_generator import generate_html
 from tqdm import tqdm
 import traceback
-from email_methods import send_email, send_update
+from email_methods import send_log_email, send_update
 
 
-def run_safely(func, message, log, args=None):
+def run_safely(func, message, args=None):
+    time = datetime.now()
     try:
-        start = datetime.now()
-        log.write("[" + message + "] Start time: " + start.strftime("%m/%d/%Y %H:%M"))
         if args is None:
             data = func()
         else:
             data = func(*args)
-        end = datetime.now()
-        log.write(", End time: " + end.strftime("%m/%d/%Y %H:%M") + ", Total time: " + str(end - start) + "\n")
-        return data
+        time = datetime.now() - time
+        return data, {"name": message, "time": time}
     except Exception as e:
-        log.write(", Error time: " + datetime.now().strftime("%m/%d/%Y %H:%M") + "\n")
-        log.write(str(e) + "\n")
+        error = str(e)
         print()
         print(e)
-        # traceback.print_exc()
+        traceback.print_exc()
         print("An error occurred while running [" + message + "]")
+        time = datetime.now() - time
+        return None, {"name": message, "time": time, "error": error}
 
 
 def scrape_products(name, pbar=None):
@@ -47,8 +46,8 @@ def update_website():
     path = os.path.dirname(__file__)
 
     # Initializing necessary variables
-    log = open(os.path.join(path, "log.txt"), "w")
     product_data = pd.DataFrame()
+    log_data = pd.DataFrame(columns=["name", "time", "products", "error"])
 
     # Scrape all product data
     pbar = tqdm(os.listdir(os.path.join(path, "product_scrapers")), desc="Scraping products")
@@ -56,9 +55,10 @@ def update_website():
         if name in ["__init__.py", "scrape_methods.py", "__pycache__"]:
             continue
         pbar.set_description(name[:-3])
-        df = run_safely(scrape_products, name, log, [name, pbar])
+        df, log = run_safely(scrape_products, name, [name, pbar])
         if df is not None:
-            log.write(str(df.size) + " products from " + name + "\n")
+            log["products"] = df.size
+        log_data = log_data.append(log, ignore_index=True)
         product_data = pd.concat([product_data, df])
 
     # Delete product data in case it could interfere with memory in remaining code
@@ -66,12 +66,14 @@ def update_website():
     product_data = None
 
     # Scrape review data and delete review_data variable
-    review_data = run_safely(get_review_data, "Scraping reviews", log)
+    review_data, log = run_safely(get_review_data, "Scraping reviews")
+    log_data = log_data.append(log, ignore_index=True)
     pickle.dump(review_data, open(os.path.join(path, "data/review_data.p"), "wb"))
     review_data = None
 
     # Categorize products
-    run_safely(categorize, "Categorizing products", log, [os.path.join(path, "data/product_data.p")])
+    _, log = run_safely(categorize, "Categorizing products", [os.path.join(path, "data/product_data.p")])
+    log_data = log_data.append(log, ignore_index=True)
     product_data = pickle.load(open(os.path.join(path, "data/product_data.p"), "rb"))
     pickle.dump(product_data,
                 open(os.path.join(path, "archive/", "data" + datetime.now().strftime("_%m_%d_%Y_%H_%M") + ".p"), "wb"))
@@ -89,14 +91,15 @@ def update_website():
     product_data = pickle.load(open(os.path.join(path, "data/product_data.p"), "rb"))
 
     # Generate the html files
-    run_safely(generate_html, "Generating HTML", log, [product_data, archive_data, path])
+    _, log = run_safely(generate_html, "Generating HTML", [product_data, archive_data, path])
+    log_data = log_data.append(log, ignore_index=True)
 
     # Send the emil updates
-    run_safely(send_update, "Sending Updates", log)
+    _, log = run_safely(send_update, "Sending Updates")
+    log_data = log_data.append(log, ignore_index=True)
 
-    # Send results of script
-    log.close()
-    send_email("turbotinftw@gmail.com", "Website Updated", open(os.path.join(path, "log.txt"), "r").read())
+    # Send results log as email
+    run_safely(send_log_email, "Sending log", [log_data])
 
 
 def clean_archive_data(df):

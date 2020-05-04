@@ -2,9 +2,9 @@ import os
 import pickle
 import smtplib
 from email.mime.text import MIMEText
-
-import pandas as pd
 from bs4 import BeautifulSoup
+import pandas as pd
+import math
 
 # Variable allowing for relative paths
 path = os.path.dirname(__file__)
@@ -61,3 +61,19 @@ def generate_email_html(data, key_term):
     string = string.replace("<!--BLEND NAME-->", key_term)
 
     return string
+
+
+def send_log_email(log_data):
+    template_string = open(os.path.join(path, "templates/email_template.html"), "r").read()
+    log_email = template_string.replace("<!--TABLE-->", log_data.to_html(index=False, justify="left", escape=False))
+    log_email = log_email.replace(r'''border="1" class="dataframe"''',
+                                  r'''border="0" id="table" class="tablesorter custom-table"''')
+
+    # Specify rows that are errors
+    soup = BeautifulSoup(log_email, features="lxml")
+    tr = soup.find_all("tr")
+    for i in range(1, len(tr)):
+        if log_data["products"].iloc[i - 1] == 0 or isinstance(log_data["error"].iloc[i - 1], str):
+            for td in tr[i].find_all("td"):
+                td["style"] = "color:rgba(255,0,0, 1)"
+    send_email("turbotinftw@gmail.com", "Website Updated", str(soup))

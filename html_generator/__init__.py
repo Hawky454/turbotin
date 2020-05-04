@@ -77,7 +77,7 @@ def generate_html(df, plot_data, path):
         string = string.replace("<!--TITLE-->", "TurboTin - " + blend)
         string = string.replace("<!--ITEM LIST-->", data["item-card"].str.cat(sep="\n"))
         string = string.replace("<!--PLOT-->", generate_plot(plot_data, brand, blend))
-        open(os.path.join(save_path, url + ".html"), "w").write(string)
+        open(os.path.join(save_path, url + ".html"), "w", encoding="utf-8").write(string)
         files.append(url + ".html")
 
     files.append("full_table.html")

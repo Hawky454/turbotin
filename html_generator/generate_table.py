@@ -22,4 +22,4 @@ def generate_table(df, path, save_path):
         if "Out of stock" in str(i):
             i["class"] = "out-of-stock"
 
-    open(os.path.join(save_path, "full_table.html"), "w").write(minify(str(soup)))
+    open(os.path.join(save_path, "full_table.html"), "w", encoding="utf-8").write(minify(str(soup)))
