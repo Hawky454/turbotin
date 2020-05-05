@@ -44,6 +44,7 @@ def send_update():
                 body = generate_email_html(filtered_data, ", ".join([brand, blend]))
                 subject = key_term + " is in stock"
                 send_email(email, subject, body)
+                send_email("turbotinftw@gmail.com", subject + ", " + email, body)
 
 
 def generate_email_html(data, key_term):
