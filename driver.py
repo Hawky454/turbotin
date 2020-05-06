@@ -80,7 +80,8 @@ def update_website():
     with open(os.path.join(path, "data/product_data.p"), "rb") as f:
         product_data = pickle.load(f)
     with open(os.path.join(path, "archive/", "data" + datetime.now().strftime("_%m_%d_%Y_%H_%M") + ".p"), "wb") as f:
-        pickle.dump(product_data, f)
+        if "error" not in log:
+            pickle.dump(product_data, f)
     product_data = None
 
     # Load old data
@@ -101,8 +102,8 @@ def update_website():
     log_data = log_data.append(log, ignore_index=True)
 
     # Send the emil updates
-    # _, log = run_safely(send_update, "Sending Updates")
-    # log_data = log_data.append(log, ignore_index=True)
+    _, log = run_safely(send_update, "Sending Updates")
+    log_data = log_data.append(log, ignore_index=True)
 
     # Send results log as email
     run_safely(send_log_email, "Sending log", [log_data])
