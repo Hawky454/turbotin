@@ -17,3 +17,5 @@
 /html_generator/__pycache__/
 /email_methods/email_password.txt
 /email_methods/email_list.csv
+/email_methods/storage.json
+/email_methods/client_id.json
