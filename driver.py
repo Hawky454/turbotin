@@ -61,7 +61,6 @@ def update_website(test=False):
             log["products"] = df.size
         log_data = log_data.append(log, ignore_index=True)
         product_data = pd.concat([product_data, df])
-        break
 
     # Delete product data in case it could interfere with memory in remaining code
     with open(os.path.join(path, "data/product_data.p"), "wb") as f:
