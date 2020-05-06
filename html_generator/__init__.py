@@ -10,7 +10,8 @@ import numpy as np
 
 
 def generate_html(df, plot_data, path):
-    save_path = open(os.path.join(path, "paths.txt"), "r").read()
+    with open(os.path.join(path, "paths.txt"), "r") as f:
+        save_path = f.read()
 
     plot_data = clean_array(plot_data)
 
@@ -18,8 +19,10 @@ def generate_html(df, plot_data, path):
 
     # Load in the main template for all the sub pages
     files = []
-    header = open(os.path.join(path, "templates/header.html"), "r").read()
-    template_string = open(os.path.join(path, "templates/main_template.html"), "r").read()
+    with open(os.path.join(path, "templates/header.html"), "r") as f:
+        header = f.read()
+    with open(os.path.join(path, "templates/main_template.html"), "r") as f:
+        template_string = f.read()
     template_string = minify(template_string.replace("<!--LIST-->", index_string))
     template_string = template_string.replace("<!--HEADER-->", header)
     template_string = template_string.replace("<!--TITLE-->", "TurboTin")
@@ -27,9 +30,11 @@ def generate_html(df, plot_data, path):
     # Add the headers to each page template and copy it into the html_data folder
     custom_pages = ["faq", "email_updates"]
     for page in custom_pages:
-        page_html = open(os.path.join(path, "templates/" + page + ".html"), "r").read().replace("<!--HEADER-->", header)
+        with open(os.path.join(path, "templates/" + page + ".html"), "r") as f:
+            page_html = f.read().replace("<!--HEADER-->", header)
         page_html = page_html.replace("<!--TITLE-->", "TurboTin")
-        open(os.path.join(save_path, page + ".html"), "w").write(page_html)
+        with open(os.path.join(save_path, page + ".html"), "w") as f:
+            f.write(page_html)
         files.append(page + ".html")
 
     item_card = '''
@@ -78,7 +83,8 @@ def generate_html(df, plot_data, path):
         string = string.replace("<!--TITLE-->", "TurboTin - " + blend)
         string = string.replace("<!--ITEM LIST-->", data["item-card"].str.cat(sep="\n"))
         string = string.replace("<!--PLOT-->", generate_plot(plot_data, brand, blend))
-        open(os.path.join(save_path, url + ".html"), "w", encoding="utf-8").write(string)
+        with open(os.path.join(save_path, url + ".html"), "w", encoding="utf-8") as f:
+            f.write(string)
         files.append(url + ".html")
 
     files.append("full_table.html")

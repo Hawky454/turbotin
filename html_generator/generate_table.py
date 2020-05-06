@@ -4,8 +4,10 @@ from htmlmin import minify
 
 
 def generate_table(df, path, save_path):
-    template_string = open(os.path.join(path, "templates/table_template.html"), "r").read()
-    header = open(os.path.join(path, "templates/header.html"), "r").read()
+    with open(os.path.join(path, "templates/table_template.html"), "r") as f:
+        template_string = f.read()
+    with open(os.path.join(path, "templates/header.html"), "r") as f:
+        header = f.read()
     template_string = template_string.replace("<!--HEADER-->", header)
     template_string = template_string.replace("<!--TITLE-->", "TurboTin")
 
@@ -21,5 +23,5 @@ def generate_table(df, path, save_path):
     for i in soup.find_all("tr"):
         if "Out of stock" in str(i):
             i["class"] = "out-of-stock"
-
-    open(os.path.join(save_path, "full_table.html"), "w", encoding="utf-8").write(minify(str(soup)))
+    with open(os.path.join(save_path, "full_table.html"), "w", encoding="utf-8") as f:
+        f.write(minify(str(soup)))

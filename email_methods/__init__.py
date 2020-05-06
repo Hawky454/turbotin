@@ -19,7 +19,8 @@ def send_email(to, subject, body):
 
     server = smtplib.SMTP("smtp.gmail.com:587")
     server.starttls()
-    password = open(os.path.join(path, "email_methods/email_password.txt"), "r").read()
+    with open(os.path.join(path, "email_methods/email_password.txt"), "r") as f:
+        password = f.read()
     server.login("turbotinftw@gmail.com", password)
     server.sendmail("turbotinftw@gmail.com", to, msg.as_string())
 
@@ -28,10 +29,12 @@ def send_email(to, subject, body):
 
 
 def send_update():
-    data = pickle.load(open(os.path.join(path, "data/product_data.p"), "rb"))
+    with open(os.path.join(path, "data/product_data.p"), "rb") as f:
+        data = pickle.load(f)
     data = data[data["stock"] != "Out of stock"]
     filtered_data = data.copy()
-    email_list = pd.read_csv(open(os.path.join(path, "email_methods/email_list.csv"), "r"))
+    with open(os.path.join(path, "email_methods/email_list.csv"), "r") as f:
+        email_list = pd.read_csv(f)
 
     for index, row in email_list.iterrows():
         timestamp, email, brand, blend = dict(row).values()
@@ -53,7 +56,8 @@ def generate_email_html(data, key_term):
     df["real-price"] = data["price"].str.slice(1)
     df["real-price"] = pd.to_numeric(df["real-price"], errors="coerce")
     df = df.sort_values("real-price")
-    template_string = open(os.path.join(path, "templates/email_template.html"), "r").read()
+    with open(os.path.join(path, "templates/email_template.html"), "r") as f:
+        template_string = f.read()
     df["name"] = r'''<a target="blank" href="''' + df["link"] + '''">''' + df["item"] + '''</a>'''
     df = df[["store", "name", "stock", "price", "time"]]
     df.columns = [n[0].upper() + n[1:] for n in df.columns]
@@ -66,7 +70,8 @@ def generate_email_html(data, key_term):
 
 
 def send_log_email(log_data):
-    template_string = open(os.path.join(path, "templates/email_template.html"), "r").read()
+    with open(os.path.join(path, "templates/email_template.html"), "r") as f:
+        template_string = f.read()
     log_email = template_string.replace("<!--TABLE-->", log_data.to_html(index=False, justify="left", escape=False))
     log_email = log_email.replace(r'''border="1" class="dataframe"''',
                                   r'''border="0" id="table" class="tablesorter custom-table"''')

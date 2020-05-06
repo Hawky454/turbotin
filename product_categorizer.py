@@ -1,7 +1,5 @@
-from fuzzywuzzy import fuzz, process
 import pickle
 import re
-import pandas as pd
 from tqdm import tqdm
 import os
 
@@ -11,6 +9,7 @@ def get_category(item, cat_data, review_data):
         tobacco = cat_data.loc[cat_data["item"] == item]
         contains_item = True
     else:
+        from fuzzywuzzy import fuzz, process
         string = simplify_string(item)
         fuzzy_blend = process.extractOne(string, review_data["full_name"].tolist(), scorer=fuzz.token_set_ratio)
         tobacco = review_data.loc[review_data["full_name"] == fuzzy_blend[0]]
@@ -34,10 +33,12 @@ def simplify_string(item):
 def categorize(filename):
     # Variable allowing for relative paths
     path = os.path.dirname(__file__)
-
-    product_data = pickle.load(open(filename, "rb"))
-    review_data = pickle.load(open(os.path.join(path, "data/review_data.p"), "rb"))
-    cat_data = pickle.load(open(os.path.join(path, "data/cat_data.p"), "rb"))
+    with open(filename, "rb") as f:
+        product_data = pickle.load(f)
+    with open(os.path.join(path, "data/review_data.p"), "rb") as f:
+        review_data = pickle.load(f)
+    with open(os.path.join(path, "data/cat_data.p"), "rb") as f:
+        cat_data = pickle.load(f)
     product_data["brand"] = ""
     product_data["blend"] = ""
     product_data = product_data.reset_index(drop=True)
@@ -48,5 +49,7 @@ def categorize(filename):
         if not contains_item:
             cat_data = cat_data.append({"item": row["item"], "brand": tobacco["brand"], "blend": tobacco["blend"]},
                                        ignore_index=True)
-    pickle.dump(product_data, open(os.path.join(path, filename), "wb"))
-    pickle.dump(cat_data, open(os.path.join(path, "data/cat_data.p"), "wb"))
+    with open(os.path.join(path, filename), "wb") as f:
+        pickle.dump(product_data, f)
+    with open(os.path.join(path, "data/cat_data.p"), "wb") as f:
+        pickle.dump(cat_data, f)

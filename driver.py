@@ -60,43 +60,49 @@ def update_website():
             log["products"] = df.size
         log_data = log_data.append(log, ignore_index=True)
         product_data = pd.concat([product_data, df])
+        break
 
     # Delete product data in case it could interfere with memory in remaining code
-    pickle.dump(product_data, open(os.path.join(path, "data/product_data.p"), "wb"))
+    with open(os.path.join(path, "data/product_data.p"), "wb") as f:
+        pickle.dump(product_data, f)
     product_data = None
 
     # Scrape review data and delete review_data variable
     review_data, log = run_safely(get_review_data, "Scraping reviews")
     log_data = log_data.append(log, ignore_index=True)
-    pickle.dump(review_data, open(os.path.join(path, "data/review_data.p"), "wb"))
+    with open(os.path.join(path, "data/review_data.p"), "wb") as f:
+        pickle.dump(review_data, f)
     review_data = None
 
     # Categorize products
     _, log = run_safely(categorize, "Categorizing products", [os.path.join(path, "data/product_data.p")])
     log_data = log_data.append(log, ignore_index=True)
-    product_data = pickle.load(open(os.path.join(path, "data/product_data.p"), "rb"))
-    pickle.dump(product_data,
-                open(os.path.join(path, "archive/", "data" + datetime.now().strftime("_%m_%d_%Y_%H_%M") + ".p"), "wb"))
+    with open(os.path.join(path, "data/product_data.p"), "rb") as f:
+        product_data = pickle.load(f)
+    with open(os.path.join(path, "archive/", "data" + datetime.now().strftime("_%m_%d_%Y_%H_%M") + ".p"), "wb") as f:
+        pickle.dump(product_data, f)
     product_data = None
 
     # Load old data
     archive_data = pd.DataFrame()
     for file in tqdm(os.listdir(os.path.join(path, "archive")), desc="Loading archive"):
-        df = pickle.load(open(os.path.join(path, "archive/", file), "rb"))
+        with open(os.path.join(path, "archive/", file), "rb") as f:
+            df = pickle.load(f)
         df = clean_archive_data(df)
         archive_data = archive_data.append(df)
     archive_data = archive_data.drop_duplicates()
 
     # Reload product data in case archive causes memory errors
-    product_data = pickle.load(open(os.path.join(path, "data/product_data.p"), "rb"))
+    with open(os.path.join(path, "data/product_data.p"), "rb") as f:
+        product_data = pickle.load(f)
 
     # Generate the html files
     _, log = run_safely(generate_html, "Generating HTML", [product_data, archive_data, path])
     log_data = log_data.append(log, ignore_index=True)
 
     # Send the emil updates
-    _, log = run_safely(send_update, "Sending Updates")
-    log_data = log_data.append(log, ignore_index=True)
+    # _, log = run_safely(send_update, "Sending Updates")
+    # log_data = log_data.append(log, ignore_index=True)
 
     # Send results log as email
     run_safely(send_log_email, "Sending log", [log_data])
