@@ -103,9 +103,8 @@ def update_website(test=False):
     log_data = log_data.append(log, ignore_index=True)
 
     # Send the emil updates
-    if not test:
-        _, log = run_safely(send_update, "Sending Updates")
-        log_data = log_data.append(log, ignore_index=True)
+    _, log = run_safely(send_update, "Sending Updates", [test])
+    log_data = log_data.append(log, ignore_index=True)
 
     # Send results log as email
     run_safely(send_log_email, "Sending log", [log_data])

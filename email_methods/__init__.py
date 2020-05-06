@@ -28,7 +28,7 @@ def send_email(to, subject, body):
     server.quit()
 
 
-def send_update():
+def send_update(test=False):
     with open(os.path.join(path, "data/product_data.p"), "rb") as f:
         data = pickle.load(f)
     data = data[data["stock"] != "Out of stock"]
@@ -47,8 +47,12 @@ def send_update():
                 key_term = ", ".join([brand, blend])
                 body = generate_email_html(filtered_data, ", ".join([brand, blend]))
                 subject = key_term + " is in stock"
-                send_email(email, subject, body)
-                send_email("turbotinftw@gmail.com", subject + ", " + email, body)
+                if not test:
+                    send_email(email, subject, body)
+                subject += ", sent to " + email
+                if test:
+                    subject += ", (run as test)"
+                send_email("turbotinftw@gmail.com", subject, body)
 
 
 def generate_email_html(data, key_term):
