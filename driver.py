@@ -9,6 +9,7 @@ from html_generator import generate_html
 from tqdm import tqdm
 import traceback
 from email_methods import send_log_email, send_update
+import sys
 
 
 def run_safely(func, message, args=None):
@@ -41,7 +42,7 @@ def get_review_data():
     return data
 
 
-def update_website():
+def update_website(test=False):
     # Variable allowing for relative paths
     path = os.path.dirname(__file__)
 
@@ -102,8 +103,9 @@ def update_website():
     log_data = log_data.append(log, ignore_index=True)
 
     # Send the emil updates
-    _, log = run_safely(send_update, "Sending Updates")
-    log_data = log_data.append(log, ignore_index=True)
+    if not test:
+        _, log = run_safely(send_update, "Sending Updates")
+        log_data = log_data.append(log, ignore_index=True)
 
     # Send results log as email
     run_safely(send_log_email, "Sending log", [log_data])
@@ -119,4 +121,7 @@ def clean_archive_data(df):
 
 
 if __name__ == "__main__":
-    update_website()
+    test = False
+    if len(sys.argv) > 1 and sys.argv[1] == "test":
+        test = True
+    update_website(test)
