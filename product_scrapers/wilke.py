@@ -9,7 +9,7 @@ def scrape(pbar=None):
     url = "https://www.wilkepipetobacco.com/tincellar"
 
     soup = get_html(url)
-    for product in soup.find_all('ul', class_="_2Irj0"):
+    for product in soup.find_all('ul', class_="_3g8J4 _3Xnzg"):
         for element in product.find_all('li'):
             if element.find("h3", class_="_2BULo"):
                 item = element.find("h3", class_="_2BULo").get_text().strip()
