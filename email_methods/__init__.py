@@ -4,7 +4,7 @@ import smtplib
 from email.mime.text import MIMEText
 from bs4 import BeautifulSoup
 import pandas as pd
-import math
+from email_methods.drive_api import get_drive_data
 
 # Variable allowing for relative paths
 path = os.path.dirname(__file__)
@@ -29,6 +29,8 @@ def send_email(to, subject, body):
 
 
 def send_update(test=False):
+    get_drive_data()
+
     with open(os.path.join(path, "data/product_data.p"), "rb") as f:
         data = pickle.load(f)
     data = data[data["stock"] != "Out of stock"]
