@@ -5,6 +5,10 @@ body {
 }
 
 @media (max-width:992px) {
+
+    .side-menu {
+        display: none;
+    }
     .non-mobile {
         display: none!important;
     }
