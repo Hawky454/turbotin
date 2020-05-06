@@ -52,7 +52,7 @@ def update_website():
     # Scrape all product data
     pbar = tqdm(os.listdir(os.path.join(path, "product_scrapers")), desc="Scraping products")
     for name in pbar:
-        if name in ["__init__.py", "scrape_methods.py", "__pycache__"]:
+        if name.startswith("__"):
             continue
         pbar.set_description(name[:-3])
         df, log = run_safely(scrape_products, name, [name, pbar])
