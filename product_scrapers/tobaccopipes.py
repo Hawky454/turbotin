@@ -1,42 +1,64 @@
-from product_scrapers import get_html
 from datetime import datetime
+from selenium import webdriver
+import time
+from bs4 import BeautifulSoup
+import re
 
 
 def scrape(pbar=None):
     item, price, stock, link = ["", "", "", ""]
     data = []
     name = "tobaccopipes"
-    url = "https://www.tobaccopipes.com/pipe-tobacco/"
+    url = "https://www.tobaccopipes.com/pipe-tobacco"
+    # url = "https://www.tobaccopipes.com/pipe-tobacco/?sort_by=creation_date&page_num=41"
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--disable-gpu")
+    browser = webdriver.Chrome(options=chrome_options)
 
-    soup = get_html(url)
-    next_page = True
-    while next_page:
-        for product in soup.find_all(class_="product"):
-            for element in product.find_all():
-                if element.get("class"):
-                    if " ".join(element.get("class")) == \
-                            "button button--small card-figcaption-button add-to-cart-button":
-                        if element.get_text() == "OUT OF STOCK":
-                            stock = "Out of stock"
-                        elif element.get_text() == "ADD TO CART":
-                            stock = "In Stock"
-                        else:
-                            stock = element.get_text().strip()
-                    if " ".join(element.get("class")) == "price price--withoutTax":
-                        price = element.get_text()
-                    if " ".join(element.get("class")) == "card-figure":
-                        for items in element.find_all("a"):
-                            link = items.get("href")
-                if element.get("src"):
-                    item = element.get("alt").strip()
-            data.append({"store": name, "item": item, "price": price, "stock": stock, "link": link,
-                         "time": datetime.now().strftime("%m/%d/%Y %H:%M")})
-            if pbar is not None:
-                pbar.set_description(", ".join([name, item]))
-            item, price, stock, link = ["", "", "", ""]
-        if soup.find("link", rel="next"):
-            soup = get_html(soup.find("link", rel="next").get("href"))
-        else:
-            next_page = False
+    try:
+        next_page = True
+        browser.get(url)
+        while next_page:
+            skeleton_error = True
+            max_tries = 20
+            num_tries = 0
+            while skeleton_error and num_tries < max_tries:
+                num_tries += 1
+                time.sleep(2)
+                browser.refresh()
+                soup = BeautifulSoup(browser.page_source.encode('utf8'), "lxml")
+                skeleton_error = False
+                for product in soup.find_all("li", class_="isp_grid_product"):
+                    if "isp_sold_out_banner" in str(product):
+                        stock = "Out of stock"
+                    else:
+                        stock = "In stock"
+                    if "<!-- skeleton -->" in str(product):
+                        skeleton_error = True
+                        time.sleep(5)
+                        break
+                    link = url + product.find("a").get("href")
+                    item = product.find(class_="isp_product_title").get_text()
+                    price = product.find(class_="isp_product_price_wrapper").get_text()
+                    if re.match(r"\$\d+\.\d{2} \$\d+\.\d{2}", price):
+                        price = re.findall(r"\$\d+\.\d{2} (\$\d+\.\d{2})", price)[0]
+
+                    data.append({"store": name, "item": item, "price": price, "stock": stock, "link": link,
+                                 "time": datetime.now().strftime("%m/%d/%Y %H:%M")})
+                    if pbar is not None:
+                        pbar.set_description(", ".join([name, item]))
+                    print([item, price, stock, link])
+                    item, price, stock, link = ["", "", "", ""]
+            if browser.find_elements_by_xpath('''//li[@class='page-item next disabled']'''):
+                next_page = False
+            else:
+                browser.find_element_by_xpath('''//*[@id="isp_pagination_anchor"]/ul/li[7]/a''').click()
+
+    except Exception as e:
+        print(e)
+        browser.quit()
+    finally:
+        browser.quit()
 
     return data
