@@ -12,8 +12,8 @@ def scrape(pbar=None):
     soup = get_html(url)
     for category in soup.find_all('div', class_="categoryListBoxContents"):
         new_soup = get_html(category.find("a").get("href"))
-        products = new_soup.find_all("tr", class_="productListing-odd") + \
-                   new_soup.find_all("tr", class_="productListing-even")
+        products = new_soup.find_all("tr", class_="productListing-odd")
+        products += new_soup.find_all("tr", class_="productListing-even")
         for product in products:
             if "There are no products to list in this category." not in str(product):
                 item = product.find(class_="itemTitle").get_text()
