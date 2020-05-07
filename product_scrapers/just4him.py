@@ -24,7 +24,6 @@ def scrape(pbar=None):
                              "time": datetime.now().strftime("%m/%d/%Y %H:%M")})
                 if pbar is not None:
                     pbar.set_description(", ".join([name, item]))
-                print([item, price, stock, link])
                 item, price, stock, link = ["", "", "", ""]
 
     return data
