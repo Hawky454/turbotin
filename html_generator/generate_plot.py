@@ -25,9 +25,7 @@ def generate_plot(data, brand, blend):
 
     # Reshape the data so that the row indices as the dates, the columns are the stores and the values are the
     df = df.groupby(["date", "store"])["charts-var"].aggregate("min").unstack()
-    print(df)
     df = df.reindex(stores, axis=1)
-    print(df)
     df = df.fillna("null,false")
     df["string"] = df[df.columns[0]].str.cat(df[df.columns[1:]], sep=",")
     df["string"] = "[" + df.index + "," + df["string"] + "]"
