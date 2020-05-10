@@ -1,6 +1,5 @@
 from product_scrapers import get_html
 from datetime import datetime
-import re
 
 
 def scrape(pbar=None):
