@@ -5,7 +5,7 @@ from datetime import datetime
 def scrape(pbar=None):
     item, price, stock, link = ["", "", "", ""]
     data = []
-    name = "bnbtobacco"
+    name = "bnb"
     url = "https://www.bnbtobacco.com/collections/tin-can-pipe-tobacco?page="
 
     page_number = 1
