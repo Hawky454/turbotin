@@ -76,6 +76,8 @@ def generate_html(df, plot_data, path):
         df["item-card"] = df["item-card"] + pre_string + df[key]
     df["item-card"] = df["item-card"] + post_string
 
+    df = df[["item-card", "num-price", "brand", "blend"]]
+
     # Create the actual html page from the template
     for index, data in tqdm(df.groupby(['brand', 'blend']), desc="Generating html"):
         brand, blend = index
