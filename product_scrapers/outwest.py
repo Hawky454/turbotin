@@ -10,7 +10,6 @@ def scrape(pbar=None):
     url = "http://www.outwesttobacco.com/Pipe-Tobacco.html"
 
     soup = get_html(url)
-    count = 0
     for table in soup.find_all("table"):
         if "TIN PIPE TOBACCO" in str(table):
             for td in table.find_all("td"):
