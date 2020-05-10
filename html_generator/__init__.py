@@ -58,6 +58,9 @@ def generate_html(df, plot_data, path):
                     ["<!--PRICE-->", "price"],
                     ["<!--STORE-->", "store"]]
 
+    files.append("full_table.html")
+    generate_table(df, path, save_path)
+
     # Convert prices to numbers and make errors very large so that they are listed last
     df["num-price"] = pd.to_numeric(df["price"].str[1:], errors="coerce").fillna(10 ** 9)
 
@@ -86,9 +89,6 @@ def generate_html(df, plot_data, path):
         with open(os.path.join(save_path, url + ".html"), "w", encoding="utf-8") as f:
             f.write(string)
         files.append(url + ".html")
-
-    files.append("full_table.html")
-    generate_table(df, path, save_path)
 
     # Delete files that weren't updated (This is to prevent the directory from getting clogged with old files)
     for file in os.listdir(save_path):
