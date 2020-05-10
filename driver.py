@@ -58,7 +58,7 @@ def update_website(test=False):
         pbar.set_description(name[:-3])
         df, log = run_safely(scrape_products, name, [name, pbar])
         if df is not None:
-            log["products"] = df.size
+            log["products"] = len(df.index)
         log_data = log_data.append(log, ignore_index=True)
         product_data = pd.concat([product_data, df])
 
