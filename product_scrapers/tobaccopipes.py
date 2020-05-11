@@ -38,7 +38,7 @@ def scrape(pbar=None):
                         skeleton_error = True
                         time.sleep(5)
                         break
-                    link = url + product.find("a").get("href")
+                    link = "https://www.tobaccopipes.com" + product.find("a").get("href")
                     item = product.find(class_="isp_product_title").get_text()
                     price = product.find(class_="isp_product_price_wrapper").get_text()
                     if re.match(r"\$\d+\.\d{2} \$\d+\.\d{2}", price):
