@@ -10,7 +10,6 @@ def scrape(pbar=None):
     data = []
     name = "tobaccopipes"
     url = "https://www.tobaccopipes.com/pipe-tobacco"
-    # url = "https://www.tobaccopipes.com/pipe-tobacco/?sort_by=creation_date&page_num=41"
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--disable-gpu")
