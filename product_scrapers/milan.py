@@ -12,7 +12,6 @@ def scrape(pbar=None):
     soup = get_html(url)
     for category in soup.find_all("li"):
         main_link = category.find("a").get("href")
-        print(main_link)
         new_soup = get_html(main_link)
         pattern = r"<(b|strong)>(.+?)</\1>.+?Size: (.+?)Availability: (.+?)Price: (.+?) USD"
         for product in re.findall(pattern, minify(str(new_soup))):
@@ -24,10 +23,8 @@ def scrape(pbar=None):
                 stock = "In stock"
             else:
                 stock = ""
-
             price = product[4]
             link = main_link
-            print([item, price, stock, link])
             data.append({"store": name, "item": item, "price": price, "stock": stock, "link": link,
                          "time": datetime.now().strftime("%m/%d/%Y %H:%M")})
             if pbar is not None:
