@@ -47,7 +47,7 @@ def scrape(pbar=None):
                     price = product.find(class_="woocommerce-Price-amount amount").get_text()
                     link = product.find("a", class_="woocommerce-LoopProduct-link").get("href")
                     stock = "In Stock"
-                    data.append({"store": "boswell", "item": item, "price": price, "stock": stock, "link": link,
+                    data.append({"store": name, "item": item, "price": price, "stock": stock, "link": link,
                                  "time": datetime.now().strftime("%m/%d/%Y %H:%M")})
                     if pbar is not None:
                         pbar.set_description(", ".join([name, item]))
