@@ -12,7 +12,7 @@ def scrape(pbar=None):
     urls = ["https://kbven.com/product-category/kbb/",
             "https://kbven.com/product-category/opb"]
     chrome_options = webdriver.ChromeOptions()
-    # chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--headless")
     chrome_options.add_argument("--disable-gpu")
 
     for url in urls:
@@ -30,7 +30,7 @@ def scrape(pbar=None):
                 if products == len(soup.find("ul", class_="products").find_all("li")):
                     break
                 products = len(soup.find("ul", class_="products").find_all("li"))
-                for i in range(5):
+                for i in range(10):
                     html.send_keys(Keys.END)
                     time.sleep(1)
 
