@@ -12,7 +12,7 @@ def scrape(pbar=None):
     boswell_url = ["https://boswellpipes.com/product-category/boswell-tobacco/",
                    "https://boswellpipes.com/product-category/tobacco-blends/"]
     chrome_options = webdriver.ChromeOptions()
-    # chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--headless")
     chrome_options.add_argument("--disable-gpu")
 
     for b_url in boswell_url:
