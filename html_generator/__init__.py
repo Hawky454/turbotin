@@ -7,11 +7,22 @@ from html_generator.generate_plot import generate_plot
 from html_generator.generate_table import generate_table
 from html_generator.generate_index import generate_index
 import numpy as np
+from shutil import copyfile
 
 
 def generate_html(df, plot_data, path):
     with open(os.path.join(path, "paths.txt"), "r") as f:
         save_path = f.read()
+
+    # Move templates to save_path
+    for file in os.listdir(os.path.join(path, "templates")):
+        if not file.endswith(".html"):
+            try:
+                copyfile(os.path.join(path, "templates", file),
+                         os.path.join(os.path.dirname(save_path), "templates", file))
+            except Exception as e:
+                print(e)
+                pass
 
     plot_data = clean_array(plot_data)
 
