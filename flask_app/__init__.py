@@ -14,14 +14,14 @@ blends_list = [{"key": n, "text": blends_list[n].lower(), "full_text": blends_li
 
 @app.route('/')
 def main():
-    return render_template("main.html")
+    return render_template("main.html", blends_list=blends_list)
 
 
 @app.route('/faq')
 def faq():
     with open(os.path.join(path, "static/questions.json")) as f:
         faq_items = json.load(f)
-    return render_template("faq.html", faq_items=faq_items)
+    return render_template("faq.html", faq_items=faq_items, blends_list=blends_list)
 
 
 @app.route('/blends/', defaults={'blend': None})
