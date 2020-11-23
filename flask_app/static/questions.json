@@ -1,0 +1,54 @@
+[
+  {
+    "question": "How do I use TurboTin.com?",
+    "answer": "We will be updating our How To video shortly and will link it here."
+  },
+  {
+    "question": "Is there a fee to use TurboTin.com?",
+    "answer": "No, at this time TurboTin.com is free to use."
+  },
+  {
+    "question": "How often is TurboTin.com updated?",
+    "answer": "We search over 30 online pipe tobacco retailers, twice a day. The \"Time\" column shows the last update time for that entry."
+  },
+  {
+    "question": "Which online retailers are included in your search?",
+    "answer": "McCranies, 4Noggins, BlackCatCigars, WatchCityCigar, SmokingPipes, TopHat, CountrySquire, EACarey, KingSmoking, WindyCityCigars, TheStoryTellers, PayLess, BnB, KBVentures, PipeandLeaf, TheBriary, NiceAshCigars, PipeNook, Just4Him, Wilke, TobaccoPipes, MarsCigars, IwanRies, Boswells, CupOJoes, LilBrown, OutWest, CigarsIntl, SmokersHaven, Milan, LJPeretti, Hilandcigars, CDMCigars, Pipesand Cigars"
+  },
+  {
+    "question": "How do I request another retailer to be added?",
+    "answer": "Send us an email at <a href=\"mailto:turbotinftw@gmail.com\" class=\"header-text non-mobile\" target=\"_blank\">turbotinftw@gmail.com</a>"
+  },
+  {
+    "question": "Can I get notified on the status of my favorite blends?",
+    "answer": "Yes, click on the \"Email Updates\" link and provide your email address and select the blend or brand to receive email notifications."
+  },
+  {
+    "question": "Is there different data on the homepage versus the Individual Blends page?",
+    "answer": "No, it is the same data, just grouped differently.  The homepage has a search bar to granularly sort the entire product list. The Individual Blends pages attempt to group blends together and provide price tracking over time."
+  },
+  {
+    "question": "Why does TurboTin.com look different on my mobile devices?",
+    "answer": "The site is now formatted to optimize multiple screen sizes, but the data will be the same."
+  },
+  {
+    "question": "I don't see a \"Stock\" column when looking at TurboTin.com on my phone.  How do I know if it's out of stock?",
+    "answer": "On smaller screen sizes, the entry will be highlighted in red if it is out of stock."
+  },
+  {
+    "question": "The main page is really long.  How do I find what I'm looking for?",
+    "answer": "Use the search box at the top of the columns to reduce the list.  Clicking on the column titles with change the sort order. You can also browse the \"Individual Blends\" page to find the blends you are looking for."
+  },
+  {
+    "question": "Why are some tobacco's not categorized correctly?",
+    "answer": "We scrape several thousand tobaccos every day and therefore categorizing each one manually would be far too time consuming. Instead we use fuzzy string matching, which is normally very good, especially with tobaccos that have unique names. However, blends with simple names or several different categorizations can cause it to slip up. If you have any feedback on how we could make this process better please let us know by emailing <a href=\"mailto:turbotinftw@gmail.com\" class=\"header-text non-mobile\" target=\"_blank\">turbotinftw@gmail.com</a>"
+  },
+  {
+    "question": "What does the data in the price history plots mean?",
+    "answer": "Each point in the graph represents the price of the tobacco when we scraped it. Dashed lines mean that the tobacco was out of stock at that time whereas a solid line means that it was in stock at that moment in time. This data is by no means complete as we only scrape twice a day and sometimes are unable to get data from a website for a period of time."
+  },
+  {
+    "question": "Is TurboTin.com the best way to locate hard to find pipe tobaccos?",
+    "answer": "You should have a multi-faceted plan that includes TurboTin.com as well as frequenting your local tobacco shops, registering with online retailers directly to get notifications and join their waitlists (if they have them), and visiting vintage tobacco tin sites like <a href=\"http://pipestud.com\">PipeStud.com</a>"
+  }
+]

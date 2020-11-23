@@ -1,0 +1,30 @@
+{% extends "header.html" %}
+{% block body %}
+<div class="container mt-5 mb-5">
+    <div class="col-md">
+        <div class="accordion" id="accordionExample">
+            {% for i in range(faq_items|length) %}
+            <div class="card">
+                <div class="card-header" id="heading{{i}}" style="border-bottom: 2px solid #00D2D2;">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link text-secondary" type="button" data-toggle="collapse"
+                                data-target="#collapse{{i}}" aria-expanded="false" aria-controls="collapse{{i}}">
+                            {{faq_items[i].question|safe}}
+                        </button>
+                    </h5>
+                </div>
+
+                <div id="collapse{{i}}" class="collapse" aria-labelledby="heading{{i}}"
+                     data-parent="#accordionExample">
+                    <div class="card-body">
+                        {{faq_items[i].answer|safe}}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+</div>
+{% endblock %}
