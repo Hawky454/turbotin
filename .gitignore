@@ -22,3 +22,5 @@
 /chromedriver.exe
 /venv/
 /config.sh
+/flask_app/__init__.py
+/flask_app/__pycache__/
