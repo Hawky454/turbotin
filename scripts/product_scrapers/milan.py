@@ -1,4 +1,4 @@
-from product_scrapers import get_html
+from . import get_html
 from datetime import datetime
 from htmlmin import minify
 import re
