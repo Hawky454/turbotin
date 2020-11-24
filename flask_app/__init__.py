@@ -34,8 +34,8 @@ def main():
     df = df.rename(columns={"time": "last updated (utc)"})
     df = df.rename(columns={"item": render_template("table_forms/search_form.html", label="item", column=1)})
     df = df.rename(columns={"store": render_template("table_forms/search_form.html", label="store", column=0)})
-    df = df.rename(columns={"stock": render_template("table_forms/in_stock_checkbox.html")})
-    df = df.rename(columns={"price": render_template("table_forms/price_sort.html")})
+    df = df.rename(columns={"stock": render_template("table_forms/stock_toggle_button.html")})
+    df = df.rename(columns={"price": render_template("table_forms/price_sort_button.html")})
 
     table = df.to_html(index=False, classes="table table-hover display table-bordered table-responsive-lg",
                        escape=False, border=0, justify="left", table_id="myTable")

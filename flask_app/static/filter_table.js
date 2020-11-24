@@ -1,13 +1,14 @@
 function toggle_stock() {
-  var check_box = document.getElementById("in_stock_check");
-  if (check_box.classList.contains("active")) {
-    check_box.classList.remove("active");
-  } else {
-    check_box.classList.add("active");
-  }
-  filter_table();
+    var check_box = document.getElementById("in_stock_check");
+    if (check_box.classList.contains("active")) {
+        check_box.classList.remove("active");
+    } else {
+        check_box.classList.add("active");
+    }
+    filter_table();
 }
-function toggle_sort(){
+
+function toggle_sort() {
     var button = document.getElementById("price_sort");
     if (button.dataset.sort_direction == "asc") {
         button.dataset.sort_direction = "desc";
@@ -18,30 +19,33 @@ function toggle_sort(){
     }
     sort_table(6);
 }
-function search_filter(filter, td) {return (td.textContent || td.innerText).toUpperCase().indexOf(filter) > -1}
-function stock_filter(active, td) {return !(active && (td.textContent || td.innerText) == "Out of stock")}
+
+function search_filter(filter, td) {
+    return (td.textContent || td.innerText).toUpperCase().indexOf(filter) > -1
+}
+
+function stock_filter(active, td) {
+    return !(active && (td.textContent || td.innerText) == "Out of stock")
+}
 
 function filter_table() {
-  // Declare variables
-  var table = document.getElementById("myTable");
-  var tr = table.getElementsByTagName("tr");
-  var stock_check_active = document.getElementById("in_stock_check").classList.contains("active");
-  var filter_item = input = document.getElementById("search_form_item").value.toUpperCase();
-  var filter_store = input = document.getElementById("search_form_store").value.toUpperCase();
+    var table = document.getElementById("myTable");
+    var tr = table.getElementsByTagName("tr");
+    var stock_check_active = document.getElementById("in_stock_check").classList.contains("active");
+    var filter_item = input = document.getElementById("search_form_item").value.toUpperCase();
+    var filter_store = input = document.getElementById("search_form_store").value.toUpperCase();
 
-  // Loop through all table rows, and hide those who don't match the search query
-  for (var i = 0; i < tr.length; i++) {
-    // In stock filter
-    td_stock = tr[i].getElementsByTagName("td")[2];
-    td_item = tr[i].getElementsByTagName("td")[1];
-    td_store = tr[i].getElementsByTagName("td")[0];
+    for (var i = 0; i < tr.length; i++) {
+        td_stock = tr[i].getElementsByTagName("td")[2];
+        td_item = tr[i].getElementsByTagName("td")[1];
+        td_store = tr[i].getElementsByTagName("td")[0];
 
-    if (td_item && td_stock){
-      if (search_filter(filter_item, td_item) && stock_filter(stock_check_active, td_stock) && search_filter(filter_store, td_store)) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
+        if (td_item && td_stock) {
+            if (search_filter(filter_item, td_item) && stock_filter(stock_check_active, td_stock) && search_filter(filter_store, td_store)) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
     }
-  }
 }

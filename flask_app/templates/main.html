@@ -3,11 +3,11 @@
 <script src="{{ url_for('static', filename='moment.js')}}"></script>
 <script src="{{ url_for('static', filename='sort_table.js')}}"></script>
 <script src="{{ url_for('static', filename='filter_table.js')}}"></script>
-<!--Hide columns on mobile-->
+
 <style>@media(max-width:991px){td:nth-child(3),td:nth-child(5),th:nth-child(3),th:nth-child(5){display:none}}</style>
-<!--Hide column that's just for sorting-->
 <style>td:nth-child(6),th:nth-child(6){display:none}</style>
 <style>.table thead th {vertical-align: middle!important;}</style>
+
 <div class="m-l-3 m-xl-3 m-sm-0 m-md-0">
     {{ table|safe }}
 </div>
