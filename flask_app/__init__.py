@@ -27,6 +27,7 @@ def main():
     df.loc[df["stock"] == "Out of stock", "item_class"] = "text-danger"
     df["item"] = '''<a class=' ''' + df["item_class"] + ''' ' target="_blank" href="''' + df["link"] + '''">''' + df[
         "item"] + '''</a>'''
+    df["stock"] = '''<div class="''' + df["item_class"] + '''">''' + df["stock"] + '''</div>'''
     cols = ["store", "item", "stock", "price", "time", "price_num"]
     df = df[cols]
 
