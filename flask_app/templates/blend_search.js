@@ -6,7 +6,7 @@ var idx = lunr(function () {
   documents.forEach(function (doc) {
     this.add(doc)
   }, this)
-})
+});
 $( "#search_bar" ).keyup(function() {
   var query = $(this).val().toLowerCase();
   if (query.length > 2){

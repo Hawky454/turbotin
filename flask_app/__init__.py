@@ -2,6 +2,9 @@ from flask import Flask, render_template
 import json
 import os
 import pandas as pd
+import pickle
+import timeago
+import datetime
 
 app = Flask(__name__)
 path = os.path.dirname(__file__)
@@ -14,7 +17,29 @@ blends_list = [{"key": n, "text": blends_list[n].lower(), "full_text": blends_li
 
 @app.route('/')
 def main():
-    return render_template("main.html", blends_list=blends_list)
+    with open(os.path.join(os.path.dirname(path), "data/sample_data.p"), "rb") as f:
+        df = pickle.load(f)
+    # df = df.loc[:200]
+    df["price_num"] = df["price"].str.extract(r'(\d+.\d+)')
+    df["price_num"] = pd.to_numeric(df["price_num"], errors="coerce")
+    df = df[df["item"] != ""]
+    df["item_class"] = "text-dark"
+    df.loc[df["stock"] == "Out of stock", "item_class"] = "text-danger"
+    df["item"] = '''<a class=' ''' + df["item_class"] + ''' ' target="_blank" href="''' + df["link"] + '''">''' + df[
+        "item"] + '''</a>'''
+
+    cols = ["store", "item", "stock", "price", "time", "price_num"]
+    df = df[cols]
+
+    df = df.rename(columns={"time": "last updated (utc)"})
+    df = df.rename(columns={"item": render_template("table_forms/search_form.html", label="item", column=1)})
+    df = df.rename(columns={"store": render_template("table_forms/search_form.html", label="store", column=0)})
+    df = df.rename(columns={"stock": render_template("table_forms/in_stock_checkbox.html")})
+    df = df.rename(columns={"price": render_template("table_forms/price_sort.html")})
+
+    table = df.to_html(index=False, classes="table table-hover display table-bordered table-responsive-lg",
+                       escape=False, border=0, justify="left", table_id="myTable")
+    return render_template("main.html", table=table, blends_list=blends_list)
 
 
 @app.route('/faq')

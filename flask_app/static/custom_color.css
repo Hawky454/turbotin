@@ -1,0 +1,13 @@
+.btn-outline-custom {
+    color: #6c757d;border-color: #00D2D2;
+}
+.btn-outline-custom:not(:disabled):not(.disabled).active, .btn-outline-info:not(:disabled):not(.disabled):active, .show>.btn-outline-info.dropdown-toggle {
+    color: #fff;background-color: #00D2D2;
+    border-color: #00D2D2;
+}
+.form-control:focus {
+    border-color: #00D2D2;box-shadow: 0 0 0 3px rgba(108, 117, 125,.25);
+}
+.form-control::-webkit-search-cancel-button {
+    display: none;
+}
