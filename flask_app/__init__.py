@@ -21,7 +21,7 @@ def main():
         df = pickle.load(f)
     # df = df.loc[:200]
     df["price_num"] = df["price"].str.extract(r'(\d+.\d+)')
-    df["price_num"] = pd.to_numeric(df["price_num"], errors="coerce")
+    df["price_num"] = pd.to_numeric(df["price_num"], errors="coerce").fillna(10 ** 4)
     df = df[df["item"] != ""]
     df["item_class"] = "text-dark"
     df.loc[df["stock"] == "Out of stock", "item_class"] = "text-danger"
