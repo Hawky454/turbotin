@@ -19,7 +19,7 @@ blends_list = [{"key": n, "text": blends_list[n].lower(), "full_text": blends_li
 def main():
     with open(os.path.join(os.path.dirname(path), "data/sample_data.p"), "rb") as f:
         df = pickle.load(f)
-    # df = df.loc[:200]
+    df = df.loc[:200]
     df["price_num"] = df["price"].str.extract(r'(\d+.\d+)')
     df["price_num"] = pd.to_numeric(df["price_num"], errors="coerce").fillna(10 ** 4)
     df = df[df["item"] != ""]
@@ -27,7 +27,6 @@ def main():
     df.loc[df["stock"] == "Out of stock", "item_class"] = "text-danger"
     df["item"] = '''<a class=' ''' + df["item_class"] + ''' ' target="_blank" href="''' + df["link"] + '''">''' + df[
         "item"] + '''</a>'''
-
     cols = ["store", "item", "stock", "price", "time", "price_num"]
     df = df[cols]
 

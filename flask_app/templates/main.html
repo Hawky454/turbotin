@@ -7,8 +7,9 @@
 <style>@media(max-width:991px){td:nth-child(3),td:nth-child(5),th:nth-child(3),th:nth-child(5){display:none}}</style>
 <style>td:nth-child(6),th:nth-child(6){display:none}</style>
 <style>.table thead th {vertical-align: middle!important;}</style>
-
-<div class="m-l-3 m-xl-3 m-sm-0 m-md-0">
-    {{ table|safe }}
+<div class="container-fluid mt-1 mt-md-5 mr-0 ml-0 mr-md-auto ml-md-auto pr-0 pl-0">
+    <div class="col-xl-10 col-lg-11 col-md-12 ml-md-auto mr-md-auto mr-0 ml-0 pr-0 pl-0">
+        {{ table|safe }}
+    </div>
 </div>
 {% endblock %}
