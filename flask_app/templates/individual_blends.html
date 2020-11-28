@@ -1,8 +1,6 @@
 {% extends "header.html" %}
 {% block body %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-<script src="https://unpkg.com/lunr/lunr.js"></script>
-
 <div class="container-fluid">
     <div class="row vh-100">
         <div class="d-none d-lg-block bg-light" style="width: 350px">
@@ -14,7 +12,8 @@
                         <div class="dropdown">
                             <form class="form-inline mt-2" action="#">
                                 <input class="form-control mr-sm-2" type="search" autocomplete="off"
-                                       placeholder="Search for blends" aria-label="Search" id="search_bar">
+                                       placeholder="Search for blends" aria-label="Search" id="search_bar"
+                                       onkeyup="search_blends()">
                             </form>
                             <div class="dropdown-menu" id="search_results">
                             </div>
@@ -33,5 +32,5 @@
         </div>
     </div>
 </div>
-<script>{% include "blend_search.js" %}</script>
+<script>{% include 'search_bar.js' %}</script>
 {% endblock %}
