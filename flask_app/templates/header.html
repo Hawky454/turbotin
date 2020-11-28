@@ -30,7 +30,8 @@
         <ul class="navbar-nav mr-auto">
             {% set nav_items = [
             {"name": "Home", "link": "/"},
-            {"name": "Email Updates", "link": "email"},
+            {"name": "Individual Blends", "link": "/individual_blends"},
+            {"name": "Email Updates", "link": "/email"},
             {"name": "FAQ", "link": "/faq"},
             ]%}
             {% for item in nav_items %}
@@ -40,7 +41,8 @@
             {% endfor %}
             <li class="nav-item">
                 <form class="form-inline" action="#">
-                    <button type="button" class="btn btn-outline-turbotin-cyan" onclick="#" id="donate">Donate</button>
+                    <button type="button" class="btn btn-outline-turbotin-cyan active" onclick="#" id="donate">Donate
+                    </button>
                 </form>
             </li>
 
