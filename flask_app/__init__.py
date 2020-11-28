@@ -9,10 +9,12 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 db.init_app(app)
 from .views.full_table import full_table_blueprint
-
-path = os.path.dirname(__file__)
+from .views.individual_blends import individual_blends_blueprint
 
 app.register_blueprint(full_table_blueprint)
+app.register_blueprint(individual_blends_blueprint)
+
+path = os.path.dirname(__file__)
 
 
 @app.route('/')
