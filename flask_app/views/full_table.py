@@ -33,4 +33,4 @@ def main():
     df = df.rename(columns={"price": render_template("table_forms/price_sort_button.html")})
     table = df.to_html(index=False, classes="table table-hover display table-bordered table-responsive-lg",
                        escape=False, border=0, justify="left", table_id="myTable")
-    return render_template("main.html", table=table)
+    return render_template("full_table.html", table=table)
