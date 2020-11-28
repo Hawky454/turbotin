@@ -20,6 +20,11 @@ $theme-colors: (
     box-shadow: none;
     -webkit-box-shadow: none;
 }
+.btn:focus {
+    border-color: $turbotin-cyan;
+    box-shadow: none;
+    -webkit-box-shadow: none
+}
 input[type=search]::-ms-clear {  display: none; width : 0; height: 0; }
 input[type=search]::-ms-reveal {  display: none; width : 0; height: 0; }
 input[type="search"]::-webkit-search-decoration,

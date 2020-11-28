@@ -8030,6 +8030,11 @@ a.text-turbotin-yellow:hover, a.text-turbotin-yellow:focus {
   box-shadow: none;
   -webkit-box-shadow: none; }
 
+.btn:focus {
+  border-color: #00D2D2;
+  box-shadow: none;
+  -webkit-box-shadow: none; }
+
 input[type=search]::-ms-clear {
   display: none;
   width: 0;
