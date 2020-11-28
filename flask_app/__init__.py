@@ -37,8 +37,7 @@ def main():
 
     cols = ["store", "item", "stock", "price", "time", "price_num"]
     df = df[cols]
-    print(df)
-
+    
     df = df.rename(columns={"time": "last updated (utc)"})
     df = df.rename(columns={"item": render_template("table_forms/search_form.html", label="item", column=1)})
     df = df.rename(columns={"store": render_template("table_forms/search_form.html", label="store", column=0)})
