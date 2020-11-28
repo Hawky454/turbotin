@@ -1,4 +1,4 @@
-from .. import app, db
+from .. import db
 from flask import render_template, Blueprint
 from ..models import Tobacco
 import pandas as pd
