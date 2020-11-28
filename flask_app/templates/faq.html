@@ -2,10 +2,10 @@
 {% block body %}
 <div class="container mt-5 mb-5">
     <div class="col-md">
-        <div class="accordion border border-turbotin-cyan" id="accordionExample">
+        <div class="accordion" id="accordionExample">
             {% for i in range(faq_items|length) %}
             <div class="card">
-                <div class="card-header border-bottom border-turbotin-cyan" id="heading{{i}}">
+                <div class="card-header border border-turbotin-cyan" id="heading{{i}}">
                     <h5 class="mb-0">
                         <button class="btn btn-link text-secondary" type="button" data-toggle="collapse"
                                 data-target="#collapse{{i}}" aria-expanded="false" aria-controls="collapse{{i}}">
