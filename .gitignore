@@ -23,3 +23,6 @@
 /venv/
 /config.sh
 /flask_app/__pycache__/
+/flask_app/static/.sass-cache/
+/flask_app/static/scss/.sass-cache/
+/flask_app/static/bootstrap/
