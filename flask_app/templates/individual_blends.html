@@ -1,0 +1,37 @@
+{% extends "header.html" %}
+{% block body %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://unpkg.com/lunr/lunr.js"></script>
+
+<div class="container-fluid">
+    <div class="row vh-100">
+        <div class="d-none d-lg-block bg-light" style="width: 350px">
+
+            <div class="container">
+
+                <ul class="list-group list-group-flush bg-light">
+                    <li class="list-group-item bg-light border-bottom-0">
+                        <div class="dropdown">
+                            <form class="form-inline mt-2" action="#">
+                                <input class="form-control mr-sm-2" type="search" autocomplete="off"
+                                       placeholder="Search for blends" aria-label="Search" id="search_bar">
+                            </form>
+                            <div class="dropdown-menu" id="search_results">
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item bg-light font-weight-bold h3">{{brand}}</li>
+                    {% for i in range(blends|length) %}
+                    <a class="list-group-item bg-light list-group-item-action"
+                       href="/individual_blends/{{blends[i].id}}">{{blends[i].name}}</a>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col bg-secondary">
+
+        </div>
+    </div>
+</div>
+<script>{% include "blend_search.js" %}</script>
+{% endblock %}

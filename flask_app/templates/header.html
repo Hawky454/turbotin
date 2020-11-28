@@ -14,8 +14,6 @@
         integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
         crossorigin="anonymous"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light border-turbotin-cyan border-3">
     <a class="navbar-brand" href="/" style="font-variant: small-caps"><img
@@ -30,7 +28,7 @@
         <ul class="navbar-nav mr-auto">
             {% set nav_items = [
             {"name": "Home", "link": "/"},
-            {"name": "Individual Blends", "link": "/individual_blends"},
+            {"name": "Individual Blends", "link": "/individual_blends/0"},
             {"name": "Email Updates", "link": "/email"},
             {"name": "FAQ", "link": "/faq"},
             ]%}
@@ -78,5 +76,5 @@
 {% block body %}
 {% endblock %}
 </body>
-<script>{% include "blend_search.js" %}</script>
+
 </html>

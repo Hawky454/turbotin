@@ -8,8 +8,9 @@ from datetime import timedelta
 full_table_blueprint = Blueprint('full_table', __name__, template_folder='templates')
 
 max_time = db.session.query(func.max(Tobacco.time)).scalar() - timedelta(hours=10)
-df = pd.read_sql(Tobacco.query.filter(Tobacco.time >= max_time).statement, db.session.bind)
+main_df = pd.read_sql(Tobacco.query.filter(Tobacco.time >= max_time).statement, db.session.bind)
 
+df = main_df.copy()
 df["price_num"] = df["price"].str.extract(r'(\d+.\d+)')
 df["price_num"] = pd.to_numeric(df["price_num"], errors="coerce").fillna(10 ** 4)
 df = df[df["item"] != ""]

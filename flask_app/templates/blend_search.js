@@ -1,4 +1,4 @@
-var documents = {{blends_list}}
+var documents = {{search_list}}
 var idx = lunr(function () {
   this.ref('key')
   this.field('text')
@@ -14,7 +14,7 @@ $( "#search_bar" ).keyup(function() {
       var new_inner_html = "";
       for (var i = 0; i < result_list.length; i++) {
         var result = documents[parseInt(result_list[i].ref)];
-        new_inner_html += "<a class='dropdown-item' href='/blends/" + result.key + "'>" + result.full_text + "</a>";
+        new_inner_html += "<a class='dropdown-item' href='/individual_blends/" + result.key + "'>" + result.full_text + "</a>";
       }
       var results_element = document.getElementById('search_results');
       if (result_list.length > 0){
