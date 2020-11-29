@@ -16,7 +16,6 @@ archive_df = pd.read_feather("archive.feather")
 @individual_blends_blueprint.route('/individual_blends/<blend>')
 def main(blend):
     blend = int(blend)
-    print(blend_list[blend])
     brand = main_df["brand"][(main_df["brand"] + " " + main_df["blend"]) == blend_list[blend]].iloc[0]
     blends = pd.unique(main_df["blend"][main_df["brand"] == brand])
     blends = [{"name": n, "id": blend_list.index(brand + " " + n)} for n in blends]
