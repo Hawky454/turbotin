@@ -21,4 +21,4 @@ def main(blend):
     blends = pd.unique(main_df["blend"][main_df["brand"] == brand])
     blends = [{"name": n, "id": blend_list.index(brand + " " + n)} for n in blends]
 
-    return render_template("individual_blends.html", brand=brand, blends=blends, search_list=search_list)
+    return render_template("individual_blends.html", brand=brand, blends=blends, search_list=search_list, id=blend)

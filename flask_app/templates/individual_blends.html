@@ -2,32 +2,34 @@
 {% block body %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <div class="container-fluid">
-    <div class="row vh-100">
-        <div class="d-none d-lg-block bg-light" style="width: 350px">
-
-            <div class="container">
-
-                <ul class="list-group list-group-flush bg-light">
-                    <li class="list-group-item bg-light border-bottom-0">
-                        <div class="dropdown">
-                            <form class="form-inline mt-2" action="#">
-                                <input class="form-control mr-sm-2" type="search" autocomplete="off"
-                                       placeholder="Search for blends" aria-label="Search" id="search_bar"
-                                       onkeyup="search_blends()">
-                            </form>
-                            <div class="dropdown-menu" id="search_results">
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item bg-light font-weight-bold h3">{{brand}}</li>
-                    {% for i in range(blends|length) %}
-                    <a class="list-group-item bg-light list-group-item-action"
-                       href="/individual_blends/{{blends[i].id}}">{{blends[i].name}}</a>
-                    {% endfor %}
-                </ul>
+    <div class="row">
+        <div class="bg-light col-lg-2 col-md-12 sidebar">
+            <div class="container p-0 m-0">
+                <div class="dropdown ml-lg-3" id="search_results_parent">
+                    <form class="form-inline mt-3 mb-2" action="#">
+                        <input class="form-control" type="search" autocomplete="off"
+                               placeholder="Search for blends" aria-label="Search" id="search_bar"
+                               onkeyup="search_blends()">
+                    </form>
+                    <div class="dropdown-menu w-100 overflow-hidden" id="search_results">
+                    </div>
+                </div>
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <div class="collapse navbar-collapse" id="sidebar_collapse">
+                        <ul class="navbar-nav flex-column">
+                            <li class="nav-item font-weight-bold h3">{{brand}}</li>
+                            {% for i in range(blends|length) %}
+                            <li class="nav-item {%if blends[i].id|int==id %} active{% endif %}">
+                                <a class="nav-link"
+                                   href="/individual_blends/{{blends[i].id}}">{{blends[i].name}}</a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </nav>
             </div>
         </div>
-        <div class="col bg-secondary">
+        <div class="col bg-secondary vh-100">
 
         </div>
     </div>

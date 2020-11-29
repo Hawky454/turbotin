@@ -36,3 +36,12 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
 .border-3 {
     border-bottom: 3px solid;
 }
+
+@include media-breakpoint-up(lg) {
+  .sidebar {
+    max-width: 350px;
+  }
+}
+.sidebar {
+    min-width: 300px;
+}

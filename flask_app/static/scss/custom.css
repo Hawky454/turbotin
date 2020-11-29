@@ -8054,4 +8054,10 @@ input[type="search"]::-webkit-search-results-decoration {
 .border-3 {
   border-bottom: 3px solid; }
 
+@media (min-width: 992px) {
+  .sidebar {
+    max-width: 350px; } }
+.sidebar {
+  min-width: 300px; }
+
 /*# sourceMappingURL=custom.css.map */

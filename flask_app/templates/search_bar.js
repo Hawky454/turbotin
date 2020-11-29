@@ -27,11 +27,3 @@ function search_blends() {
     }
     results_element.innerHTML = new_inner_html;
 }
-//$(document).mouseup(function(e)
-//{
-//    var container = $("#search_results");
-//    if (!container.is(e.target) && container.has(e.target).length === 0)
-//    {
-//        results_element.classList.remove("show");
-//    }
-//});
