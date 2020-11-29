@@ -1,9 +1,12 @@
 var blends = {{search_list}}
+var results_element = document.getElementById('search_results');
 function search_blends() {
+
     var query = document.getElementById("search_bar").value.toLowerCase();
-    var results_element = document.getElementById('search_results');
-    if (query == ""){
-        results_element.classList.remove("show");
+    console.log(query);
+    console.log(results_element.classList);
+    if (query == "" && results_element.classList.contains("show")){
+        $("#search_results").dropdown('hide');
         return;
     }
     var new_inner_html = "";
@@ -19,11 +22,9 @@ function search_blends() {
             if (results >= 10) { break; }
         }
     }
-
-    if (results > 0){
-        results_element.classList.add("show");
-    } else{
-        results_element.classList.remove("show");
+    if (new_inner_html != "" && !results_element.classList.contains("show")){
+        console.log("show")
+        $("#search_results").dropdown('show');
     }
     results_element.innerHTML = new_inner_html;
 }

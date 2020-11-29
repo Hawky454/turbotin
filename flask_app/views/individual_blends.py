@@ -19,5 +19,6 @@ def main(blend):
     brand = main_df["brand"][(main_df["brand"] + " " + main_df["blend"]) == blend_list[blend]].iloc[0]
     blends = pd.unique(main_df["blend"][main_df["brand"] == brand])
     blends = [{"name": n, "id": blend_list.index(brand + " " + n)} for n in blends]
+    _, blends = zip(*sorted(zip([n["name"] for n in blends], blends)))
 
     return render_template("individual_blends.html", brand=brand, blends=blends, search_list=search_list, id=blend)
