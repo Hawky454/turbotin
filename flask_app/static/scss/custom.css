@@ -8060,4 +8060,8 @@ input[type="search"]::-webkit-search-results-decoration {
 .sidebar {
   min-width: 300px; }
 
+@media (max-width: 991.98px) {
+  .search-results {
+    max-width: 100%; } }
+
 /*# sourceMappingURL=custom.css.map */
