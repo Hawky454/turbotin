@@ -1,12 +1,14 @@
 var blends = {{search_list}}
 var results_element = document.getElementById('search_results');
+var count = 0;
 function search_blends() {
-
     var query = document.getElementById("search_bar").value.toLowerCase();
+    count += 1;
+    console.log(count);
     console.log(query);
-    console.log(results_element.classList);
-    if (query == "" && results_element.classList.contains("show")){
-        $("#search_results").dropdown('hide');
+    if (query == ""){
+        results_element.innerHTML = "";
+        results_element.classList.add("p-0", "m-0", "border-0")
         return;
     }
     var new_inner_html = "";
@@ -22,9 +24,11 @@ function search_blends() {
             if (results >= 10) { break; }
         }
     }
-    if (new_inner_html != "" && !results_element.classList.contains("show")){
-        console.log("show")
-        $("#search_results").dropdown('show');
+    if (new_inner_html != "") {
+        results_element.classList.remove("p-0", "m-0", "border-0")
+    } else {
+        results_element.classList.add("p-0", "m-0", "border-0")
     }
     results_element.innerHTML = new_inner_html;
+    return true;
 }

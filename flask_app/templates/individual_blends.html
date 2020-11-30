@@ -5,13 +5,13 @@
     <div class="row">
         <div class="bg-light col-lg-2 col-md-12 sidebar">
             <div class="container p-0 m-0">
-                <div class="btn-group ml-lg-3" id="search_results_parent">
-                    <form class="form-inline mt-3 mb-2 " action="#" data-toggle="dropdown" onclick="search_blends()">
+                <div class="dropdown ml-lg-3" id="search_dropdown">
+                    <form class="form-inline mt-3 mb-2" data-toggle="dropdown">
                         <input class="form-control dropdown-toggle" type="search" autocomplete="off"
                                placeholder="Search for blends" aria-label="Search" id="search_bar"
-                               onkeyup="search_blends()">
+                               onkeyup="search_blends()" onclick="search_blends()">
                     </form>
-                    <div class="dropdown-menu w-100 overflow-hidden" id="search_results">
+                    <div class="dropdown-menu overflow-hidden" id="search_results">
                     </div>
                 </div>
                 <nav class="navbar navbar-expand-lg navbar-light">
