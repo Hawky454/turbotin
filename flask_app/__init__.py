@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 import json
 import os
 
+path = os.path.dirname(__file__)
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ["DATABASE_URL"]
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -13,8 +14,6 @@ from .views.individual_blends import individual_blends_blueprint
 
 app.register_blueprint(full_table_blueprint)
 app.register_blueprint(individual_blends_blueprint)
-
-path = os.path.dirname(__file__)
 
 
 @app.route('/')
