@@ -27,9 +27,3 @@ def faq():
     with open(os.path.join(path, "static/questions.json")) as f:
         faq_items = json.load(f)
     return render_template("faq.html", faq_items=faq_items)
-
-
-@app.route('/blends/', defaults={'blend': None})
-@app.route('/blends/<blend>')
-def blends(blend):
-    return render_template("blend.html")
