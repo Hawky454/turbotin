@@ -2,8 +2,8 @@
 {% block body %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <div class="container-fluid">
-    <div class="row">
-        <div class="bg-light col-lg-2 col-md-12 sidebar">
+    <div class="row min-vh-100">
+        <div class="bg-light col-lg-2 col-md-12 sidebar border-right">
             <div class="container p-0 m-0">
                 <div class="dropdown ml-lg-3" id="search_dropdown">
                     <form class="form-inline mt-3 mb-2" data-toggle="dropdown">
@@ -20,8 +20,7 @@
                             <li class="nav-item font-weight-bold h3">{{brand}}</li>
                             {% for i in range(blends|length) %}
                             <li class="nav-item {%if blends[i].id|int==id %} active{% endif %}">
-                                <a class="nav-link"
-                                   href="/individual_blends/{{blends[i].id}}">{{blends[i].name}}</a>
+                                <a class="nav-link" href="/individual_blends/{{blends[i].id}}">{{blends[i].name}}</a>
                             </li>
                             {% endfor %}
                         </ul>
@@ -29,8 +28,42 @@
                 </nav>
             </div>
         </div>
-        <div class="col bg-secondary vh-100">
+        <div class="col mr-5 ml-5">
+            <div class="container m-5 mx-auto">
+                <div class="row align-items-center mb-5">
+                    <div class="col" style="max-width: 125px!important;">
+                        <img src="{{ url_for('static', filename='TurboTinLogo.png')}}" width="100px" height="100px">
+                    </div>
+                    <div class="col">
+                        <h1>{{blend}}</h1>
+                    </div>
+                </div>
+                {% for i in range(items|length) %}
+                <div class="card bg-white mb-1">
+                    <div class="card-body">
+                        <div class="row m-0">
+                            <div class="mr-auto">
+                                <h5 class="card-title">
+                                    <a class="text-secondary" target="_blank"
+                                       href="{{items[i].link}}">{{items[i].item}}</a>
+                                </h5>
+                                <div class="row ml-0">
+                                    <p class="card-text mb-0 text-secondary">
 
+                                        {{items[i].time|safe}} -&nbsp{{items[i].stock|safe}}
+
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end flex-column">
+                                <h4 class="text-right">{{items[i].price}}</h4>
+                                <h6 class="card-text mb-0 text-right">{{items[i].store}}</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 </div>

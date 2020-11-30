@@ -8063,5 +8063,7 @@ input[type="search"]::-webkit-search-results-decoration {
 @media (max-width: 991.98px) {
   .search-results {
     max-width: 100%; } }
+a {
+  text-decoration: none !important; }
 
 /*# sourceMappingURL=custom.css.map */

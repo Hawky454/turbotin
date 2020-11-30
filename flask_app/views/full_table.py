@@ -24,7 +24,7 @@ df["stock"] = "<div class='" + df["item_class"] + "'>" + df["stock"] + "</div>"
 
 cols = ["store", "item", "stock", "price", "time", "price_num"]
 df = df[cols]
-df = df.rename(columns={"time": "last updated (utc)"})
+df = df.rename(columns={"time": "Last Updated (UTC)"})
 with open(os.path.join(path, "static/table_forms/search_form.html"), "r") as f:
     template = f.read()
     df = df.rename(columns={"item": template.format(label="item")})
@@ -33,8 +33,8 @@ with open(os.path.join(path, "static/table_forms/stock_toggle_button.html"), "r"
     df = df.rename(columns={"stock": f.read()})
 with open(os.path.join(path, "static/table_forms/price_sort_button.html"), "r") as f:
     df = df.rename(columns={"price": f.read()})
-table = df.to_html(index=False, classes="table table-hover display table-bordered table-responsive-lg",
-                   escape=False, border=0, justify="left", table_id="myTable")
+table = df.to_html(index=False, escape=False, border=0, justify="left", table_id="myTable",
+                   classes="table table-hover display table-bordered table-responsive-lg bg-light table-striped")
 table = BeautifulSoup(table)
 n = 0
 for tr in table.find_all("tr"):
