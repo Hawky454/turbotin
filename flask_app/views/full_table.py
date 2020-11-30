@@ -1,9 +1,11 @@
-from .. import db
+from .. import db, path
 from flask import render_template, Blueprint
 from ..models import Tobacco
 import pandas as pd
 from sqlalchemy import func
 from datetime import timedelta
+from bs4 import BeautifulSoup
+import os
 
 full_table_blueprint = Blueprint('full_table', __name__, template_folder='templates')
 
@@ -22,16 +24,26 @@ df["stock"] = "<div class='" + df["item_class"] + "'>" + df["stock"] + "</div>"
 
 cols = ["store", "item", "stock", "price", "time", "price_num"]
 df = df[cols]
+df = df.rename(columns={"time": "last updated (utc)"})
+with open(os.path.join(path, "static/table_forms/search_form.html"), "r") as f:
+    template = f.read()
+    df = df.rename(columns={"item": template.format(label="item")})
+    df = df.rename(columns={"store": template.format(label="store")})
+with open(os.path.join(path, "static/table_forms/stock_toggle_button.html"), "r") as f:
+    df = df.rename(columns={"stock": f.read()})
+with open(os.path.join(path, "static/table_forms/search_form.html"), "r") as f:
+    df = df.rename(columns={"stock": f.read()})
+table = df.to_html(index=False, classes="table table-hover display table-bordered table-responsive-lg",
+                   escape=False, border=0, justify="left", table_id="myTable")
+table = BeautifulSoup(table)
+n = 0
+for tr in table.find_all("tr"):
+    if n > 100:
+        tr["style"] = "display: none;"
+    n += 1
+table = str(table)
 
 
 @full_table_blueprint.route('/full_table')
 def main():
-    global df
-    df = df.rename(columns={"time": "last updated (utc)"})
-    df = df.rename(columns={"item": render_template("table_forms/search_form.html", label="item", column=1)})
-    df = df.rename(columns={"store": render_template("table_forms/search_form.html", label="store", column=0)})
-    df = df.rename(columns={"stock": render_template("table_forms/stock_toggle_button.html")})
-    df = df.rename(columns={"price": render_template("table_forms/price_sort_button.html")})
-    table = df.to_html(index=False, classes="table table-hover display table-bordered table-responsive-lg",
-                       escape=False, border=0, justify="left", table_id="myTable")
     return render_template("full_table.html", table=table)

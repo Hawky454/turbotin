@@ -1,3 +1,11 @@
+function hidden_alert() {
+    if ($('#myTable tr:visible').length > 101){
+        $("#alert").show();
+    } else {
+        $("#alert").hide();
+    }
+}
+
 function sort_attr($tr, idx) {
     var $td = $tr.children("td:nth-child(" + idx + ")"),
         sort_attr = $td.attr("sort")
@@ -21,6 +29,7 @@ function _sort(idx, ascending) {
 }
 
 function sort_table(n) {
+    hidden_alert();
     var fn = _sort(n, document.getElementById("price_sort").dataset.sort_direction == "asc")
     $("table tbody").html($("table tbody tr").sort(fn))
 }
