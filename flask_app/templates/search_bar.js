@@ -6,6 +6,8 @@ function search_blends() {
     count += 1;
     console.log(count);
     console.log(query);
+
+
     if (query == ""){
         results_element.innerHTML = "";
         results_element.classList.add("p-0", "m-0", "border-0")
@@ -26,6 +28,10 @@ function search_blends() {
     }
     if (new_inner_html != "") {
         results_element.classList.remove("p-0", "m-0", "border-0")
+        if ($("#search_bar").is(':hover') && !results_element.classList.contains("show")) {
+            console.log("trigger")
+            $("#search_bar").trigger("click");
+        }
     } else {
         results_element.classList.add("p-0", "m-0", "border-0")
     }
