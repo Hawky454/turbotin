@@ -31,8 +31,8 @@ with open(os.path.join(path, "static/table_forms/search_form.html"), "r") as f:
     df = df.rename(columns={"store": template.format(label="store")})
 with open(os.path.join(path, "static/table_forms/stock_toggle_button.html"), "r") as f:
     df = df.rename(columns={"stock": f.read()})
-with open(os.path.join(path, "static/table_forms/search_form.html"), "r") as f:
-    df = df.rename(columns={"stock": f.read()})
+with open(os.path.join(path, "static/table_forms/price_sort_button.html"), "r") as f:
+    df = df.rename(columns={"price": f.read()})
 table = df.to_html(index=False, classes="table table-hover display table-bordered table-responsive-lg",
                    escape=False, border=0, justify="left", table_id="myTable")
 table = BeautifulSoup(table)
