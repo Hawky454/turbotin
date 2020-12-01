@@ -1,6 +1,6 @@
 from .. import db
 from .full_table import main_df
-from flask import render_template, Blueprint
+from flask import render_template, Blueprint, redirect
 from ..models import Tobacco
 import pandas as pd
 import random
@@ -29,7 +29,8 @@ archive_df["price_num"] = pd.to_numeric(archive_df["price_num"], errors="coerce"
 archive_df = archive_df[archive_df["item"] != ""]
 
 colors = ["#007bff", "#6610f2", "#6f42c1", "#e83e8c", "#dc3545", "#fd7e14", "#ffc107", "#28a745", "#20c997", "#17a2b8"]
-random.shuffle(colors)
+stores = list(pd.unique(archive_df["store"]))
+store_colors = {stores[n]: colors[divmod(n, len(colors))[1]] for n in range(len(stores))}
 
 
 @individual_blends_blueprint.route('/individual_blends/<blend>')
@@ -48,12 +49,14 @@ def main(blend):
     cols = ["store", "item", "stock", "price", "time"]
     table_df = table_df[cols]
 
-    stores = list(pd.unique(table_df["store"]))
-    store_colors = {stores[n]: colors[divmod(n, len(colors))[1]] for n in range(len(stores))}
-
     return render_template("individual_blends.html", brand=brand, blends=blends, search_list=search_list, id=blend,
                            blend=blend_name, items=list(table_df.T.to_dict().values()), store_colors=store_colors,
                            plot_data=get_plot_data(brand, blend_name))
+
+
+@individual_blends_blueprint.route('/individual_blends')
+def default():
+    return redirect("/individual_blends/{}".format(int(random.random() * len(blend_list))))
 
 
 def get_plot_data(brand, blend):
