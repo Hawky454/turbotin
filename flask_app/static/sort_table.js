@@ -1,8 +1,8 @@
 function hidden_alert() {
     if ($('#myTable tr:visible').length > 101){
-        $("#alert").show();
+        $("#alert").css('opacity', 1);
     } else {
-        $("#alert").hide();
+        $("#alert").css('opacity', 0);
     }
 }
 
