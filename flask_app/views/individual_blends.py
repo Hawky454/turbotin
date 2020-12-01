@@ -46,7 +46,7 @@ def main(blend):
     table_df = df.copy()
     table_df = table_df[(table_df["brand"] == brand) & (table_df["blend"] == blend_name)]
     table_df = table_df.sort_values("price_num")
-    cols = ["store", "item", "stock", "price", "time"]
+    cols = ["store", "item", "stock", "price", "time", "link"]
     table_df = table_df[cols]
 
     return render_template("individual_blends.html", brand=brand, blends=blends, search_list=search_list, id=blend,
