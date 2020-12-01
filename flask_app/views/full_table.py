@@ -36,7 +36,7 @@ with open(os.path.join(path, "static/table_forms/price_sort_button.html"), "r") 
     df = df.rename(columns={"price": f.read()})
 table = df.to_html(index=False, escape=False, border=0, justify="left", table_id="myTable",
                    classes="table table-hover display table-bordered table-responsive-lg bg-light table-striped")
-table = BeautifulSoup(table)
+table = BeautifulSoup(table, features="lxml")
 n = 0
 for tr in table.find_all("tr"):
     if n > 100:
