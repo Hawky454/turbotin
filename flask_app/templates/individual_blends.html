@@ -1,6 +1,7 @@
 {% extends "header.html" %}
 {% block body %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
 <div class="container-fluid">
     <div class="row min-vh-100">
         <div class="bg-light col-lg-2 col-md-12 sidebar border-right">
@@ -39,12 +40,12 @@
                     </div>
                 </div>
                 {% for i in range(items|length) %}
-                <div class="card bg-white mb-1">
+                <div class="card bg-light mb-1">
                     <div class="card-body">
                         <div class="row m-0">
                             <div class="mr-auto">
                                 <h5 class="card-title">
-                                    <a class="text-secondary" target="_blank"
+                                    <a class="text-secondary stretched-link" target="_blank"
                                        href="{{items[i].link}}">{{items[i].item}}</a>
                                 </h5>
                                 <div class="row ml-0">
@@ -57,15 +58,21 @@
                             </div>
                             <div class="d-flex justify-content-end flex-column">
                                 <h4 class="text-right">{{items[i].price}}</h4>
-                                <h6 class="card-text mb-0 text-right">{{items[i].store}}</h6>
+                                <h6 class="card-text mb-0 text-right" style="color: {{store_colors[items[i].store]}}">
+                                    {{items[i].store}}</h6>
                             </div>
                         </div>
                     </div>
                 </div>
                 {% endfor %}
+                <div class="w-100 mt-5">
+                    <canvas id="canvas"></canvas>
+                </div>
             </div>
+
         </div>
     </div>
 </div>
 <script>{% include 'search_bar.js' %}</script>
+<script>{% include 'plot.js' %}</script>
 {% endblock %}
