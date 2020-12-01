@@ -1,3 +1,31 @@
 {% extends "header.html" %}
 {% block body %}
+<div class="container">
+    <div class="col m-5 mx-auto text">
+        <h1>Sign up for Notifications</h1>
+        <div class="dropdown">
+            <div class="input-group pt-4" data-toggle="dropdown">
+                <input class="dropdown-toggle form-control form-control-lg" id="brand_input"
+                       onkeyup="brand_input();">
+                <div class="dropdown-menu overflow-hidden search-results p-0 m-0 border-0" id="brand_results">
+                </div>
+                <div class="input-group-prepend">
+                    <div class="input-group-text">Brand</div>
+                </div>
+            </div>
+        </div>
+        <div class="dropdown">
+            <div class="input-group pt-4" data-toggle="dropdown">
+                <input class="dropdown-toggle form-control form-control-lg" id="blend_input"
+                       onkeyup="blend_input();" disabled>
+                <div class="dropdown-menu overflow-hidden search-results p-0 m-0 border-0" id="blend_results">
+                </div>
+                <div class="input-group-prepend">
+                    <div class="input-group-text">Blend</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>{% include 'custom_input.js'%}</script>
 {% endblock %}
