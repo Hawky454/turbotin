@@ -11,9 +11,11 @@ db = SQLAlchemy(app)
 db.init_app(app)
 from .views.full_table import full_table_blueprint
 from .views.individual_blends import individual_blends_blueprint
+from .views.email_updates import email_updates_blueprint
 
 app.register_blueprint(full_table_blueprint)
 app.register_blueprint(individual_blends_blueprint)
+app.register_blueprint(email_updates_blueprint)
 
 
 @app.route('/')
