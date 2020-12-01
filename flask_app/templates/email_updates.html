@@ -25,6 +25,23 @@
             <div class="dropdown-menu overflow-hidden search-results p-0 m-0 border-0" id="blend_results">
             </div>
         </div>
+        <div class="row d-flex flex-row">
+            <div class="input-group input-group-lg pt-4 col">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="all_stores_check">
+                    <label class="custom-control-label" for="all_stores_check">Only specific stores</label>
+                </div>
+            </div>
+            <div class="input-group pt-4 col">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <input type="checkbox" aria-label="Checkbox for following text input">
+                        &nbsp Maximum price
+                    </div>
+                </div>
+                <input type="text" class="form-control" aria-label="Text input with checkbox">
+            </div>
+        </div>
     </div>
 </div>
 <script>{% include 'custom_input.js'%}</script>
