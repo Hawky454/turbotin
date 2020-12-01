@@ -53,3 +53,7 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
 a {
     text-decoration: none!important;
 }
+.dropdown-item:active {
+    color: #fff!important;
+    background-color: $turbotin-cyan!important;
+}
