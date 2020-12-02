@@ -37,22 +37,26 @@ function filter_table() {
     var num_results = 0;
 
     for (var i = 0; i < tr.length; i++) {
-        if (num_results > 100) {
-            tr[i].style.display = "none";
-            continue;
-        }
+
         td_stock = tr[i].getElementsByTagName("td")[2];
         td_item = tr[i].getElementsByTagName("td")[1];
         td_store = tr[i].getElementsByTagName("td")[0];
 
         if (td_item && td_stock) {
             if (search_filter(filter_item, td_item) && stock_filter(stock_check_active, td_stock) && search_filter(filter_store, td_store)) {
-                tr[i].style.display = "";
+                tr[i].dataset.filtered = false;
                 num_results += 1;
+                if (num_results > 101){
+                    tr[i].style.display = "none";
+                } else {
+                    tr[i].style.display = "";
+                }
             } else {
+                tr[i].dataset.filtered = true;
                 tr[i].style.display = "none";
             }
         }
     }
+    console.log($('#myTable tr:visible').length);
     hidden_alert();
 }

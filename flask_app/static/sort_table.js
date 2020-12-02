@@ -31,5 +31,9 @@ function _sort(idx, ascending) {
 function sort_table(n) {
     hidden_alert();
     var fn = _sort(n, document.getElementById("price_sort").dataset.sort_direction == "asc")
-    $("table tbody").html($("table tbody tr").sort(fn))
+    console.log($("[data-filtered=true]").length);
+    $("table tbody").html($("table tbody tr").sort(fn));
+    $("table tbody").find("tr").hide();
+    $("table tbody").find("[data-filtered=false]").slice(0, 101).show();
+
 }
