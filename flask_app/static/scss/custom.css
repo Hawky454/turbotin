@@ -8078,6 +8078,10 @@ a {
   border-color: #00D2D2 !important;
   background-color: #00D2D2 !important; }
 
+.custom-control-input-turbotin-cyan:indeterminate ~ .custom-control-label::before {
+  border-color: #00D2D2 !important;
+  background-color: #00D2D2 !important; }
+
 .custom-control-input-turbotin-cyan:focus:not(:checked) ~ .custom-control-label::before {
   border-color: #00D2D2 !important; }
 

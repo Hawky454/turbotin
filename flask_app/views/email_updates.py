@@ -12,8 +12,9 @@ brands = list(pd.unique(df["brand"]))
 blends = {}
 for brand, data in df.groupby("brand"):
     blends[brand] = list(pd.unique(data["blend"]))
+stores = list(pd.unique(df["store"]))
 
 
 @email_updates_blueprint.route('/email_updates')
 def main():
-    return render_template("email_updates.html", brands=brands, blends=blends)
+    return render_template("email_updates.html", brands=brands, blends=blends, stores=stores)

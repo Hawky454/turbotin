@@ -26,27 +26,52 @@
             </div>
         </div>
         <div class="row d-flex flex-row">
-            <div class="input-group input-group-lg pt-4 col">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input custom-control-input-turbotin-cyan"
-                           id="all_stores_check">
-                    <label class="custom-control-label" for="all_stores_check">Only specific stores</label>
-                </div>
-            </div>
-            <div class="input-group pt-4 col">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input custom-control-input-turbotin-cyan"
-                                   id="max_price_check">
-                            <label class="custom-control-label" for="max_price_check">Maximum Price</label>
-                        </div>
+            <div class="col">
+                <div class="input-group input-group-lg pt-4 ">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input custom-control-input-turbotin-cyan"
+                               id="all_stores_check">
+                        <label class="custom-control-label" for="all_stores_check">
+                            <div id="store_label">Only specific stores</div>
+                        </label>
                     </div>
                 </div>
-                <input type="text" class="form-control" aria-label="Text input with checkbox">
+                <div id="stores_list" style="display:none;">
+                    {% for i in range(stores|length) %}
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input custom-control-input-turbotin-cyan"
+                               id="store_{{i}}" checked>
+                        <label class="custom-control-label" for="store_{{i}}">{{stores[i]}}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col">
+                <div class="input-group pt-4 ">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <div class="custom-control custom-checkbox h-auto">
+                                <input type="checkbox"
+                                       class="custom-control-input custom-control-input-turbotin-cyan"
+                                       id="max_price_check">
+                                <label class="custom-control-label" for="max_price_check">Maximum Price</label>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="number" class="form-control" aria-label="Number input with checkbox">
+                </div>
+                <div class="container">
+                    <div class="row align-items-end pt-4">
+                        <span class="ml-auto"></span>
+                        <button type="button" class="btn btn-turbotin-cyan ">Submit</button>
+                    </div>
+                </div>
             </div>
         </div>
+
     </div>
+
+</div>
 </div>
 <script>{% include 'custom_input.js'%}</script>
 {% endblock %}

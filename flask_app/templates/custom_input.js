@@ -73,6 +73,29 @@ function blend_input() {
         return;
     }
     filter_allowed("blend_input", "blend_results", blends[brand]);
-
-
 }
+
+$("#all_stores_check").change(function() {
+//    if ($("#all_stores_check").data('hide_all')) {
+//        $("#all_stores_check").prop('indeterminate', false);
+//        $("#all_stores_check").data('hide_all', false);
+//        $("#stores_list").find("input").prop("checked", false);
+//        return;
+//    }
+    if(this.checked) {
+        $("#store_label").hide();
+        $("#stores_list").slideDown();
+        $("#stores_list").find("input").prop("checked", true);
+    } else {
+        $("#stores_list").find("input").prop("checked", false);
+    }
+});
+$("#stores_list").find("input").change(function() {
+    if ($("#stores_list").find("input:checked").length != $("#stores_list").find("input").length) {
+        if ($("#stores_list").find("input:not(:checked)") != $("#stores_list").find("input").length) {
+            $("#all_stores_check").prop('indeterminate', true);
+            return;
+        }
+    }
+    $("#all_stores_check").prop('indeterminate', false);
+});
