@@ -57,3 +57,21 @@ a {
     color: #fff!important;
     background-color: $turbotin-cyan!important;
 }
+.custom-control-input-turbotin-cyan:focus~.custom-control-label::before {
+  border-color: $turbotin-cyan !important;
+  box-shadow: 0 0 0 0.2rem rgba(0, 210, 210, 0.25) !important;
+}
+
+.custom-control-input-turbotin-cyan:checked~.custom-control-label::before {
+  border-color: $turbotin-cyan !important;
+  background-color: $turbotin-cyan !important;
+}
+
+.custom-control-input-turbotin-cyan:focus:not(:checked)~.custom-control-label::before {
+  border-color: $turbotin-cyan !important;
+}
+
+.custom-control-input-turbotin-cyan:not(:disabled):active~.custom-control-label::before {
+  background-color: $turbotin-cyan !important;
+  border-color: $turbotin-cyan !important;
+}

@@ -2,7 +2,7 @@
 {% block body %}
 <div class="container">
     <div class="col m-5 mx-auto text">
-        <h1>Sign up for Notifications</h1>
+        <h1>Add Notification</h1>
         <div class="dropdown">
             <div class="input-group pt-4" data-toggle="dropdown">
                 <input class="dropdown-toggle form-control form-control-lg" id="brand_input"
@@ -28,15 +28,19 @@
         <div class="row d-flex flex-row">
             <div class="input-group input-group-lg pt-4 col">
                 <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="all_stores_check">
+                    <input type="checkbox" class="custom-control-input custom-control-input-turbotin-cyan"
+                           id="all_stores_check">
                     <label class="custom-control-label" for="all_stores_check">Only specific stores</label>
                 </div>
             </div>
             <div class="input-group pt-4 col">
                 <div class="input-group-prepend">
                     <div class="input-group-text">
-                        <input type="checkbox" aria-label="Checkbox for following text input">
-                        &nbsp Maximum price
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input custom-control-input-turbotin-cyan"
+                                   id="max_price_check">
+                            <label class="custom-control-label" for="max_price_check">Only specific stores</label>
+                        </div>
                     </div>
                 </div>
                 <input type="text" class="form-control" aria-label="Text input with checkbox">
