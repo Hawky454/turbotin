@@ -76,15 +76,9 @@ function blend_input() {
 }
 
 $("#all_stores_check").change(function() {
-//    if ($("#all_stores_check").data('hide_all')) {
-//        $("#all_stores_check").prop('indeterminate', false);
-//        $("#all_stores_check").data('hide_all', false);
-//        $("#stores_list").find("input").prop("checked", false);
-//        return;
-//    }
     if(this.checked) {
         $("#store_label").hide();
-        $("#stores_list").slideDown();
+        $("#stores_list").slideDown("slow");
         $("#stores_list").find("input").prop("checked", true);
     } else {
         $("#stores_list").find("input").prop("checked", false);
@@ -98,4 +92,12 @@ $("#stores_list").find("input").change(function() {
         }
     }
     $("#all_stores_check").prop('indeterminate', false);
+});
+$('#max_price_val').on('blur',function () {
+    if( this.value == ""){
+         $("#max_price_check").prop("checked", false);
+     }
+});
+$('#max_price_val').on('focus',function () {
+    $("#max_price_check").prop("checked", true);
 });
