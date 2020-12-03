@@ -1,18 +1,26 @@
 {% extends "header.html" %}
 {% block body %}
-<script src="{{ url_for('static', filename='sort_table.js')}}"></script>
-<script src="{{ url_for('static', filename='filter_table.js')}}"></script>
+<script>{% include 'table.js' %}</script>
 
 <style>@media(max-width:991px){td:nth-child(3),td:nth-child(5),th:nth-child(3),th:nth-child(5){display:none}}</style>
 <style>td:nth-child(6),th:nth-child(6){display:none}</style>
 <style>.table thead th {vertical-align: middle!important;}</style>
 <div class="container-fluid mt-1 mr-0 ml-0 mr-md-auto ml-md-auto pr-0 pl-0">
-    <div class="col-xl-10 col-lg-11 col-md-12 ml-md-auto mr-md-auto mr-0 ml-0 pr-0 pl-0">
-        <div class="alert alert-turbotin-cyan mt-3" role="alert" id="alert">
-            Only showing first 100 items.
+    <div class="col-xl-10 col-lg-11 col-md-12 ml-md-auto mr-md-auto mr-0 ml-0 pr-0 pl-0 mt-3">
+        <!--        {{ table|safe }}-->
+        <div class="row max-w-100">
+            <div class="col">
+                <div class="alert alert-turbotin-cyan ml-3" role="alert" id="alert">
+                    The remaining rows are hidden.
+                </div>
+            </div>
+            <div class="col">
+                <div class="row align-items-end mr-3">
+                    <span class="ml-auto"></span>
+                    <button type="button" class="btn btn-turbotin-cyan" onclick="show_more()">Show more</button>
+                </div>
+            </div>
         </div>
-        {{ table|safe }}
-        <script>filter_table();</script>
     </div>
 </div>
 

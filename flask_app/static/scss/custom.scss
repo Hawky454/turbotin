@@ -5,36 +5,51 @@
 $turbotin-cyan: #00D2D2;
 $turbotin-yellow: #d2d200;
 $theme-colors: (
-  "turbotin-cyan": $turbotin-cyan,
-  "turbotin-yellow": $turbotin-yellow
+        "turbotin-cyan": $turbotin-cyan,
+        "turbotin-yellow": $turbotin-yellow
 );
 
 @import "../bootstrap/scss/bootstrap";
 
 .form-control:focus {
-    border-color: $turbotin-cyan;
-    box-shadow: none;
-    -webkit-box-shadow: none
+  border-color: $turbotin-cyan;
+  box-shadow: none;
+  -webkit-box-shadow: none
 }
+
 .has-error .form-control:focus {
-    box-shadow: none;
-    -webkit-box-shadow: none;
+  box-shadow: none;
+  -webkit-box-shadow: none;
 }
+
 .btn:focus {
-    border-color: $turbotin-cyan;
-    box-shadow: none;
-    -webkit-box-shadow: none
+  border-color: $turbotin-cyan;
+  box-shadow: none;
+  -webkit-box-shadow: none
 }
-input[type=search]::-ms-clear {  display: none; width : 0; height: 0; }
-input[type=search]::-ms-reveal {  display: none; width : 0; height: 0; }
+
+input[type=search]::-ms-clear {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+input[type=search]::-ms-reveal {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
 input[type="search"]::-webkit-search-decoration,
 input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-results-button,
-input[type="search"]::-webkit-search-results-decoration { display: none; }
+input[type="search"]::-webkit-search-results-decoration {
+  display: none;
+}
 
 
 .border-3 {
-    border-bottom: 3px solid;
+  border-bottom: 3px solid;
 }
 
 @include media-breakpoint-up(lg) {
@@ -42,40 +57,46 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
     max-width: 350px;
   }
 }
+
 .sidebar {
-    min-width: 300px;
+  min-width: 300px;
 }
+
 @include media-breakpoint-down(md) {
   .search-results {
     max-width: 100%;
   }
 }
+
 a {
-    text-decoration: none!important;
+  text-decoration: none !important;
 }
+
 .dropdown-item:active {
-    color: #fff!important;
-    background-color: $turbotin-cyan!important;
+  color: #fff !important;
+  background-color: $turbotin-cyan !important;
 }
-.custom-control-input-turbotin-cyan:focus~.custom-control-label::before {
+
+.custom-control-input-turbotin-cyan:focus ~ .custom-control-label::before {
   border-color: $turbotin-cyan !important;
   box-shadow: 0 0 0 0.2rem rgba(0, 210, 210, 0.25) !important;
 }
 
-.custom-control-input-turbotin-cyan:checked~.custom-control-label::before {
-  border-color: $turbotin-cyan !important;
-  background-color: $turbotin-cyan !important;
-}
-.custom-control-input-turbotin-cyan:indeterminate~.custom-control-label::before {
+.custom-control-input-turbotin-cyan:checked ~ .custom-control-label::before {
   border-color: $turbotin-cyan !important;
   background-color: $turbotin-cyan !important;
 }
 
-.custom-control-input-turbotin-cyan:focus:not(:checked)~.custom-control-label::before {
+.custom-control-input-turbotin-cyan:indeterminate ~ .custom-control-label::before {
+  border-color: $turbotin-cyan !important;
+  background-color: $turbotin-cyan !important;
+}
+
+.custom-control-input-turbotin-cyan:focus:not(:checked) ~ .custom-control-label::before {
   border-color: $turbotin-cyan !important;
 }
 
-.custom-control-input-turbotin-cyan:not(:disabled):active~.custom-control-label::before {
+.custom-control-input-turbotin-cyan:not(:disabled):active ~ .custom-control-label::before {
   background-color: $turbotin-cyan !important;
   border-color: $turbotin-cyan !important;
 }

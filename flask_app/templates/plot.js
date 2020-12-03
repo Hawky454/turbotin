@@ -9,7 +9,7 @@ var config = {
                 borderColor: '{{store_colors[plot_data.datasets[i].store]}}',
                 pointBackgroundColor: '{{store_colors[plot_data.datasets[i].store]}}',
                 data: {{plot_data.datasets[i].data}}
-            }{% if i != plot_data.datasets|length %},{% endif %}
+            }{% if i != plot_data.datasets|length %}, {% endif %}
             {% endfor %}]
     },
     options: {
@@ -39,7 +39,7 @@ var config = {
     }
 };
 
-window.onload = function() {
+window.onload = function () {
     var ctx = document.getElementById('canvas').getContext('2d');
     window.myLine = new Chart(ctx, config);
 };
