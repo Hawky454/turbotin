@@ -110,15 +110,4 @@ $("#stores_list").find("input").change(function () {
             all_stores_check.prop('checked', false);
         }
     }
-
-
-});
-var max_price_val = $('#max_price_val');
-max_price_val.on('blur', function () {
-    if (this.value === "") {
-        $("#max_price_check").prop("checked", false);
-    }
-});
-max_price_val.on('focus', function () {
-    $("#max_price_check").prop("checked", true);
 });
