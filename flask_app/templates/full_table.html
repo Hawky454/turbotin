@@ -1,27 +1,75 @@
 {% extends "header.html" %}
 {% block body %}
-<script>{% include 'table.js' %}</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script>{% include 'table.js' %}</script>
 
-<style>@media(max-width:991px){td:nth-child(3),td:nth-child(5),th:nth-child(3),th:nth-child(5){display:none}}</style>
-<style>td:nth-child(6),th:nth-child(6){display:none}</style>
-<style>.table thead th {vertical-align: middle!important;}</style>
-<div class="container-fluid mt-1 mr-0 ml-0 mr-md-auto ml-md-auto pr-0 pl-0">
-    <div class="col-xl-10 col-lg-11 col-md-12 ml-md-auto mr-md-auto mr-0 ml-0 pr-0 pl-0 mt-3">
-        <!--        {{ table|safe }}-->
-        <div class="row max-w-100">
-            <div class="col">
-                <div class="alert alert-turbotin-cyan ml-3" role="alert" id="alert">
-                    The remaining rows are hidden.
+    <style>@media (max-width: 991px) {
+        td:nth-child(3), td:nth-child(5), th:nth-child(3), th:nth-child(5) {
+            display: none
+        }
+    }</style>
+    <style>.table thead th {
+        vertical-align: middle !important;
+    }</style>
+    <div class="container-fluid mt-1 mr-0 ml-0 mr-md-auto ml-md-auto pr-0 pl-0">
+        <div class="col-xl-10 col-lg-11 col-md-12 ml-md-auto mr-md-auto mr-0 ml-0 pr-0 pl-0 mt-3">
+            <table class="dataframe table table-hover display table-bordered table-responsive-lg bg-light table-striped"
+                   id="myTable">
+                <thead>
+                <tr style="text-align: left;">
+                    <th>
+                        <form action="#" class="form-inline">
+                            <input aria-label="Search" autocomplete="off" class="form-control mr-sm-2"
+                                   id="search_form_store" onkeyup="filter_table()" placeholder="Filter stores"
+                                   type="search"/>
+                        </form>
+                    </th>
+                    <th>
+                        <form action="#" class="form-inline">
+                            <input aria-label="Search" autocomplete="off" class="form-control mr-sm-2"
+                                   id="search_form_item" onkeyup="filter_table()" placeholder="Filter items"
+                                   type="search"/>
+                        </form>
+                    </th>
+                    <th>
+                        <form action="#" class="form-inline">
+                            <button class="btn btn-outline-turbotin-cyan" id="in_stock_check" onclick="toggle_stock()"
+                                    type="button">In stock
+                            </button>
+                        </form>
+                    </th>
+                    <th>
+                        <form action="#" class="form-inline">
+                            <button class="btn btn-outline-turbotin-cyan" id="price_sort" onclick="toggle_sort()"
+                                    sort_direction="desc" type="button">
+                                <svg class="bi bi-arrow-down-up" fill="currentColor" height="1em" viewbox="0 0 16 16"
+                                     width="1em" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5zm-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5z"
+                                          fill-rule="evenodd"></path>
+                                </svg>
+                            </button>
+                        </form>
+                    </th>
+                    <th>Last Updated</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <div class="row max-w-100" id="alert_container">
+                <div class="col">
+                    <div class="alert alert-turbotin-cyan ml-3" role="alert" id="alert">
+                        The remaining rows are hidden.
+                    </div>
                 </div>
-            </div>
-            <div class="col">
-                <div class="row align-items-end mr-3">
-                    <span class="ml-auto"></span>
-                    <button type="button" class="btn btn-turbotin-cyan" onclick="show_more()">Show more</button>
+                <div class="col">
+                    <div class="row align-items-end mr-3">
+                        <span class="ml-auto"></span>
+                        <button type="button" class="btn btn-turbotin-cyan" onclick="show_more()">Show more</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 {% endblock %}

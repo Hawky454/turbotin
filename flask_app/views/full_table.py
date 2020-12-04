@@ -1,55 +1,23 @@
-from .. import db, path
+from .. import db
 from flask import render_template, Blueprint
 from ..models import Tobacco
 import pandas as pd
 from sqlalchemy import func
 from datetime import timedelta
-from bs4 import BeautifulSoup
-import os
-import numpy as np
 
 full_table_blueprint = Blueprint('full_table', __name__, template_folder='templates')
 
 max_time = db.session.query(func.max(Tobacco.time)).scalar() - timedelta(hours=10)
 main_df = pd.read_sql(Tobacco.query.filter(Tobacco.time >= max_time).statement, db.session.bind)
-
+main_df["time"] = pd.to_datetime(main_df["time"], format="%m/%d/%Y %H:%M", utc=True)
+main_df["time"] = main_df["time"].apply(lambda x: str(int(x.timestamp())))
+main_df["price_num"] = main_df["price"].str.extract(r'(\d+.\d+)')
+main_df["price_num"] = pd.to_numeric(main_df["price_num"], errors="coerce").fillna(10 ** 4)
+main_df = main_df[main_df["item"] != ""]
 df = main_df.copy()
-df["price_num"] = df["price"].str.extract(r'(\d+.\d+)')
-df["price_num"] = pd.to_numeric(df["price_num"], errors="coerce").fillna(10 ** 4)
-df = df[df["item"] != ""]
-
-# df["item_class"] = "text-dark"
-# df.loc[df["stock"] == "Out of stock", "item_class"] = "text-danger"
-# df["item"] = "<a class='" + df["item_class"] + "' target='_blank' href='" + df["link"] + "'>" + df["item"] + "</a>"
-# df["stock"] = "<div class='" + df["item_class"] + "'>" + df["stock"] + "</div>"
-df["time"] = df["time"].dt.strftime("%m/%d/%Y, %H:%M")
 
 cols = ["store", "link", "item", "stock", "price", "time", "price_num"]
 df = df[cols]
-
-
-# with open(os.path.join(path, "static/table_forms/search_form.html"), "r") as f:
-#     template = f.read()
-#     df = df.rename(columns={"item": template.format(label="item")})
-#     df = df.rename(columns={"store": template.format(label="store")})
-# with open(os.path.join(path, "static/table_forms/stock_toggle_button.html"), "r") as f:
-#     df = df.rename(columns={"stock": f.read()})
-# with open(os.path.join(path, "static/table_forms/price_sort_button.html"), "r") as f:
-#     df = df.rename(columns={"price": f.read()})
-
-
-# df = df.sort_values(by="price_num")
-# table = df.to_html(index=False, escape=False, border=0, justify="left", table_id="myTable",
-#                    classes="table table-hover display table-bordered table-responsive-lg bg-light table-striped")
-# table = BeautifulSoup(table, features="lxml")
-# n = 0
-# for tr in table.find_all("tr"):
-#     if n > 100:
-#         tr["style"] = "display: none;"
-#     tr["data-filtered"] = False
-#     tr["id"] = n
-#     n += 1
-# table = str(table)
 
 
 @full_table_blueprint.route('/full_table')

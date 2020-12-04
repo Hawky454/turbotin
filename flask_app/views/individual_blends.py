@@ -8,15 +8,10 @@ import random
 individual_blends_blueprint = Blueprint('individual_blends', __name__, template_folder='templates')
 
 df = main_df.copy()
-df["price_num"] = df["price"].str.extract(r'(\d+.\d+)')
-df["price_num"] = pd.to_numeric(df["price_num"], errors="coerce").fillna(10 ** 4)
-df = df[df["item"] != ""]
 
 df["item_class"] = "text-dark"
 df.loc[df["stock"] == "Out of stock", "item_class"] = "text-danger"
 df["stock"] = "<div class='" + df["item_class"] + "'>" + df["stock"] + "</div>"
-df["time"] = pd.to_datetime(df["time"], format="%m/%d/%Y %H:%M", utc=True)
-df["time"] = df["time"].apply(lambda x: str(int(x.timestamp())))
 df["time"] = '''<script>document.write(moment.unix(''' + df["time"] + ''').fromNow());</script>'''
 
 # archive_df = pd.read_sql("tobacco", db.engine)

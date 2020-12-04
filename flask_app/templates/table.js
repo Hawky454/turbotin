@@ -1,19 +1,19 @@
-var max_num_rows = 100;
-var table_array = {{table}}
+var max_num_rows = 50;
+var table_array = {{table}};
 
-    function show_more() {
-        max_num_rows += 100;
-        $("table tbody").find($('[data-filtered=false]')).slice(0, max_num_rows).show();
-        hidden_alert();
-    }
+function show_more() {
+    max_num_rows += 100;
+    filter_table();
+    hidden_alert();
+}
 
 function hidden_alert() {
-    var alert_box = $("#alert");
+    var alert_container = $("#alert_container");
     if ($('#myTable tr:visible').length > max_num_rows) {
-        alert_box.text("Only showing first " + max_num_rows + " rows");
-        alert_box.show();
+        $("#alert").text("Only showing first " + max_num_rows + " rows");
+        alert_container.show();
     } else {
-        alert_box.hide();
+        alert_container.hide();
     }
 }
 
@@ -68,14 +68,56 @@ function toggle_sort() {
 }
 
 function search_filter(filter, td) {
-    return (td.textContent || td.innerText).toUpperCase().indexOf(filter) > -1
+    return (td.textContent || td.innerText).toUpperCase().indexOf(filter) > -1;
 }
 
 function stock_filter(active, td) {
-    return !(active && (td.textContent || td.innerText) === "Out of stock")
+    return !(active && (td.textContent || td.innerText) === "Out of stock");
 }
 
 function filter_table() {
+    var store, text_color, link, item, stock, price, time, row, index;
+    var filter_item = document.getElementById("search_form_item").value.toUpperCase();
+    var filter_store = document.getElementById("search_form_store").value.toUpperCase();
+    var filter_stock = document.getElementById("in_stock_check").classList.contains("active");
+    var table = $("#myTable tbody");
+    table.find("tr").hide();
+    var num_results = 0;
+    for (var i = 0; i < table_array.length; i++) {
+        if (num_results >= max_num_rows) {
+            break;
+        }
+        row = table_array[i];
+        store = row[0];
+        link = row[1];
+        item = row[2];
+        stock = row[3];
+        price = row[4];
+        if (stock === "Out of stock") {
+            text_color = "text-danger";
+        } else {
+            text_color = "text-dark";
+        }
+        if (store.toUpperCase().indexOf(filter_store) === -1) {
+            continue;
+        }
+        index = item.toUpperCase().indexOf(filter_item)
+        if (index === -1) {
+            continue;
+        } else {
+            item = item.slice(0, index) + "<b>" + item.slice(index, index + filter_item.length) + "</b>" + item.slice(index + filter_item.length);
+        }
+        if (filter_stock && stock === "Out of stock") {
+            continue;
+        }
+        time = moment.unix(row[5]).fromNow();
+        num_results += 1
+        table.append(`<tr><td>${store}</td><td><a class='${text_color}' href='${link}' target='_blank'>${item}</a></td><td class='${text_color}'>${stock}</td><td>${price}</td><td>${time}</td></tr>`);
+    }
+    hidden_alert()
+}
+
+function filter_table_old() {
     var table = document.getElementById("myTable");
     var tr = table.getElementsByTagName("tr");
     var stock_check_active = document.getElementById("in_stock_check").classList.contains("active");
