@@ -95,11 +95,6 @@ function filter_table() {
         store = row[0];
         item = row[2];
         stock = row[3];
-        if (stock.toUpperCase() === "OUT OF STOCK") {
-            text_color = "text-danger";
-        } else {
-            text_color = "text-dark";
-        }
         if (item.toUpperCase().indexOf(filter_item) === -1) {
             continue;
         }
@@ -132,6 +127,11 @@ function filter_table() {
         index = item.toUpperCase().indexOf(filter_item)
         item = item.slice(0, index) + "<b>" + item.slice(index, index + filter_item.length) + "</b>" + item.slice(index + filter_item.length);
         stock = row[3];
+        if (stock.toUpperCase() === "OUT OF STOCK") {
+            text_color = "text-danger";
+        } else {
+            text_color = "text-dark";
+        }
         price = row[4];
         time = moment.unix(row[5]).fromNow();
         table.prepend(`<tr><td>${store}</td><td><a class='${text_color}' href='${link}' target='_blank'>${item}</a></td><td class='${text_color}'>${stock}</td><td>${price}</td><td>${time}</td></tr>`);

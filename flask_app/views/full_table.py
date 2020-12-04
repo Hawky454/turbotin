@@ -22,4 +22,4 @@ df = df[cols]
 
 @full_table_blueprint.route('/full_table')
 def main():
-    return render_template("full_table.html", table=df.values.tolist(), stores=list(pd.unique(df["store"])))
+    return render_template("full_table.html", table=df.values.tolist(), stores=sorted(list(pd.unique(df["store"]))))
