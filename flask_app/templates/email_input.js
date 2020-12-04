@@ -95,22 +95,22 @@ $("#all_stores_check").change(function () {
 $("#stores_list").find("input").change(function () {
     var stores_list = $("#stores_list");
     var all_stores_check = $("#all_stores_check");
+
     var num_checked = stores_list.find($("input:checked")).length;
     var num_unchecked = stores_list.find($("input:not(:checked)")).length;
     var num_checkbox = stores_list.find("input").length;
-    console.log(num_unchecked);
-    console.log(num_checked);
-    console.log(num_checkbox);
+
     if ((num_checked !== num_checkbox) && (num_unchecked !== num_checkbox)) {
         all_stores_check.prop('indeterminate', true);
-    } else if (num_checked === num_checkbox) {
+    } else {
         all_stores_check.prop('indeterminate', false);
-        all_stores_check.prop('checked', true);
-    } else if (num_unchecked === num_checkbox) {
-        all_stores_check.prop('indeterminate', false);
-        all_stores_check.prop('checked', false);
-
+        if (num_checked === num_checkbox) {
+            all_stores_check.prop('checked', true);
+        } else if (num_unchecked === num_checkbox) {
+            all_stores_check.prop('checked', false);
+        }
     }
+
 
 });
 var max_price_val = $('#max_price_val');
