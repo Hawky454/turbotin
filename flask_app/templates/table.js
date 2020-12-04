@@ -154,4 +154,5 @@ $("#all_stores_check").change(function (e) {
         store_label.text("All");
         stores_list.find("input").prop("checked", false);
     }
+    filter_table();
 });
