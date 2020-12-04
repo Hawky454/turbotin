@@ -81,14 +81,20 @@ function blend_input() {
     }
     filter_allowed("blend_input", "blend_results", blends[brand]);
 }
-
-$("#all_stores_check").change(function () {
+var all_stores_check = $("#all_stores_check");
+all_stores_check.change(function () {
     var stores_list = $("#stores_list");
-    if (this.checked) {
-        $("#store_label").hide();
+    var store_label = $("#store_label");
+    store_label.addClass("text-secondary");
+    if (store_label.text() === "Only specific stores") {
+        all_stores_check.prop("checked", false);
         stores_list.slideDown("slow");
+    }
+    if (this.checked) {
+        store_label.text("None");
         stores_list.find("input").prop("checked", true);
     } else {
+        store_label.text("All");
         stores_list.find("input").prop("checked", false);
     }
 });

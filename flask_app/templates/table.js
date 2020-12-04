@@ -84,7 +84,7 @@ function filter_table() {
     table.find("tr").hide();
     var num_results = 0;
     var new_array = [];
-    var stores = stores_list.find($("input:checked")).map(function () {
+    var stores = stores_list.find($("input:checked:not(#all_stores_check)")).map(function () {
         return $(this).attr('id');
     }).get();
     for (var i = 0; i < table_array.length; i++) {
@@ -139,7 +139,19 @@ function filter_table() {
 
     hidden_alert()
 }
-stores_list.on('click', function (e) {
+$("#stores_list .dropdown-item").on('click', function (e) {
     e.stopPropagation();
     filter_table();
+});
+$("#all_stores_check").change(function (e) {
+    var stores_list = $("#stores_list");
+    var store_label = $("#store_label");
+    store_label.addClass("text-secondary");
+    if (this.checked) {
+        store_label.text("None");
+        stores_list.find("input").prop("checked", true);
+    } else {
+        store_label.text("All");
+        stores_list.find("input").prop("checked", false);
+    }
 });

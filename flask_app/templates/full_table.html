@@ -24,8 +24,17 @@
                                 Filter Stores
                             </button>
                             <div class="dropdown-menu" id="stores_list">
+                                <div class="dropdown-item dropdown-item-no-highlight mr-0">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox"
+                                               class="custom-control-input custom-control-input-turbotin-cyan"
+                                               id="all_stores_check">
+                                        <label class="custom-control-label text-secondary"
+                                               for="all_stores_check" id="store_label">All</label>
+                                    </div>
+                                </div>
                                 {% for i in range(stores|length) %}
-                                    <div class="dropdown-item">
+                                    <div class="dropdown-item dropdown-item-no-highlight mr-0">
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox"
                                                    class="custom-control-input custom-control-input-turbotin-cyan"

@@ -82,6 +82,12 @@ a {
   background-color: $turbotin-cyan !important;
 }
 
+.dropdown-item-no-highlight:active {
+  color: #16181b !important;
+  text-decoration: none !important;
+  background-color: #f8f9fa !important;
+}
+
 .custom-control-input-turbotin-cyan:focus ~ .custom-control-label::before {
   border-color: $turbotin-cyan !important;
   box-shadow: 0 0 0 0.2rem rgba(0, 210, 210, 0.25) !important;
