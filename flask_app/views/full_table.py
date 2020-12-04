@@ -24,7 +24,7 @@ df = df[df["item"] != ""]
 # df["stock"] = "<div class='" + df["item_class"] + "'>" + df["stock"] + "</div>"
 df["time"] = df["time"].dt.strftime("%m/%d/%Y, %H:%M")
 
-cols = ["store", "item", "stock", "price", "time", "price_num"]
+cols = ["store", "link", "item", "stock", "price", "time", "price_num"]
 df = df[cols]
 
 
