@@ -1,5 +1,6 @@
 var max_num_rows = 50;
 var table_array = {{table}};
+var stores_list = $("#stores_list");
 
 function show_more() {
     max_num_rows += 100;
@@ -64,7 +65,7 @@ function toggle_sort() {
         button.dataset.sort_direction = "asc";
         button.innerHTML = '<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-up" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/></svg>';
     }
-    sort_table();
+    filter_table();
 }
 
 function search_filter(filter, td) {
@@ -78,76 +79,67 @@ function stock_filter(active, td) {
 function filter_table() {
     var store, text_color, link, item, stock, price, time, row, index;
     var filter_item = document.getElementById("search_form_item").value.toUpperCase();
-    var filter_store = document.getElementById("search_form_store").value.toUpperCase();
     var filter_stock = document.getElementById("in_stock_check").classList.contains("active");
     var table = $("#myTable tbody");
     table.find("tr").hide();
     var num_results = 0;
+    var new_array = [];
+    var stores = stores_list.find($("input:checked")).map(function () {
+        return $(this).attr('id');
+    }).get();
     for (var i = 0; i < table_array.length; i++) {
         if (num_results >= max_num_rows) {
             break;
         }
         row = table_array[i];
         store = row[0];
-        link = row[1];
         item = row[2];
         stock = row[3];
-        price = row[4];
-        if (stock === "Out of stock") {
+        if (stock.toUpperCase() === "OUT OF STOCK") {
             text_color = "text-danger";
         } else {
             text_color = "text-dark";
         }
-        if (store.toUpperCase().indexOf(filter_store) === -1) {
+        if (item.toUpperCase().indexOf(filter_item) === -1) {
             continue;
-        }
-        index = item.toUpperCase().indexOf(filter_item)
-        if (index === -1) {
-            continue;
-        } else {
-            item = item.slice(0, index) + "<b>" + item.slice(index, index + filter_item.length) + "</b>" + item.slice(index + filter_item.length);
         }
         if (filter_stock && stock === "Out of stock") {
             continue;
         }
-        time = moment.unix(row[5]).fromNow();
+        if (stores.length !== 0 && !stores.includes(store)) {
+            continue;
+        }
         num_results += 1
-        table.append(`<tr><td>${store}</td><td><a class='${text_color}' href='${link}' target='_blank'>${item}</a></td><td class='${text_color}'>${stock}</td><td>${price}</td><td>${time}</td></tr>`);
+        new_array.push(row)
     }
+    var sort_button = document.getElementById("price_sort");
+
+    function price_sort(a, b) {
+        return a[6] - b[6];
+    }
+
+    if (sort_button.dataset.sort_direction === "asc") {
+        new_array.sort(price_sort);
+    } else if (sort_button.dataset.sort_direction === "desc") {
+        new_array.sort(price_sort).reverse();
+    }
+
+    for (i = 0; i < new_array.length; i++) {
+        row = new_array[i];
+        store = row[0];
+        link = row[1];
+        item = row[2];
+        index = item.toUpperCase().indexOf(filter_item)
+        item = item.slice(0, index) + "<b>" + item.slice(index, index + filter_item.length) + "</b>" + item.slice(index + filter_item.length);
+        stock = row[3];
+        price = row[4];
+        time = moment.unix(row[5]).fromNow();
+        table.prepend(`<tr><td>${store}</td><td><a class='${text_color}' href='${link}' target='_blank'>${item}</a></td><td class='${text_color}'>${stock}</td><td>${price}</td><td>${time}</td></tr>`);
+    }
+
     hidden_alert()
 }
-
-function filter_table_old() {
-    var table = document.getElementById("myTable");
-    var tr = table.getElementsByTagName("tr");
-    var stock_check_active = document.getElementById("in_stock_check").classList.contains("active");
-    var filter_item = document.getElementById("search_form_item").value.toUpperCase();
-    var filter_store = document.getElementById("search_form_store").value.toUpperCase();
-    var num_results = 0;
-
-    var td_stock;
-    var td_item;
-    var td_store;
-    for (var i = 0; i < tr.length; i++) {
-
-        td_stock = tr[i].getElementsByTagName("td")[2];
-        td_item = tr[i].getElementsByTagName("td")[1];
-        td_store = tr[i].getElementsByTagName("td")[0];
-
-        if (td_item && td_stock) {
-            if (search_filter(filter_item, td_item) && stock_filter(stock_check_active, td_stock) && search_filter(filter_store, td_store)) {
-                tr[i].dataset.filtered = "false";
-                num_results += 1;
-                if (num_results > max_num_rows) {
-                    tr[i].style.display = "none";
-                } else {
-                    tr[i].style.display = "";
-                }
-            } else {
-                tr[i].dataset.filtered = "true";
-                tr[i].style.display = "none";
-            }
-        }
-    }
-    hidden_alert();
-}
+stores_list.on('click', function (e) {
+    e.stopPropagation();
+    filter_table();
+});

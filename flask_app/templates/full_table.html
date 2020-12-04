@@ -1,7 +1,6 @@
 {% extends "header.html" %}
 {% block body %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-    <script>{% include 'table.js' %}</script>
 
     <style>@media (max-width: 991px) {
         td:nth-child(3), td:nth-child(5), th:nth-child(3), th:nth-child(5) {
@@ -18,11 +17,27 @@
                 <thead>
                 <tr style="text-align: left;">
                     <th>
-                        <form action="#" class="form-inline">
-                            <input aria-label="Search" autocomplete="off" class="form-control mr-sm-2"
-                                   id="search_form_store" onkeyup="filter_table()" placeholder="Filter stores"
-                                   type="search"/>
-                        </form>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-turbotin-cyan dropdown-toggle" type="button"
+                                    id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">
+                                Filter Stores
+                            </button>
+                            <div class="dropdown-menu" id="stores_list">
+                                {% for i in range(stores|length) %}
+                                    <div class="dropdown-item">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox"
+                                                   class="custom-control-input custom-control-input-turbotin-cyan"
+                                                   id="{{ stores[i] }}">
+                                            <label class="custom-control-label"
+                                                   for="{{ stores[i] }}">{{ stores[i] }}</label>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
                     </th>
                     <th>
                         <form action="#" class="form-inline">
@@ -41,7 +56,7 @@
                     <th>
                         <form action="#" class="form-inline">
                             <button class="btn btn-outline-turbotin-cyan" id="price_sort" onclick="toggle_sort()"
-                                    sort_direction="desc" type="button">
+                                    sort_direction="indeterminate" type="button">
                                 <svg class="bi bi-arrow-down-up" fill="currentColor" height="1em" viewbox="0 0 16 16"
                                      width="1em" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5zm-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5z"
@@ -71,5 +86,6 @@
             </div>
         </div>
     </div>
-
+    <script>{% include 'table.js' %}</script>
+    <script>filter_table()</script>
 {% endblock %}
