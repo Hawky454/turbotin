@@ -18,34 +18,6 @@ function hidden_alert() {
     }
 }
 
-
-function sort_table() {
-    hidden_alert();
-    var num_results = 0;
-    var tr = document.getElementById("myTable").getElementsByTagName("tr");
-    var sort_direction = $("#price_sort").attr("data-sort_direction") === "desc";
-    $("table tbody tr").hide();
-    var id;
-    for (var i = 1; i < tr.length; i++) {
-        if (num_results > max_num_rows) {
-            tr[i].style.display = "none";
-            continue;
-        }
-        if (sort_direction) {
-            id = tr.length - i - 1;
-        } else {
-            id = i;
-        }
-        if (tr[i].dataset.filtered === "false") {
-            num_results += 1;
-            tr[i].style.display = "";
-            $("table tbody").append($("#" + id));
-        }
-    }
-    console.log(num_results);
-
-}
-
 function toggle_stock() {
     var check_box = document.getElementById("in_stock_check");
     if (check_box.classList.contains("active")) {
@@ -66,14 +38,6 @@ function toggle_sort() {
         button.innerHTML = '<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-up" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/></svg>';
     }
     filter_table();
-}
-
-function search_filter(filter, td) {
-    return (td.textContent || td.innerText).toUpperCase().indexOf(filter) > -1;
-}
-
-function stock_filter(active, td) {
-    return !(active && (td.textContent || td.innerText) === "Out of stock");
 }
 
 function filter_table() {
