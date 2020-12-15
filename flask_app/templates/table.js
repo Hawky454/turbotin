@@ -51,6 +51,17 @@ function filter_table() {
     var stores = stores_list.find($("input:checked:not(#all_stores_check)")).map(function () {
         return $(this).attr('id');
     }).get();
+
+    function price_sort(a, b) {
+        return a[6] - b[6];
+    }
+
+    var sort_button = document.getElementById("price_sort");
+    if (sort_button.dataset.sort_direction === "asc") {
+        table_array.sort(price_sort).reverse();
+    } else if (sort_button.dataset.sort_direction === "desc") {
+        table_array.sort(price_sort);
+    }
     for (var i = 0; i < table_array.length; i++) {
         if (num_results >= max_num_rows) {
             break;
@@ -69,28 +80,8 @@ function filter_table() {
             continue;
         }
         num_results += 1
-        new_array.push(row)
-    }
-    var sort_button = document.getElementById("price_sort");
-
-    function price_sort(a, b) {
-        return a[6] - b[6];
-    }
-
-    if (sort_button.dataset.sort_direction === "asc") {
-        new_array.sort(price_sort);
-    } else if (sort_button.dataset.sort_direction === "desc") {
-        new_array.sort(price_sort).reverse();
-    }
-
-    for (i = 0; i < new_array.length; i++) {
-        row = new_array[i];
-        store = row[0];
-        link = row[1];
-        item = row[2];
         index = item.toUpperCase().indexOf(filter_item)
         item = item.slice(0, index) + "<b>" + item.slice(index, index + filter_item.length) + "</b>" + item.slice(index + filter_item.length);
-        stock = row[3];
         if (stock.toUpperCase() === "OUT OF STOCK") {
             text_color = "text-danger";
         } else {
@@ -98,8 +89,15 @@ function filter_table() {
         }
         price = row[4];
         time = moment.unix(row[5]).fromNow();
-        table.prepend(`<tr><td>${store}</td><td><a class='${text_color}' href='${link}' target='_blank'>${item}</a></td><td class='${text_color}'>${stock}</td><td>${price}</td><td>${time}</td></tr>`);
+        var tr = `<tr><td>${store}</td><td><a class='${text_color}' href='${link}' target='_blank'>${item}</a></td><td class='${text_color}'>${stock}</td><td>${price}</td><td>${time}</td></tr>`
+
+        if (sort_button.dataset.sort_direction === "asc") {
+            table.prepend(tr);
+        } else {
+            table.append(tr);
+        }
     }
+
 
     hidden_alert()
 }
