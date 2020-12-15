@@ -4,19 +4,20 @@ var lowercase_brands = [];
 for (var i = 0; i < brands.length; i++) {
     lowercase_brands.push(brands[i].toLowerCase());
 }
-
 function complete_element(element, self) {
     document.getElementById(element).value = self.innerText;
     $('#' + element).keyup();
 }
-
+var invalidInput = $("#invalid_input")
 function filter_allowed(input_element_id, results_element_id, allowed_inputs) {
     var results_element = document.getElementById(results_element_id);
     var input_element = $("#" + input_element_id)
+    var input_alert = $("#invalid_input");
 
     function hide_results() {
         results_element.classList.add("p-0", "m-0", "border-0");
         input_element.removeClass("border-danger");
+        input_alert.hide();
     }
 
     var query = document.getElementById(input_element_id).value.toLowerCase();
@@ -49,6 +50,7 @@ function filter_allowed(input_element_id, results_element_id, allowed_inputs) {
     if (new_inner_html !== "") {
         results_element.classList.remove("p-0", "m-0", "border-0");
         input_element.removeClass("border-danger");
+        input_alert.hide();
         if (input_element.is(':focus') && !$("#" + results_element.id).hasClass("show")) {
             input_element.trigger("click");
         }
@@ -66,10 +68,13 @@ function brand_input() {
     var blend_input = $("#blend_input");
     if (lowercase_brands.includes(document.getElementById("brand_input").value.toLowerCase())) {
         blend_input.prop("disabled", false);
+        console.log("not disabled")
     } else {
         blend_input.prop("disabled", true);
+
         blend_input.val("");
     }
+    invalidInput.hide();
 }
 
 function blend_input() {
@@ -80,6 +85,7 @@ function blend_input() {
         return;
     }
     filter_allowed("blend_input", "blend_results", blends[brand]);
+    invalidInput.hide();
 }
 var all_stores_check = $("#all_stores_check");
 all_stores_check.change(function () {
@@ -97,6 +103,7 @@ all_stores_check.change(function () {
         store_label.text("All");
         stores_list.find("input").prop("checked", false);
     }
+    invalidInput.hide();
 });
 $("#stores_list").find("input").change(function () {
     var stores_list = $("#stores_list");
@@ -116,4 +123,37 @@ $("#stores_list").find("input").change(function () {
             all_stores_check.prop('checked', false);
         }
     }
+    invalidInput.hide();
+});
+$("#submit").on("click", function () {
+    var brand = $("#brand_input").val();
+    var blend = $("#blend_input").val();
+
+    var stores = JSON.stringify($("#stores_list").find($("input:checked:not(#all_stores_check)")).map(function () {
+        return $(this).next().text();
+    }).get());
+
+
+    var max_price = $("#max_price_val").val();
+
+    console.log({
+        brand: brand,
+        blend: blend,
+        stores: stores,
+        max_price: max_price
+    });
+    $.post("/email_updates/add_notification", {
+        brand: brand,
+        blend: blend,
+        stores: stores,
+        max_price: max_price
+    }).done(function (data) {
+        console.log(data);
+        data = JSON.parse(data);
+        if (data["failed"]) {
+            invalidInput.text(data["what"] + " is invalid");
+            invalidInput.show();
+        }
+    });
+
 });

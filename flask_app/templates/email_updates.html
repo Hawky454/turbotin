@@ -2,7 +2,9 @@
 {% block body %}
     <div class="container">
         <div class="col m-5 mx-auto text">
-            <h1>Add Notification</h1>
+            <h1 class="pb-4">Add Notification</h1>
+            <div class="alert alert-danger mb-0" role="alert" id="invalid_input" style="display: none;">
+            </div>
             <div class="dropdown">
                 <div class="input-group pt-4" data-toggle="dropdown">
                     <input class="dropdown-toggle form-control form-control-lg" id="brand_input"
@@ -57,7 +59,7 @@
                     <div class="container">
                         <div class="row align-items-end pt-4">
                             <span class="ml-auto"></span>
-                            <button type="button" class="btn btn-turbotin-cyan ">Submit</button>
+                            <button type="button" class="btn btn-turbotin-cyan" id="submit">Submit</button>
                         </div>
                     </div>
                 </div>
