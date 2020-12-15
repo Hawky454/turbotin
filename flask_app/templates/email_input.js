@@ -151,7 +151,7 @@ $("#submit").on("click", function () {
         console.log(data);
         data = JSON.parse(data);
         if (data["failed"]) {
-            invalidInput.text(data["what"] + " is invalid");
+            invalidInput.text(data["what"] + " is invalid.");
             invalidInput.show();
         }
     });
