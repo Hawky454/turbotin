@@ -5,6 +5,7 @@ from ..models import Tobacco
 import pandas as pd
 import os
 import json
+from flask_login import login_required, current_user
 
 email_updates_blueprint = Blueprint('email_updates', __name__, template_folder='templates')
 
@@ -17,11 +18,14 @@ store_list = list(pd.unique(df["store"]))
 
 
 @email_updates_blueprint.route('/email_updates')
+@login_required
 def main():
-    return render_template("email_updates.html", brands=brands, blends=blends, stores=store_list)
+    return render_template("email_updates.html", brands=brands, blends=blends, stores=store_list,
+                           updates=json.loads(current_user.email_updates))
 
 
 @email_updates_blueprint.route('/email_updates/add_notification', methods=['POST'])
+@login_required
 def add_notification():
     def check_lowercase(item, array):
         if item.lower() in [n.lower() for n in array]:
@@ -31,10 +35,10 @@ def add_notification():
 
     brand = check_lowercase(request.form["brand"], brands)
     if not brand:
-        return json.dumps({"failed": True, "what": "Brand"})
+        return json.dumps({"failed": True, "what": "The brand is invalid."})
     blend = check_lowercase(request.form["blend"], blends[brand])
     if not blend:
-        return json.dumps({"failed": True, "what": "Blend"})
+        return json.dumps({"failed": True, "what": "The blend is invalid."})
 
     stores = json.loads(request.form["stores"])
     if not stores or len(stores) == len(store_list):
@@ -44,6 +48,22 @@ def add_notification():
         try:
             max_price = float(request.form["max_price"])
         except ValueError:
-            return json.dumps({"failed": True, "what": "Price"})
-
+            return json.dumps({"failed": True, "what": "The price is invalid."})
+    updates = json.loads(current_user.email_updates)
+    if len(updates) >= 10:
+        return json.dumps({"failed": True, "what": "You cannot subscribe to more than 10 updates."})
+    updates.append({"brand": brand, "blend": blend, "stores": stores, "max_price": max_price})
+    current_user.email_updates = json.dumps(updates)
+    db.session.commit()
     return json.dumps({"failed": False, "what": None})
+
+
+@email_updates_blueprint.route('/email_updates/remove_notification', methods=['POST'])
+@login_required
+def remove_notification():
+    index = int(request.form["index"])
+    updates = json.loads(current_user.email_updates)
+    updates.pop(index)
+    current_user.email_updates = json.dumps(updates)
+    db.session.commit()
+    return json.dumps({"failed": False})

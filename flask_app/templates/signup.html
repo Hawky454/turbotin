@@ -1,0 +1,31 @@
+{% extends "header.html" %}
+
+{% block body %}
+    <div class="container">
+        <div class="col m-5 mx-auto text " style="max-width: 400px;">
+            <h3 class="title">Sign Up</h3>
+            <div class="container">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div class="alert alert-danger">
+                            {{ messages[0] }}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                <form method="POST" action="/signup">
+                    <div class="form-group">
+                        <label for="InputEmail1">Email address</label>
+                        <input type="email" class="form-control" id="InputEmail1" aria-describedby="emailHelp"
+                               placeholder="Your email" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="InputPassword">Password</label>
+                        <input type="password" class="form-control" id="InputPassword" placeholder="Your Password"
+                               name="password">
+                    </div>
+                    <button type="submit" class="btn btn-turbotin-cyan">Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

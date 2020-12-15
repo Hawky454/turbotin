@@ -2,11 +2,68 @@
 {% block body %}
     <div class="container">
         <div class="col m-5 mx-auto text">
+            {% if updates %}
+                <div class="mb-5">
+                <h1 class="pb-4">Active Notifications</h1>
+                {% for i in range(updates|length) %}
+                    <div class="card bg-light mb-1">
+                        <div class="card-body">
+                            <div class="row m-0">
+                                <div class="mr-auto">
+                                    <h5 class="card-title">
+                                        <span class="">{{ updates[i].blend }}</span>
+                                        <small class="text-secondary">{{ updates[i].brand }}</small>
+                                    </h5>
+                                    <div class="row ml-0">
+                                        {% if updates[i].max_price %}
+                                            <h6 class="card-text text-dark text-body">
+                                                ${{ updates[i].max_price }},&nbsp</h6>
+                                        {% endif %}
+                                        <h6 class="card-text mb-0 text-secondary">
+                                            {% if updates[i].stores %}
+                                                {% for n in range(updates[i].stores|length) %}
+                                                    {% if n < 3 %}
+                                                        {{ updates[i].stores[n] }}
+                                                        {% if n != updates[i].stores|length - 1 %}, {% endif %}
+                                                    {% elif n == 3 %}
+                                                        and {{ updates[i].stores|length - 3 }} more
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endif %}
+
+                                        </h6>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-end flex-column align-items-center">
+                                    <button type="button" class="btn text-danger mb-auto mt-auto "
+                                            onclick="remove({{ i }});">
+                                        Remove
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                                             fill="currentColor"
+                                             class="bi bi-x-circle " viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd"
+                                                  d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                            <path fill-rule="evenodd"
+                                                  d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                        </svg>
+                                    </button>
+
+                                    {#                                <h4 class="text-right">{{ items[i].price }}</h4>#}
+                                    {#                                <h6 class="card-text mb-0 text-right"#}
+                                    {#                                    style="color: {{ store_colors[items[i].store] }}">#}
+                                    {#                                    {{ items[i].store }}</h6>#}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            </div>
             <h1 class="pb-4">Add Notification</h1>
-            <div class="alert alert-danger mb-0" role="alert" id="invalid_input" style="display: none;">
+            <div class="alert alert-danger mb-4" role="alert" id="invalid_input" style="display: none;">
             </div>
             <div class="dropdown">
-                <div class="input-group pt-4" data-toggle="dropdown">
+                <div class="input-group pt-0" data-toggle="dropdown">
                     <input class="dropdown-toggle form-control form-control-lg" id="brand_input"
                            onkeyup="brand_input();">
                     <div class="input-group-prepend">
@@ -64,10 +121,7 @@
                     </div>
                 </div>
             </div>
-
         </div>
-
-    </div>
     </div>
     <script>{% include 'email_input.js' %}</script>
 {% endblock %}

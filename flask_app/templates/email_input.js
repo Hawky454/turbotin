@@ -133,15 +133,8 @@ $("#submit").on("click", function () {
         return $(this).next().text();
     }).get());
 
-
     var max_price = $("#max_price_val").val();
 
-    console.log({
-        brand: brand,
-        blend: blend,
-        stores: stores,
-        max_price: max_price
-    });
     $.post("/email_updates/add_notification", {
         brand: brand,
         blend: blend,
@@ -151,9 +144,20 @@ $("#submit").on("click", function () {
         console.log(data);
         data = JSON.parse(data);
         if (data["failed"]) {
-            invalidInput.text(data["what"] + " is invalid.");
+            invalidInput.text(data["what"]);
             invalidInput.show();
+        } else {
+            location.reload();
         }
     });
 
 });
+function remove(i) {
+    $.post("/email_updates/remove_notification", {
+        index: i
+    }).done(function (data) {
+        if (!data["failed"])
+            location.reload();
+    });
+
+}
