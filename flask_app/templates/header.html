@@ -35,7 +35,8 @@
             {% do nav_items.append({"name": "Log out", "link": "/logout"}) if current_user.is_authenticated else nav_items.append({"name": "Log in", "link": "/login"}) %}
             {% for item in nav_items %}
                 <li class="nav-item">
-                    <a class="nav-link {% if loop.last %}mr-2{% endif %}" href="{{ item.link }}">{{ item.name }}</a>
+                    <a class="nav-link {% if loop.last %}mr-2{% endif %} {% if request.path.startswith(item.link) %}active{% endif %}"
+                       href="{{ item.link }}">{{ item.name }}</a>
                 </li>
             {% endfor %}
             <li class="nav-item">
