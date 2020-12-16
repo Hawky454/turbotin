@@ -13,19 +13,21 @@
                                     <small class="mr-auto pr-auto">{{ updates[i].brand }}</small>
                                 </a>
                                 {% if updates[i].max_price %}
-                                    <small>${{ updates[i].max_price }}</small>
+                                    <small class="text-secondary">${{ updates[i].max_price }}</small>
                                 {% endif %}
                                 {% if updates[i].stores %}
-                                    <small class="text-secondary">
-                                        {% for n in range(updates[i].stores|length) %}
+                                    {% for n in range(updates[i].stores|length) if not n > 3 %}
+                                        <small style="color: {{ store_colors[updates[i].stores[n]] }};">
                                             {% if n < 3 %}
                                                 {{ updates[i].stores[n] }}
                                                 {% if n != updates[i].stores|length - 1 %}, {% endif %}
                                             {% elif n == 3 %}
-                                                and {{ updates[i].stores|length - 3 }} more
+                                                <small class="text-secondary">
+                                                    and {{ updates[i].stores|length - 3 }} more
+                                                </small>
                                             {% endif %}
-                                        {% endfor %}
-                                    </small>
+                                        </small>
+                                    {% endfor %}
                                 {% endif %}
                                 <button type="button" class="btn text-danger mb-auto mt-auto pt-0 pb-0 float-right pr-0"
                                         onclick="remove({{ i }});">

@@ -1,7 +1,7 @@
 from .. import db
 from flask import render_template, Blueprint, request, redirect, url_for
 from .full_table import main_df
-from .individual_blends import blend_list
+from .individual_blends import blend_list, store_colors
 import pandas as pd
 import json
 from flask_login import login_required, current_user
@@ -27,7 +27,7 @@ def main():
         else:
             updates[n]["id"] = None
     return render_template("email_updates.html", brands=brands, blends=blends, stores=store_list,
-                           updates=updates)
+                           updates=updates, store_colors=store_colors)
 
 
 @email_updates_blueprint.route('/email_updates/add_notification', methods=['POST'])
