@@ -6,7 +6,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 import os
 import json
 
-# from .email_methods import send_email_confirmation_code
+from scripts.email_methods import send_email_confirmation_code
 
 auth_blueprint = Blueprint('auth', __name__)
 
@@ -75,28 +75,29 @@ def signup_post():
     db.session.add(new_user)
     db.session.commit()
 
-    # send_email_confirmation_code(new_user.id)
+    send_email_confirmation_code(current_user.email, url_for("auth.verify_email", user_id=current_user.id,
+                                                             email_code=current_user.email_code))
 
     return redirect(url_for('auth.login'))
 
 
-@auth_blueprint.route('/verify_email', methods=['POST'])
+@auth_blueprint.route('/verify_email/<user_id>/<email_code>')
 @login_required
-def verify_email():
-    email_code = request.form.get("email_code")
-    if email_code == current_user.email_code:
-        user = User.query.filter_by(id=current_user.id).first()
+def verify_email(user_id, email_code):
+    user = User.query.filter_by(id=user_id).first()
+    if email_code == user.email_code:
         user.email_verified = True
         db.session.commit()
-    else:
-        flash('Incorrect email_code')
-        return redirect(url_for('main.profile'))
+        flash('Email verified')
 
-    return redirect("/")
+    return redirect("/email_updates")
 
 
-@auth_blueprint.route('/resend_email', methods=['POST'])
+@auth_blueprint.route('/resend_email')
 @login_required
 def resend_email():
-    # send_email_confirmation_code(current_user.id)
-    return redirect("/")
+    send_email_confirmation_code(current_user.email,
+                                 "turbotin.com" + url_for("auth.verify_email", user_id=current_user.id,
+                                                          email_code=current_user.email_code))
+    flash('Email sent')
+    return redirect("/email_updates")

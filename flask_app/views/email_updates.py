@@ -5,6 +5,7 @@ from .individual_blends import blend_list, store_colors
 import pandas as pd
 import json
 from flask_login import login_required, current_user
+from scripts.email_methods import send_email
 
 email_updates_blueprint = Blueprint('email_updates', __name__, template_folder='templates')
 
@@ -26,13 +27,16 @@ def main():
             updates[n]["id"] = blend_list.index(updates[n]["brand"] + " " + updates[n]["blend"])
         else:
             updates[n]["id"] = None
-    return render_template("email_updates.html", brands=brands, blends=blends, stores=store_list,
+    return render_template("email_updates.html", brands=brands, blends=blends, stores=sorted(store_list),
                            updates=updates, store_colors=store_colors)
 
 
 @email_updates_blueprint.route('/email_updates/add_notification', methods=['POST'])
 @login_required
 def add_notification():
+    if not current_user.email_verified:
+        return json.dumps({"failed": True, "what": "Email address isn't verified"})
+
     def check_lowercase(item, array):
         if item.lower() in [n.lower() for n in array]:
             return array[[n.lower() for n in array].index(item.lower())]

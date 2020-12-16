@@ -2,6 +2,20 @@
 {% block body %}
     <div class="container">
         <div class="col m-5 mx-auto text">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="alert alert-success">
+                        {{ messages[0] }}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            {% if not current_user.email_verified %}
+                <div class="alert alert-danger">
+                    Verify your email address to sign up for updates. If you haven't yet received an email click
+                    <a href="/resend_email" class="text-danger stretched-link">here</a> to
+                    resend the email.
+                </div>
+            {% endif %}
             {% if updates %}
                 <div class="mb-5">
                     <h1 class="pb-4">Active Notifications</h1>

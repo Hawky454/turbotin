@@ -4,7 +4,6 @@ import smtplib
 from email.mime.text import MIMEText
 from bs4 import BeautifulSoup
 import pandas as pd
-from email_methods.drive_api import get_drive_data
 
 # Variable allowing for relative paths
 path = os.path.dirname(__file__)
@@ -19,9 +18,7 @@ def send_email(to, subject, body):
 
     server = smtplib.SMTP("smtp.gmail.com:587")
     server.starttls()
-    with open(os.path.join(path, "email_methods/email_password.txt"), "r") as f:
-        password = f.read()
-    server.login("turbotinftw@gmail.com", password)
+    server.login("turbotinftw@gmail.com", os.environ["EMAIL_PASSWORD"])
     server.sendmail("turbotinftw@gmail.com", to, msg.as_string())
 
     # And to close server connection
@@ -29,8 +26,6 @@ def send_email(to, subject, body):
 
 
 def send_update(test=False):
-    get_drive_data()
-
     with open(os.path.join(path, "data/product_data.p"), "rb") as f:
         data = pickle.load(f)
     data = data[data["stock"] != "Out of stock"]
@@ -90,3 +85,9 @@ def send_log_email(log_data):
             for td in tr[i].find_all("td"):
                 td["style"] = "color:rgba(255,0,0, 1)"
     send_email("turbotinftw@gmail.com", "Website Updated", str(soup))
+
+
+def send_email_confirmation_code(email, url):
+    subject = "Your email verification code for turbotin.com"
+    body = "Go to this url to verify your email address: {}".format(url)
+    send_email(email, subject, body)
