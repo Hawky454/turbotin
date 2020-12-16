@@ -57,9 +57,9 @@ function filter_table() {
 
     var sort_button = document.getElementById("price_sort");
     if (sort_button.dataset.sort_direction === "asc") {
-        table_array.sort(price_sort).reverse();
-    } else if (sort_button.dataset.sort_direction === "desc") {
         table_array.sort(price_sort);
+    } else if (sort_button.dataset.sort_direction === "desc") {
+        table_array.sort(price_sort).reverse();
     }
     for (var i = 0; i < table_array.length; i++) {
         if (num_results >= max_num_rows) {
