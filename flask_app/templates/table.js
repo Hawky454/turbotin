@@ -89,13 +89,7 @@ function filter_table() {
         }
         price = row[4];
         time = moment.unix(row[5]).fromNow();
-        var tr = `<tr><td>${store}</td><td><a class='${text_color}' href='${link}' target='_blank'>${item}</a></td><td class='${text_color}'>${stock}</td><td>${price}</td><td>${time}</td></tr>`
-
-        if (sort_button.dataset.sort_direction === "asc") {
-            table.prepend(tr);
-        } else {
-            table.append(tr);
-        }
+        table.append(`<tr><td>${store}</td><td><a class='${text_color}' href='${link}' target='_blank'>${item}</a></td><td class='${text_color}'>${stock}</td><td>${price}</td><td>${time}</td></tr>`);
     }
 
 
