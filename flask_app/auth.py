@@ -75,14 +75,13 @@ def signup_post():
     db.session.add(new_user)
     db.session.commit()
 
-    send_email_confirmation_code(current_user.email, url_for("auth.verify_email", user_id=current_user.id,
-                                                             email_code=current_user.email_code))
+    send_email_confirmation_code(new_user.email, request.url_root + url_for("auth.verify_email", user_id=new_user.id,
+                                                                            email_code=new_user.email_code))
 
     return redirect(url_for('auth.login'))
 
 
 @auth_blueprint.route('/verify_email/<user_id>/<email_code>')
-@login_required
 def verify_email(user_id, email_code):
     user = User.query.filter_by(id=user_id).first()
     if email_code == user.email_code:
