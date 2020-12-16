@@ -47,7 +47,6 @@ function filter_table() {
     var table = $("#myTable tbody");
     table.find("tr").hide();
     var num_results = 0;
-    var new_array = [];
     var stores = stores_list.find($("input:checked:not(#all_stores_check)")).map(function () {
         return $(this).attr('id');
     }).get();
@@ -68,6 +67,7 @@ function filter_table() {
         }
         row = table_array[i];
         store = row[0];
+        link = row[1];
         item = row[2];
         stock = row[3];
         if (item.toUpperCase().indexOf(filter_item) === -1) {
