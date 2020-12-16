@@ -47,8 +47,8 @@
                                 <div class="row m-0">
                                     <div class="mr-auto">
                                         <h5 class="card-title">
-                                            <a class="text-secondary stretched-link" target="_blank"
-                                               href="{{ items[i].link }}">{{ items[i].item }}</a>
+                                            <a class="{{ 'text-danger' if 'Out of stock' in items[i].stock|safe  else 'text-secondary' }} stretched-link"
+                                               target="_blank" href="{{ items[i].link }}">{{ items[i].item }}</a>
                                         </h5>
                                         <div class="row ml-0">
                                             <p class="card-text mb-0 text-secondary">

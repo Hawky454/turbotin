@@ -25,16 +25,22 @@
                     </div>
                     <div class="row max-w-100">
                         <div class="form-group">
-                            <div class="form-check ml-3">
-                                <input type="checkbox" class="form-check-input" id="Check" name="remember">
-                                <label class="form-check-label" for="Check">Remember me</label>
+                            <div class="form-check">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox"
+                                           class="custom-control-input custom-control-input-turbotin-cyan"
+                                           id="all_stores_check" name="remember">
+                                    <label class="custom-control-label" for="all_stores_check">
+                                        <div id="store_label">Remember</div>
+                                    </label>
+                                </div>
                             </div>
                         </div>
                         <span class="mr-auto"></span>
                         <button type="submit" class="btn btn-turbotin-cyan mr-3">Login</button>
                     </div>
                 </form>
-                <p class="text-secondary"> Not registered? <a href="/signup">Sign up</a></p>
+                <p class="text-secondary"> Not registered? <a href="/signup" class="text-turbotin-cyan">Sign up</a></p>
             </div>
         </div>
     </div>
