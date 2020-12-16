@@ -8,7 +8,8 @@
                     <ul class="list-group">
                         {% for i in range(updates|length) %}
                             <li class="list-group-item">
-                                <span class="">{{ updates[i].blend }}</span>
+                                <span><a href="/individual_blends/{{ updates[i].id }}"
+                                         class="text-dark stretched-link">{{ updates[i].blend }}</a></span>
                                 <small class="mr-auto pr-auto">{{ updates[i].brand }}</small>
                                 {% if updates[i].max_price %}
                                     <small>${{ updates[i].max_price }}</small>

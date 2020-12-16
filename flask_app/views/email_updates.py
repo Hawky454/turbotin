@@ -1,9 +1,8 @@
-from .. import db, path
+from .. import db
 from flask import render_template, Blueprint, request, redirect, url_for
 from .full_table import main_df
-from ..models import Tobacco
+from .individual_blends import blend_list
 import pandas as pd
-import os
 import json
 from flask_login import login_required, current_user
 
@@ -20,8 +19,15 @@ store_list = list(pd.unique(df["store"]))
 @email_updates_blueprint.route('/email_updates')
 @login_required
 def main():
+    updates = json.loads(current_user.email_updates)
+    for n in range(len(updates)):
+        brand_blend = updates[n]["brand"] + " " + updates[n]["blend"]
+        if brand_blend in blend_list:
+            updates[n]["id"] = blend_list.index(updates[n]["brand"] + " " + updates[n]["blend"])
+        else:
+            updates[n]["id"] = None
     return render_template("email_updates.html", brands=brands, blends=blends, stores=store_list,
-                           updates=json.loads(current_user.email_updates))
+                           updates=updates)
 
 
 @email_updates_blueprint.route('/email_updates/add_notification', methods=['POST'])
