@@ -97,7 +97,7 @@ def verify_email(user_id, email_code):
 @login_required
 def resend_email():
     send_email_confirmation_code(current_user.email,
-                                 "turbotin.com" + url_for("auth.verify_email", user_id=current_user.id,
-                                                          email_code=current_user.email_code))
+                                 request.url_root + url_for("auth.verify_email", user_id=current_user.id,
+                                                            email_code=current_user.email_code))
     flash('Email sent')
     return redirect("/email_updates")

@@ -27,7 +27,7 @@
                                     <small class="mr-auto pr-auto">{{ updates[i].brand }}</small>
                                 </a>
                                 {% if updates[i].max_price %}
-                                    <small class="text-secondary">${{ updates[i].max_price }}</small>
+                                    <small class="text-secondary">{{ "${:,.2f}".format(updates[i].max_price) }}</small>
                                 {% endif %}
                                 {% if updates[i].stores %}
                                     {% for n in range(updates[i].stores|length) if not n > 3 %}
