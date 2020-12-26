@@ -85,22 +85,37 @@ function get_filtered_dict(allowed_stores = [], filter_stock = false, item_filte
 //     e.stopPropagation();
 //     filter_table();
 // });
+var stores_checkboxes = [];
+for (let i = 1; i < document.getElementById("store_dropdown").childElementCount - 1; i++)
+    stores_checkboxes.push(document.getElementById("store_dropdown" + i.toString()))
 
-table_dict = get_filtered_dict()
-console.log(table_dict)
-table = document.getElementById("table_body")
-for (var row of table_dict) {
-    row.item = `<a class="link-secondary" href="${row.link}" target="_blank">${row.item}</a>`;
-    delete row.link;
-    var new_row = document.getElementById("row_template").content.cloneNode(true);
-    for (var key in row) {
-        var cell = new_row.querySelector("#" + key);
-        cell.innerHTML = row[key]
-        cell.removeAttribute("id");
-
+function filter_table() {
+    var allowed_stores = [];
+    for (var store of stores_checkboxes) {
+        if (store.checked)
+            allowed_stores.push(store.nextElementSibling.innerText)
     }
-    table.append(new_row)
+    var table_dict = get_filtered_dict(allowed_stores)
+    var table = document.getElementById("table_body")
+    table.innerHTML = null;
+    for (var row of table_dict) {
+        row.item = `<a class="link-secondary" href="${row.link}" target="_blank">${row.item}</a>`;
+        delete row.link;
+        var new_row = document.getElementById("row_template").content.cloneNode(true);
+        for (var key in row) {
+            var cell = new_row.querySelector("#" + key);
+            cell.innerHTML = row[key]
+            cell.removeAttribute("id");
+        }
+        table.append(new_row)
+    }
+    document.getElementById("store_dropdown").addEventListener("click", function (ev) {
+        ev.stopPropagation()
+    });
 }
-document.getElementById("store_dropdown").addEventListener("click", function (ev) {
-    ev.stopPropagation()
-});
+document.getElementById("store_dropdown0").addEventListener("change", filter_table, false);
+for (var store of stores_checkboxes) {
+    store.addEventListener("change", filter_table, false);
+}
+
+filter_table();
