@@ -10180,5 +10180,23 @@ textarea.form-control-lg {
 
   .d-print-none {
     display: none !important; } }
+.custom-control-input:focus {
+  border-color: #00D2D2 !important;
+  box-shadow: 0 0 0 0.2rem rgba(0, 210, 210, 0.25) !important; }
+
+.custom-control-input:checked {
+  border-color: #00D2D2 !important;
+  background-color: #00D2D2 !important; }
+
+.custom-control-input:indeterminate {
+  border-color: #00D2D2 !important;
+  background-color: #00D2D2 !important; }
+
+.custom-control-input:focus:not(:checked) {
+  border-color: #00D2D2 !important; }
+
+.custom-control-input:not(:disabled):active {
+  background-color: #00D2D2 !important;
+  border-color: #00D2D2 !important; }
 
 /*# sourceMappingURL=custom.css.map */

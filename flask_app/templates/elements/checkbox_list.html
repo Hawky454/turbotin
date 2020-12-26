@@ -1,0 +1,20 @@
+{% set items = ["All"] + items %}
+{% for i in range(items|length) %}
+    <div class="form-check ms-2">
+        <input class="form-check-input custom-control-input" type="checkbox" value=""
+               id={{ id+i|string }}>
+        <label class="form-check-label {% if i==0 %}text-secondary{% endif %}"
+               for={{ id+i|string }}>
+            {{ items[i] }}
+        </label>
+    </div>
+{% endfor %}
+<script>
+    document.getElementById("{{ id }}0").addEventListener("change", function () {
+        update_checks("{{ id }}", {{ items|length }})
+    }, false);
+    for (let i = 1; i <{{ items|length }}; i++)
+        document.getElementById("{{ id }}" + i.toString()).addEventListener("click", function () {
+            update_label("{{ id }}", {{ items|length }})
+        }, false)
+</script>
