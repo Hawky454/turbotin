@@ -1,9 +1,7 @@
 function update_search(id, items, dropdown_element) {
     var results_element = document.getElementById(id + '_results');
     var input_element = document.getElementById(id + "_input");
-
     var query = input_element.value.toLowerCase();
-
     var new_inner_html = "";
 
     for (var i = 0; i < items.length; i++) {
@@ -16,10 +14,11 @@ function update_search(id, items, dropdown_element) {
     }
     results_element.innerHTML = new_inner_html;
     if (new_inner_html === "") {
-        dropdown_element.hide();
+        if (input_element.classList.contains("show"))
+            dropdown_element.hide();
     } else {
-        dropdown_element.show();
+        if (!input_element.classList.contains("show") && input_element === document.activeElement)
+            dropdown_element.show();
     }
-
     return true;
 }

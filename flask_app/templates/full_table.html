@@ -21,7 +21,7 @@
                     </div>
                 </th>
                 <th scope="col">
-                    {% with items=stores, id="item_search", placeholder="Filter items" %}
+                    {% with items=[], id="item_search", placeholder="Filter items", hidden=True %}
                         {% include "elements/search_bar.html" %}
                     {% endwith %}
                 </th>

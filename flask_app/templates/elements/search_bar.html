@@ -1,9 +1,11 @@
 <div class="dropdown" id="{{ id }}_parent">
     <input class="form-control form-control-turbotin-cyan" id="{{ id }}_input"
            placeholder="{{ placeholder }}" data-bs-toggle="dropdown">
-    <ul class="overflow-auto dropdown-menu" style="max-height: 336px!important;" id="{{ id }}_results">
 
-    </ul>
+    <ul class="overflow-auto dropdown-menu"
+        style="max-height: 336px!important;{% if hidden %}display: none!important;{% endif %}"
+        id="{{ id }}_results"></ul>
+
 </div>
 
 <script>
@@ -13,18 +15,17 @@
     let dropdown_element = new bootstrap.Dropdown(input_element);
     let result_element = document.getElementById("{{ id }}_results");
 
-    document.getElementById("{{ id }}_input").addEventListener("keyup", function () {
-        update_search("{{ id }}", items, dropdown_element);
-    });
-
     parent.addEventListener('shown.bs.dropdown', function () {
         if (input_element !== document.activeElement)
-            dropdown_element.hide()
+            dropdown_element.hide();
     });
     parent.addEventListener('hidden.bs.dropdown', function () {
         if (input_element === document.activeElement && result_element.innerText !== "")
-            dropdown_element.show()
+            dropdown_element.show();
     });
 
+    document.getElementById("{{ id }}_input").addEventListener("keyup", function () {
+        update_search("{{ id }}", items, dropdown_element);
+    });
     update_search("{{ id }}", items, dropdown_element);
 </script>
