@@ -2,6 +2,7 @@
 {% block body %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script>{% include 'elements/checkbox_list.js' %}</script>
+    <script>{% include 'elements/search_bar.js' %}</script>
     <div class="col-xl-10 col-lg-11 col-12 mx-auto my-4">
         <table class="table table-bordered table-light table-responsive table-hover table-striped">
             <thead>
@@ -20,7 +21,9 @@
                     </div>
                 </th>
                 <th scope="col">
-                    Item
+                    {% with items=stores, id="item_search", placeholder="Filter items" %}
+                        {% include "elements/search_bar.html" %}
+                    {% endwith %}
                 </th>
                 <th scope="col" class="d-none d-lg-table-cell">
                     Stock
@@ -40,7 +43,7 @@
     </div>
     <template id="row_template">
         <tr>
-            <th scope="row" id="store"></th>
+            <th scope="row" class="fw-normal" id="store"></th>
             <td id="item"></td>
             <td class="d-none d-lg-table-cell" id="stock"></td>
             <td id="price"></td>

@@ -28,11 +28,11 @@ $theme-colors: (
 @import "../bootstrap/scss/bootstrap";
 
 
-//.form-control:focus {
-//  border-color: $turbotin-cyan;
-//  box-shadow: none;
-//  -webkit-box-shadow: none
-//}
+.form-control-turbotin-cyan:focus {
+  border-color: $turbotin-cyan;
+  box-shadow: 0 0 0 0.25rem rgba(0, 210, 210, 0.25);;
+}
+
 //
 //.has-error .form-control:focus {
 //  box-shadow: none;
@@ -45,24 +45,25 @@ $theme-colors: (
 //  -webkit-box-shadow: none
 //}
 //
-//input[type=search]::-ms-clear {
-//  display: none;
-//  width: 0;
-//  height: 0;
-//}
-//
-//input[type=search]::-ms-reveal {
-//  display: none;
-//  width: 0;
-//  height: 0;
-//}
-//
-//input[type="search"]::-webkit-search-decoration,
-//input[type="search"]::-webkit-search-cancel-button,
-//input[type="search"]::-webkit-search-results-button,
-//input[type="search"]::-webkit-search-results-decoration {
-//  display: none;
-//}
+input[type=search]::-ms-clear {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+input[type=search]::-ms-reveal {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  display: none;
+}
+
 //
 //
 //

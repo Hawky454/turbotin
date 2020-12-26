@@ -10180,6 +10180,26 @@ textarea.form-control-lg {
 
   .d-print-none {
     display: none !important; } }
+.form-control-turbotin-cyan:focus {
+  border-color: #00D2D2;
+  box-shadow: 0 0 0 0.25rem rgba(0, 210, 210, 0.25); }
+
+input[type=search]::-ms-clear {
+  display: none;
+  width: 0;
+  height: 0; }
+
+input[type=search]::-ms-reveal {
+  display: none;
+  width: 0;
+  height: 0; }
+
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  display: none; }
+
 .custom-control-input:focus {
   border-color: #00D2D2 !important;
   box-shadow: 0 0 0 0.2rem rgba(0, 210, 210, 0.25) !important; }
