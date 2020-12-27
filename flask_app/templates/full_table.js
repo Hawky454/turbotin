@@ -11,35 +11,31 @@ var table_array = {{table}};
 //     }
 // }
 
-// function toggle_stock() {
-//     var check_box = document.getElementById("in_stock_check");
-//     if (check_box.classList.contains("active")) {
-//         check_box.classList.remove("active");
-//     } else {
-//         check_box.classList.add("active");
-//     }
-//     filter_table();
-// }
+function toggle_sort() {
+    var button = document.getElementById("price_sort");
+    var down_up_el = document.getElementById("price_sort_down_up");
+    var down_el = document.getElementById("price_sort_down");
+    var up_el = document.getElementById("price_sort_up");
+    down_up_el.classList.add("d-none");
+    down_el.classList.add("d-none");
+    up_el.classList.add("d-none");
+    if (button.dataset.sort_direction === "asc") {
+        button.dataset.sort_direction = "desc";
+        down_el.classList.remove("d-none")
+    } else {
+        button.dataset.sort_direction = "asc";
+        up_el.classList.remove("d-none")
+    }
+    filter_table();
+}
 
-// function toggle_sort() {
-//     var button = document.getElementById("price_sort");
-//     if (button.dataset.sort_direction === "asc") {
-//         button.dataset.sort_direction = "desc";
-//         button.innerHTML = '<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-down" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/></svg>';
-//     } else {
-//         button.dataset.sort_direction = "asc";
-//         button.innerHTML = '<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-up" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/></svg>';
-//     }
-//     filter_table();
-// }
-
-function get_filtered_dict(allowed_stores = [], filter_stock = false, item_filter = "", sort) {
+function get_filtered_dict(allowed_stores = [], filter_stock = false, item_filter = "", sort = "") {
 
     function price_sort(a, b) {
         return a[6] - b[6];
     }
 
-    if (typeof sort !== 'undefined') {
+    if (sort !== "") {
         table_array.sort(price_sort);
         if (sort === "desc")
             table_array.reverse();
@@ -89,7 +85,10 @@ function filter_table() {
             allowed_stores.push(store.nextElementSibling.innerText.trim());
     }
     var item_filter = search_element.value.toUpperCase();
-    var table_dict = get_filtered_dict(allowed_stores, false, item_filter);
+    var filter_stock = document.getElementById("in_stock").checked;
+    var sort = document.getElementById("price_sort").dataset.sort_direction;
+
+    var table_dict = get_filtered_dict(allowed_stores, filter_stock, item_filter, sort);
     var table = document.getElementById("table_body");
 
     table.innerHTML = null;
@@ -113,8 +112,8 @@ function filter_table() {
     });
 }
 function under_table(empty, overfull) {
-    let too_many_el = document.getElementById("too_many_matches");
-    let no_el = document.getElementById("no_matches");
+    var too_many_el = document.getElementById("too_many_matches");
+    var no_el = document.getElementById("no_matches");
     if (empty) {
         no_el.classList.remove("d-none");
     } else {
@@ -135,6 +134,8 @@ for (var store of stores_checkboxes) {
 document.getElementById("show_more").addEventListener("click", function () {
     max_num_rows += 100;
     filter_table();
-})
+});
+document.getElementById("in_stock").addEventListener("change", filter_table);
+document.getElementById("price_sort").addEventListener("click", toggle_sort);
 
 filter_table();

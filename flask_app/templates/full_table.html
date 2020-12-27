@@ -26,10 +26,35 @@
                     {% endwith %}
                 </th>
                 <th scope="col" class="d-none d-lg-table-cell">
-                    Stock
+                    <div class="input-group">
+                        <div class="input-group-text">
+                            <input class="form-check-input custom-control-input my-auto" type="checkbox" id="in_stock">
+                            <label class="form-check-label" for="in_stock">
+                                &nbsp In Stock
+                            </label>
+                        </div>
+
+                    </div>
                 </th>
                 <th scope="col">
-                    Price
+                    <div class="input-group">
+                        <label class="input-group-text" for="price_sort">
+                            $
+                        </label>
+                        <button class="btn btn-turbotin-cyan input-group-text" type="button" id="price_sort">
+                            {% with width=16, height=16 %}
+                                <div id="price_sort_down_up">
+                                    {% include 'icons/arrow_down_up.html' %}
+                                </div>
+                                <div id="price_sort_down" class="d-none">
+                                    {% include 'icons/arrow_down.html' %}
+                                </div>
+                                <div id="price_sort_up" class="d-none">
+                                    {% include 'icons/arrow_up.html' %}
+                                </div>
+                            {% endwith %}
+                        </button>
+                    </div>
                 </th>
                 <th scope="col" class="d-none d-lg-table-cell">
                     Last Updated
