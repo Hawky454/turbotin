@@ -7,11 +7,11 @@
         <table class="table table-bordered table-light table-responsive table-hover table-striped">
             <thead>
             <tr>
-                <th scope="col">
+                <th scope="col" class="col-4 col-lg-1">
                     <div class="dropdown">
                         <button class="btn btn-turbotin-cyan dropdown-toggle" type="button"
                                 id="dropdownMenuButton" data-bs-toggle="dropdown">
-                            Filter Stores
+                            <span class="d-none d-lg-inline-block">Filter</span> Stores
                         </button>
                         <div class="dropdown-menu" id="store_dropdown">
                             {% with items=stores, id="store_dropdown" %}
@@ -20,12 +20,12 @@
                         </div>
                     </div>
                 </th>
-                <th scope="col">
+                <th scope="col" class="col">
                     {% with items=[], id="item_search", placeholder="Filter items", hidden=True %}
                         {% include "elements/search_bar.html" %}
                     {% endwith %}
                 </th>
-                <th scope="col" class="d-none d-lg-table-cell">
+                <th scope="col" class="d-none d-lg-table-cell col-1">
                     <div class="input-group">
                         <div class="input-group-text">
                             <input class="form-check-input custom-control-input my-auto" type="checkbox" id="in_stock">
@@ -36,7 +36,7 @@
 
                     </div>
                 </th>
-                <th scope="col">
+                <th scope="col" class="col-4 col-lg-1">
                     <div class="input-group">
                         <label class="input-group-text" for="price_sort">
                             $
@@ -56,7 +56,7 @@
                         </button>
                     </div>
                 </th>
-                <th scope="col" class="d-none d-lg-table-cell">
+                <th scope="col" class="d-none d-lg-table-cell col-2">
                     Last Updated
                 </th>
             </tr>
