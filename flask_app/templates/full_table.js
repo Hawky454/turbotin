@@ -1,16 +1,6 @@
 var max_num_rows = 50;
 var table_array = {{table}};
 
-// function hidden_alert() {
-//     var alert_container = $("#alert_container");
-//     if ($('#myTable tr:visible').length > max_num_rows) {
-//         $("#alert").text("Only showing first " + max_num_rows + " rows");
-//         alert_container.show();
-//     } else {
-//         alert_container.hide();
-//     }
-// }
-
 function toggle_sort() {
     var button = document.getElementById("price_sort");
     var down_up_el = document.getElementById("price_sort_down_up");
@@ -90,7 +80,6 @@ function filter_table() {
 
     var table_dict = get_filtered_dict(allowed_stores, filter_stock, item_filter, sort);
     var table = document.getElementById("table_body");
-
     table.innerHTML = null;
     for (var row of table_dict) {
         var color = "link-secondary"
