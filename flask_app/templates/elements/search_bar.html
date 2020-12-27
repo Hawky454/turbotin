@@ -25,11 +25,12 @@
                 if (input_element === document.activeElement && result_element.innerText !== "")
                     dropdown_element.show();
             });
-
-            document.getElementById("{{ id }}_input").addEventListener("keyup", function () {
+            {% if not custom_listener %}
+                document.getElementById("{{ id }}_input").addEventListener("keyup", function () {
+                    update_search("{{ id }}", items, dropdown_element);
+                });
                 update_search("{{ id }}", items, dropdown_element);
-            });
-            update_search("{{ id }}", items, dropdown_element);
+            {% endif %}
         }
     </script>
 {% endif %}
