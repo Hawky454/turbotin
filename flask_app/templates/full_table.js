@@ -1,12 +1,6 @@
 var max_num_rows = 50;
 var table_array = {{table}};
 
-// function show_more() {
-//     max_num_rows += 100;
-//     filter_table();
-//     hidden_alert();
-// }
-
 // function hidden_alert() {
 //     var alert_container = $("#alert_container");
 //     if ($('#myTable tr:visible').length > max_num_rows) {
@@ -56,7 +50,7 @@ function get_filtered_dict(allowed_stores = [], filter_stock = false, item_filte
     var num_results = 0;
     for (var i = 0; i < table_array.length; i++) {
 
-        if (num_results >= max_num_rows)
+        if (num_results >= max_num_rows + 1)
             break;
 
         row = table_array[i];
@@ -81,41 +75,66 @@ function get_filtered_dict(allowed_stores = [], filter_stock = false, item_filte
     }
     return table_dict;
 }
-// $("#stores_list .dropdown-item").on('click', function (e) {
-//     e.stopPropagation();
-//     filter_table();
-// });
+
 var stores_checkboxes = [];
 for (let i = 1; i < document.getElementById("store_dropdown").childElementCount - 1; i++)
     stores_checkboxes.push(document.getElementById("store_dropdown" + i.toString()))
+var search_element = document.getElementById("item_search_input");
+search_element.addEventListener("keyup", filter_table);
 
 function filter_table() {
     var allowed_stores = [];
     for (var store of stores_checkboxes) {
         if (store.checked)
-            allowed_stores.push(store.nextElementSibling.innerText)
+            allowed_stores.push(store.nextElementSibling.innerText.trim());
     }
-    var table_dict = get_filtered_dict(allowed_stores)
-    var table = document.getElementById("table_body")
+    var item_filter = search_element.value.toUpperCase();
+    var table_dict = get_filtered_dict(allowed_stores, false, item_filter);
+    var table = document.getElementById("table_body");
+
     table.innerHTML = null;
     for (var row of table_dict) {
-        row.item = `<a class="link-secondary" href="${row.link}" target="_blank">${row.item}</a>`;
+        var color = "link-secondary"
+        if (row.stock === "Out of stock")
+            color = "link-danger"
+        row.item = `<a class="${color}" href="${row.link}" target="_blank">${row.item}</a>`;
         delete row.link;
         var new_row = document.getElementById("row_template").content.cloneNode(true);
         for (var key in row) {
             var cell = new_row.querySelector("#" + key);
-            cell.innerHTML = row[key]
+            cell.innerHTML = row[key];
             cell.removeAttribute("id");
         }
         table.append(new_row)
     }
+    under_table(table_dict.length === 0, table_dict.length >= max_num_rows);
     document.getElementById("store_dropdown").addEventListener("click", function (ev) {
         ev.stopPropagation()
     });
+}
+function under_table(empty, overfull) {
+    let too_many_el = document.getElementById("too_many_matches");
+    let no_el = document.getElementById("no_matches");
+    if (empty) {
+        no_el.classList.remove("d-none");
+    } else {
+        no_el.classList.add("d-none");
+    }
+    if (overfull) {
+        too_many_el.classList.remove("d-none");
+        document.getElementById("too_many_matches_alert").innerText = `Only showing the first ${max_num_rows} rows`;
+    } else {
+        too_many_el.classList.add("d-none");
+    }
+
 }
 document.getElementById("store_dropdown0").addEventListener("change", filter_table, false);
 for (var store of stores_checkboxes) {
     store.addEventListener("change", filter_table, false);
 }
+document.getElementById("show_more").addEventListener("click", function () {
+    max_num_rows += 100;
+    filter_table();
+})
 
 filter_table();

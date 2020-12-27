@@ -39,7 +39,23 @@
             <tbody id="table_body">
             </tbody>
         </table>
-
+        <div class="alert alert-danger d-none" role="alert" id="no_matches">
+            No items matching this query.
+        </div>
+        <div class="container" id="too_many_matches">
+            <div class="row">
+                <div class="col">
+                    <div class="alert alert-turbotin-cyan" role="alert" id="too_many_matches_alert">
+                        Only showing first n rows.
+                    </div>
+                </div>
+                <div class="col">
+                    <button type="button" class="float-end btn btn-turbotin-cyan" id="show_more">
+                        Show more
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
     <template id="row_template">
         <tr>
