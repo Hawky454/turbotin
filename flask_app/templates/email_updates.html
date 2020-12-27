@@ -1,5 +1,9 @@
 {% extends "header.html" %}
 {% block body %}
+    <script>{% include 'elements/checkbox_list.js' %}</script>
+    <script>{% include 'elements/search_bar.js' %}</script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+            integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <div class="container">
         <div class="col m-5 mx-auto text">
             {% with messages = get_flashed_messages() %}
@@ -22,10 +26,10 @@
                     <ul class="list-group">
                         {% for i in range(updates|length) %}
                             <li class="list-group-item">
-                                <a href="/individual_blends/{{ updates[i].id }}" class="text-dark">
+                                <a href="/individual_blends/{{ updates[i].id }}" class="link-secondary">
                                     <span>{{ updates[i].blend }}</span>
-                                    <small class="mr-auto pr-auto">{{ updates[i].brand }}</small>
                                 </a>
+                                <small class="text-dark">{{ updates[i].brand }}</small>
                                 {% if updates[i].max_price %}
                                     <small class="text-secondary">{{ "${:,.2f}".format(updates[i].max_price) }}</small>
                                 {% endif %}
@@ -43,17 +47,8 @@
                                         </small>
                                     {% endfor %}
                                 {% endif %}
-                                <button type="button" class="btn text-danger mb-auto mt-auto pt-0 pb-0 float-right pr-0"
+                                <button type="button" class="btn-close float-end" aria-label="Close"
                                         onclick="remove({{ i }});">
-                                    <small>Remove</small>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                         fill="currentColor"
-                                         class="bi bi-x-circle " viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd"
-                                              d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                        <path fill-rule="evenodd"
-                                              d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                                    </svg>
                                 </button>
                             </li>
                         {% endfor %}
@@ -62,65 +57,55 @@
             {% endif %}
 
             <h1 class="pb-4">Add Notification</h1>
-            <div class="alert alert-danger mb-4" role="alert" id="invalid_input" style="display: none;">
+            <div class="alert alert-danger mb-4 d-none" role="alert" id="invalid_input">
             </div>
-            <div class="dropdown">
-                <div class="input-group pt-0" data-toggle="dropdown">
-                    <input class="dropdown-toggle form-control form-control-lg" id="brand_input"
-                           onkeyup="brand_input();">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">Brand</div>
+
+            <div class="pb-4">
+                <div class="row">
+                    <div class="pe-1 col-3 col-lg-1">
+                        <span class="input-group-text mx-0" id="addon-wrapping">Brand</span>
+                    </div>
+                    <div class="ps-1 col">
+                        {% with items=brands, id="brand_search", placeholder="Brand", custom_listener=True %}
+                            {% include 'elements/search_bar.html' %}
+                        {% endwith %}
                     </div>
                 </div>
-                <div class="dropdown-menu overflow-hidden search-results p-0 m-0 border-0" id="brand_results">
-                </div>
             </div>
-            <div class="dropdown">
-                <div class="input-group pt-4" data-toggle="dropdown">
-                    <input class="dropdown-toggle form-control form-control-lg" id="blend_input"
-                           onkeyup="blend_input();" disabled>
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">Blend</div>
+            <div class="pb">
+                <div class="row">
+                    <div class="pe-1 col-3 col-lg-1">
+                        <span class="input-group-text mx-0" id="addon-wrapping">Blend</span>
+                    </div>
+                    <div class="ps-1 col">
+                        {% with items=blends, id="blend_search", placeholder="Blend", custom_listener=True %}
+                            {% include 'elements/search_bar.html' %}
+                        {% endwith %}
                     </div>
                 </div>
-                <div class="dropdown-menu overflow-hidden search-results p-0 m-0 border-0" id="blend_results">
-                </div>
             </div>
-            <div class="row d-flex flex-row">
+
+
+            <div class="row d-flex flex-row mt-4">
                 <div class="col">
-                    <div class="input-group input-group-lg pt-4 ">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input custom-control-input-turbotin-cyan"
-                                   id="all_stores_check">
-                            <label class="custom-control-label" for="all_stores_check">
-                                <div id="store_label">Only specific stores</div>
-                            </label>
-                        </div>
+                    <div class="form-check ms-2">
+                        <input class="form-check-input custom-control-input" type="checkbox" value="" id="show_stores">
+                        <label class="form-check-label" for="show_stores">
+                            Only specific stores
+                        </label>
                     </div>
-                    <div id="stores_list" style="display:none;">
-                        {% for i in range(stores|length) %}
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input custom-control-input-turbotin-cyan"
-                                       id="store_{{ i }}" checked>
-                                <label class="custom-control-label" for="store_{{ i }}">{{ stores[i] }}</label>
-                            </div>
-                        {% endfor %}
+                    <div id="stores_container" class="d-none">
+                        {% with items=stores, id="store_checkbox" %}
+                            {% include 'elements/checkbox_list.html' %}
+                        {% endwith %}
                     </div>
                 </div>
                 <div class="col">
-                    <div class="input-group pt-4 ">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">Maximum Price</div>
-                        </div>
-                        <input type="number" class="form-control" aria-label="Number input with checkbox"
-                               id="max_price_val">
+                    <div class="input-group pb-4">
+                        <div class="input-group-text">Max Price</div>
+                        <input type="number" class="form-control form-control-turbotin-cyan" id="max_price_val">
                     </div>
-                    <div class="container">
-                        <div class="row align-items-end pt-4">
-                            <span class="ml-auto"></span>
-                            <button type="button" class="btn btn-turbotin-cyan" id="submit">Submit</button>
-                        </div>
-                    </div>
+                    <button type="button" class="float-end btn btn-turbotin-cyan" id="submit">Submit</button>
                 </div>
             </div>
         </div>

@@ -1,140 +1,63 @@
 var brands = {{brands}};
+var brand_search_list = [];
+for (let brand of brands)
+    brand_search_list.push({"link": `javascript:brand_clicked('${brand}')`, "text": brand});
+
 var blends = {{blends}};
-var lowercase_brands = [];
-for (var i = 0; i < brands.length; i++) {
-    lowercase_brands.push(brands[i].toLowerCase());
+
+var brand_input = document.getElementById("brand_search_input");
+var blend_input = document.getElementById("blend_search_input");
+var invalid_input = document.getElementById("invalid_input");
+function brand_clicked(brand) {
+    brand_input.value = brand;
+    blend_input.disabled = false;
+    update_blends();
 }
-function complete_element(element, self) {
-    document.getElementById(element).value = self.innerText;
-    $('#' + element).keyup();
+function blend_clicked(blend) {
+    blend_input.value = blend;
+    update_blends();
 }
-var invalidInput = $("#invalid_input")
-function filter_allowed(input_element_id, results_element_id, allowed_inputs) {
-    var results_element = document.getElementById(results_element_id);
-    var input_element = $("#" + input_element_id)
-    var input_alert = $("#invalid_input");
-
-    function hide_results() {
-        results_element.classList.add("p-0", "m-0", "border-0");
-        input_element.removeClass("border-danger");
-        input_alert.hide();
-    }
-
-    var query = document.getElementById(input_element_id).value.toLowerCase();
-
-    if (query === "") {
-        results_element.innerHTML = "";
-        hide_results();
-        return;
-    }
-    var new_inner_html = "";
-    var results = 0;
-
-    for (var i = 0; i < allowed_inputs.length; i++) {
-        if (allowed_inputs[i].toLowerCase() === query) {
-            results_element.innerHTML = "";
-            hide_results();
-            return;
-        }
-        var index = allowed_inputs[i].toLowerCase().indexOf(query);
-        if (index > -1) {
-            var txt = allowed_inputs[i];
-            txt = txt.slice(0, index) + "<b>" + txt.slice(index, index + query.length) + "</b>" + txt.slice(index + query.length);
-            new_inner_html += "<a class='dropdown-item' href='#' onclick='complete_element(\"" + input_element_id + "\",this);return false'>" + txt + "</a>";
-            results += 1
-            if (results >= 10) {
-                break;
-            }
-        }
-    }
-    if (new_inner_html !== "") {
-        results_element.classList.remove("p-0", "m-0", "border-0");
-        input_element.removeClass("border-danger");
-        input_alert.hide();
-        if (input_element.is(':focus') && !$("#" + results_element.id).hasClass("show")) {
-            input_element.trigger("click");
-        }
+function update_blends() {
+    var brand = brand_input.value;
+    if (!brands.includes(brand))
+        return false;
+    var blend_search_list = [];
+    for (let blend of blends[brand])
+        blend_search_list.push({"link": `javascript:blend_clicked('${blend}')`, "text": blend})
+    update_search("blend_search", blend_search_list, new bootstrap.Dropdown(blend_input));
+    invalid_input.classList.add("d-none");
+}
+brand_input.addEventListener("input", function () {
+    update_search("brand_search", brand_search_list, new bootstrap.Dropdown(brand_input));
+    blend_input.disabled = !brands.includes(brand_input.value);
+    if (brands.includes(brand_input.value)) {
+        update_blends();
     } else {
-        input_element.addClass("border-danger");
-        results_element.classList.add("p-0", "m-0", "border-0");
+        blend_input.value = "";
     }
-    results_element.innerHTML = new_inner_html;
-    return true;
-}
-
-
-function brand_input() {
-    filter_allowed("brand_input", "brand_results", brands);
-    var blend_input = $("#blend_input");
-    if (lowercase_brands.includes(document.getElementById("brand_input").value.toLowerCase())) {
-        blend_input.prop("disabled", false);
-        console.log("not disabled")
-    } else {
-        blend_input.prop("disabled", true);
-
-        blend_input.val("");
-    }
-    invalidInput.hide();
-}
-
-function blend_input() {
-    var brand = document.getElementById("brand_input").value;
-    if (!lowercase_brands.includes(brand.toLowerCase())) {
-        $("#blend_input").prop("disabled", true);
-        brand_input()
-        return;
-    }
-    filter_allowed("blend_input", "blend_results", blends[brand]);
-    invalidInput.hide();
-}
-var all_stores_check = $("#all_stores_check");
-all_stores_check.change(function () {
-    var stores_list = $("#stores_list");
-    var store_label = $("#store_label");
-    store_label.addClass("text-secondary");
-    if (store_label.text() === "Only specific stores") {
-        all_stores_check.prop("checked", false);
-        stores_list.slideDown("slow");
-    }
-    if (this.checked) {
-        store_label.text("None");
-        stores_list.find("input").prop("checked", true);
-    } else {
-        store_label.text("All");
-        stores_list.find("input").prop("checked", false);
-    }
-    invalidInput.hide();
+    invalid_input.classList.add("d-none");
 });
-$("#stores_list").find("input").change(function () {
-    var stores_list = $("#stores_list");
-    var all_stores_check = $("#all_stores_check");
-
-    var num_checked = stores_list.find($("input:checked")).length;
-    var num_unchecked = stores_list.find($("input:not(:checked)")).length;
-    var num_checkbox = stores_list.find("input").length;
-
-    if ((num_checked !== num_checkbox) && (num_unchecked !== num_checkbox)) {
-        all_stores_check.prop('indeterminate', true);
-    } else {
-        all_stores_check.prop('indeterminate', false);
-        if (num_checked === num_checkbox) {
-            all_stores_check.prop('checked', true);
-        } else if (num_unchecked === num_checkbox) {
-            all_stores_check.prop('checked', false);
-        }
-    }
-    invalidInput.hide();
+update_search("brand_search", brand_search_list, new bootstrap.Dropdown(brand_input));
+blend_input.disabled = true;
+blend_input.addEventListener("input", update_blends);
+var show_stores_el = document.getElementById("show_stores")
+show_stores_el.addEventListener("change", function () {
+    show_stores_el.parentElement.classList.add("d-none");
+    document.getElementById("stores_container").classList.remove("d-none");
+    invalid_input.classList.add("d-none");
 });
-$("#submit").on("click", function () {
-    var brand = $("#brand_input").val();
-    var blend = $("#blend_input").val();
 
-    var stores = JSON.stringify($("#stores_list").find($("input:checked:not(#all_stores_check)")).map(function () {
-        return $(this).next().text();
-    }).get());
-
-    var max_price = $("#max_price_val").val();
-
+document.getElementById("submit").addEventListener("click", function () {
+    var brand = brand_input.value;
+    var blend = blend_input.value;
+    var stores_el = document.getElementById("stores_container").getElementsByClassName("form-check");
+    var stores = [];
+    for (var i = 1; i < stores_el.length; i++) {
+        if (stores_el[i].firstElementChild.checked)
+            stores.push(stores_el[i].innerText.trim());
+    }
+    stores = JSON.stringify(stores)
+    var max_price = document.getElementById("max_price_val").value;
     $.post("/email_updates/add_notification", {
         brand: brand,
         blend: blend,
@@ -144,13 +67,12 @@ $("#submit").on("click", function () {
         console.log(data);
         data = JSON.parse(data);
         if (data["failed"]) {
-            invalidInput.text(data["what"]);
-            invalidInput.show();
+            invalid_input.innerText = data["what"];
+            invalid_input.classList.remove("d-none");
         } else {
             location.reload();
         }
     });
-
 });
 function remove(i) {
     $.post("/email_updates/remove_notification", {
