@@ -69,9 +69,11 @@
                         </a>
                     </li>
                 {% else %}
-                    <li class="nav-item">
-                        {% include 'elements/login_modal.html' %}
-                    </li>
+                    {% if not request.path.startswith("/login") %}
+                        <li class="nav-item">
+                            {% include 'elements/login_modal.html' %}
+                        </li>
+                    {% endif %}
                 {% endif %}
             </ul>
         </div>
