@@ -17,7 +17,7 @@ df["time"] = '''<script>document.write(moment.unix(''' + df["time"] + ''').fromN
 # archive_df = pd.read_sql("tobacco", db.engine)
 # archive_df.to_feather("archive.feather")
 blend_list = list(pd.unique(main_df["brand"] + " " + main_df["blend"]))
-search_list = [{"key": n, "text": blend_list[n].lower(), "full_text": blend_list[n]} for n in range(len(blend_list))]
+search_list = [{"link": "/individual_blends/{}".format(n), "text": blend_list[n]} for n in range(len(blend_list))]
 archive_df = pd.read_feather("archive.feather")
 archive_df["price_num"] = archive_df["price"].str.extract(r'(\d+.\d+)')
 archive_df["price_num"] = pd.to_numeric(archive_df["price_num"], errors="coerce")

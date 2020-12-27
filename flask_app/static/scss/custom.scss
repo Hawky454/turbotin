@@ -33,6 +33,12 @@ $theme-colors: (
   box-shadow: 0 0 0 0.25rem rgba(0, 210, 210, 0.25);;
 }
 
+@include media-breakpoint-down(md) {
+  .search-results {
+    max-width: 100%;
+  }
+}
+
 //
 //.has-error .form-control:focus {
 //  box-shadow: none;
@@ -64,40 +70,18 @@ input[type="search"]::-webkit-search-results-decoration {
   display: none;
 }
 
-//
-//
-//
-//@include media-breakpoint-up(lg) {
-//  .sidebar {
-//    max-width: 350px;
-//  }
-//}
-//
-//.sidebar {
-//  min-width: 300px;
-//}
-//
-//@include media-breakpoint-down(md) {
-//  .search-results {
-//    max-width: 100%;
-//  }
-//}
-//
-//a {
-//  text-decoration: none !important;
-//}
-//
-//.dropdown-item:active {
-//  color: #fff !important;
-//  background-color: $turbotin-cyan !important;
-//}
-//
-//.dropdown-item-no-highlight:active {
-//  color: #16181b !important;
-//  text-decoration: none !important;
-//  background-color: #f8f9fa !important;
-//}
-//
+
+.dropdown-item:active {
+  color: #fff !important;
+  background-color: $turbotin-cyan !important;
+}
+
+.dropdown-item-no-highlight:active {
+  color: #16181b !important;
+  text-decoration: none !important;
+  background-color: #f8f9fa !important;
+}
+
 .custom-control-input:focus {
   border-color: $turbotin-cyan !important;
   box-shadow: 0 0 0 0.2rem rgba(0, 210, 210, 0.25) !important;

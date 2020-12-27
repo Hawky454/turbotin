@@ -1,31 +1,35 @@
 <div class="dropdown" id="{{ id }}_parent">
-    <input class="form-control form-control-turbotin-cyan" id="{{ id }}_input"
-           placeholder="{{ placeholder }}" data-bs-toggle="dropdown">
-
-    <ul class="overflow-auto dropdown-menu"
-        style="max-height: 336px!important;{% if hidden %}display: none!important;{% endif %}"
-        id="{{ id }}_results"></ul>
+    <input class="form-control form-control-turbotin-cyan border-turbotin-cyan" id="{{ id }}_input"
+           placeholder="{{ placeholder }}" data-bs-toggle="dropdown" autocomplete="off">
+    {% if not hidden %}
+        <ul class="overflow-auto dropdown-menu search-results"
+            style="max-height: 336px!important;"
+            id="{{ id }}_results"></ul>
+    {% endif %}
 
 </div>
+{% if not hidden %}
+    <script>
+        {
+            let items = {{ items|safe }};
+            let parent = document.getElementById('{{ id }}_parent');
+            let input_element = document.getElementById('{{ id }}_input');
+            let dropdown_element = new bootstrap.Dropdown(input_element);
+            let result_element = document.getElementById("{{ id }}_results");
 
-<script>
-    let items = {{ items|safe }};
-    let parent = document.getElementById('{{ id }}_parent');
-    let input_element = document.getElementById('{{ id }}_input');
-    let dropdown_element = new bootstrap.Dropdown(input_element);
-    let result_element = document.getElementById("{{ id }}_results");
+            parent.addEventListener('shown.bs.dropdown', function () {
+                if (input_element !== document.activeElement)
+                    dropdown_element.hide();
+            });
+            parent.addEventListener('hidden.bs.dropdown', function () {
+                if (input_element === document.activeElement && result_element.innerText !== "")
+                    dropdown_element.show();
+            });
 
-    parent.addEventListener('shown.bs.dropdown', function () {
-        if (input_element !== document.activeElement)
-            dropdown_element.hide();
-    });
-    parent.addEventListener('hidden.bs.dropdown', function () {
-        if (input_element === document.activeElement && result_element.innerText !== "")
-            dropdown_element.show();
-    });
-
-    document.getElementById("{{ id }}_input").addEventListener("keyup", function () {
-        update_search("{{ id }}", items, dropdown_element);
-    });
-    update_search("{{ id }}", items, dropdown_element);
-</script>
+            document.getElementById("{{ id }}_input").addEventListener("keyup", function () {
+                update_search("{{ id }}", items, dropdown_element);
+            });
+            update_search("{{ id }}", items, dropdown_element);
+        }
+    </script>
+{% endif %}

@@ -2,12 +2,26 @@
 {% block body %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <script>{% include 'elements/search_bar.js' %}</script>
+    <div class="container d-block d-lg-none min-vw-100">
+        <div class="mx-auto m-3 col-10 col-sm-8 col-md-6">
+            {% with items=search_list, id="main_search_mobile", placeholder="Search for blends" %}
+                {% include 'elements/search_bar.html' %}
+            {% endwith %}
+        </div>
+    </div>
     <div class="container-fluid flex-grow-1 d-flex">
         <div class="row d-flex flex-fill">
             <div class="d-none d-lg-block col border bg-light" style="max-width: 300px">
                 <nav class="navbar-light nav flex-column m-3">
                     <ul class="navbar-nav">
+                        <li class="nav-item mb-3">
+                            {% with items=search_list, id="main_search", placeholder="Search for blends" %}
+                                {% include 'elements/search_bar.html' %}
+                            {% endwith %}
+                        </li>
                         <a class="navbar-brand" href="#">{{ brand }}</a>
+
                         {% for i in range(blends|length) %}
                             <li class="nav-item">
                                 <a class="nav-link link-secondary {% if blends[i].id|int==id %}active{% endif %}"
@@ -47,7 +61,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>

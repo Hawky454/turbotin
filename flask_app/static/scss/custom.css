@@ -10184,6 +10184,9 @@ textarea.form-control-lg {
   border-color: #00D2D2;
   box-shadow: 0 0 0 0.25rem rgba(0, 210, 210, 0.25); }
 
+@media (max-width: 767.98px) {
+  .search-results {
+    max-width: 100%; } }
 input[type=search]::-ms-clear {
   display: none;
   width: 0;
@@ -10199,6 +10202,15 @@ input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-results-button,
 input[type="search"]::-webkit-search-results-decoration {
   display: none; }
+
+.dropdown-item:active {
+  color: #fff !important;
+  background-color: #00D2D2 !important; }
+
+.dropdown-item-no-highlight:active {
+  color: #16181b !important;
+  text-decoration: none !important;
+  background-color: #f8f9fa !important; }
 
 .custom-control-input:focus {
   border-color: #00D2D2 !important;
