@@ -39,7 +39,6 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                {% do nav_items.append({"name": "Log out", "link": "/logout"}) if current_user.is_authenticated else nav_items.append({"name": "Log in", "link": "/login"}) %}
                 {% for item in nav_items %}
                     <li class="nav-item">
                         <a class="nav-link {% if loop.last %}me-2{% endif %} {% if request.path.startswith(item.link) %}active{% endif %}"
@@ -63,6 +62,17 @@
                         </a>
                     </li>
                 {% endfor %}
+                {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="btn btn-turbotin-cyan" href="/logout">
+                            Log out
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        {% include 'elements/login_modal.html' %}
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </div>
