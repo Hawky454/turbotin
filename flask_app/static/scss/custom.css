@@ -10231,4 +10231,12 @@ input[type="search"]::-webkit-search-results-decoration {
   background-color: #00D2D2 !important;
   border-color: #00D2D2 !important; }
 
+.custom-accordion-button:not(.collapsed) {
+  color: #212529 !important;
+  background-color: rgba(0, 210, 210, 0.1) !important; }
+
+.custom-accordion-button:focus {
+  border-color: #00D2D2 !important;
+  box-shadow: 0 0 0 0.2rem rgba(0, 210, 210, 0.25) !important; }
+
 /*# sourceMappingURL=custom.css.map */

@@ -39,18 +39,6 @@ $theme-colors: (
   }
 }
 
-//
-//.has-error .form-control:focus {
-//  box-shadow: none;
-//  -webkit-box-shadow: none;
-//}
-//
-//.btn:focus {
-//  border-color: $turbotin-cyan;
-//  box-shadow: none;
-//  -webkit-box-shadow: none
-//}
-//
 input[type=search]::-ms-clear {
   display: none;
   width: 0;
@@ -69,7 +57,6 @@ input[type="search"]::-webkit-search-results-button,
 input[type="search"]::-webkit-search-results-decoration {
   display: none;
 }
-
 
 .dropdown-item:active {
   color: #fff !important;
@@ -105,3 +92,14 @@ input[type="search"]::-webkit-search-results-decoration {
   background-color: $turbotin-cyan !important;
   border-color: $turbotin-cyan !important;
 }
+
+.custom-accordion-button:not(.collapsed) {
+  color: $dark !important;
+  background-color: rgba(0, 210, 210, 0.1) !important;
+}
+
+.custom-accordion-button:focus {
+  border-color: $turbotin-cyan !important;
+  box-shadow: 0 0 0 0.2rem rgba(0, 210, 210, 0.25) !important;
+}
+
