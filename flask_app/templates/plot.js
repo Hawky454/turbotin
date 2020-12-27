@@ -16,16 +16,21 @@ var config = {
         responsive: true,
         title: {
             display: true,
-            text: 'Price history'
+            text: 'Price When in Stock'
         },
         scales: {
             xAxes: [{
                 type: 'time'
             }],
             yAxes: [{
+                ticks: {
+                    callback: function (label, index, labels) {
+                        return "$" + label;
+                    }
+                },
                 scaleLabel: {
                     display: true,
-                    labelString: '$'
+                    labelString: 'Price'
                 }
             }]
         },
@@ -35,7 +40,20 @@ var config = {
             }
         },
         showLines: false,
-        maintainAspectRatio: false
+        maintainAspectRatio: false,
+        tooltips: {
+            callbacks: {
+                label: function (tooltipItem, data) {
+                    var label = data.datasets[tooltipItem.datasetIndex].label || '';
+
+                    if (label) {
+                        label += ': $';
+                    }
+                    label += tooltipItem.yLabel.toFixed(2);
+                    return label;
+                }
+            }
+        }
     }
 };
 

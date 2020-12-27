@@ -22,6 +22,7 @@ archive_df = pd.read_feather("archive.feather")
 archive_df["price_num"] = archive_df["price"].str.extract(r'(\d+.\d+)')
 archive_df["price_num"] = pd.to_numeric(archive_df["price_num"], errors="coerce")
 archive_df = archive_df[archive_df["item"] != ""]
+archive_df = archive_df[archive_df["stock"] != "Out of stock"]
 
 colors = ["#007bff", "#6610f2", "#6f42c1", "#e83e8c", "#dc3545", "#fd7e14", "#ffc107", "#28a745", "#20c997", "#17a2b8"]
 stores = list(pd.unique(archive_df["store"]))
