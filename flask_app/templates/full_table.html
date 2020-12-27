@@ -87,7 +87,13 @@
             <th scope="row" class="fw-normal" id="store"></th>
             <td id="item"></td>
             <td class="d-none d-lg-table-cell" id="stock"></td>
-            <td id="price"></td>
+            <td id="price">
+                <a class="float-end link-secondary" href="#" data-bs-toggle="tooltip" title="Price history">
+                    {% with width=20, height=20 %}
+                        {% include 'icons/graph_up.html' %}
+                    {% endwith %}
+                </a>
+            </td>
             <td class="d-none d-lg-table-cell" id="time"></td>
         </tr>
     </template>

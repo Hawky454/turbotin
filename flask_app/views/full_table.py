@@ -15,8 +15,11 @@ main_df["price_num"] = main_df["price"].str.extract(r'(\d+.\d+)')
 main_df["price_num"] = pd.to_numeric(main_df["price_num"], errors="coerce").fillna(10 ** 4)
 main_df = main_df[main_df["item"] != ""]
 df = main_df.copy()
+ids = list(pd.unique(main_df["brand"] + " " + main_df["blend"]))
 
-cols = ["store", "link", "item", "stock", "price", "time", "price_num"]
+df["id"] = (df["brand"] + " " + df["blend"]).apply(lambda x: ids.index(x))
+
+cols = ["store", "link", "item", "stock", "price", "time", "price_num", "id"]
 df = df[cols]
 
 

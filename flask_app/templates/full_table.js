@@ -57,7 +57,15 @@ function get_filtered_dict(allowed_stores = [], filter_stock = false, item_filte
         item = item.slice(0, index) + "<b>" + item.slice(index, index + item_filter.length) + "</b>" + item.slice(index + item_filter.length);
         price = row[4];
         time = moment.unix(row[5]).fromNow();
-        table_dict.push({"store": store, "link": link, "item": item, "stock": stock, "price": price, "time": time});
+        table_dict.push({
+            "store": store,
+            "link": link,
+            "item": item,
+            "stock": stock,
+            "price": price,
+            "time": time,
+            "id": row[7]
+        });
     }
     return table_dict;
 }
@@ -88,9 +96,11 @@ function filter_table() {
         row.item = `<a class="${color}" href="${row.link}" target="_blank">${row.item}</a>`;
         delete row.link;
         var new_row = document.getElementById("row_template").content.cloneNode(true);
+        new_row.querySelector("#price").firstElementChild.href = "/individual_blends/" + row.id;
+        delete row.id;
         for (var key in row) {
             var cell = new_row.querySelector("#" + key);
-            cell.innerHTML = row[key];
+            cell.innerHTML += row[key];
             cell.removeAttribute("id");
         }
         table.append(new_row)
