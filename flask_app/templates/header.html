@@ -12,13 +12,14 @@
         crossorigin="anonymous"></script>
 
 <body class="d-flex flex-column min-vh-100">
-
+{% set login_link =  "/email_updates" if current_user.is_authenticated else '#" data-bs-toggle="modal" data-bs-target="#exampleModal' %}
 {% set nav_items = [
     {"name": "Full Table", "link": "/full_table"},
     {"name": "Price History", "link": "/individual_blends"},
-    {"name": "Availability Notifications", "link": "/email_updates"},
+    {"name": "Availability Notifications", "link": login_link},
     {"name": "FAQ", "link": "/faq"}
 ] %}
+
 
 {% set icons = [
     {"icon": "instagram.html", "link": "https://www.instagram.com/turbotinman/"},
@@ -42,7 +43,7 @@
                 {% for item in nav_items %}
                     <li class="nav-item">
                         <a class="nav-link {% if loop.last %}me-2{% endif %} {% if request.path.startswith(item.link) %}active{% endif %}"
-                           href="{{ item.link }}">{{ item.name }}</a>
+                           href="{{ item.link|safe }}">{{ item.name }}</a>
                     </li>
                 {% endfor %}
                 <li class="nav-item">
