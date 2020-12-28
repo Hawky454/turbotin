@@ -85,9 +85,3 @@ def send_log_email(log_data):
             for td in tr[i].find_all("td"):
                 td["style"] = "color:rgba(255,0,0, 1)"
     send_email("turbotinftw@gmail.com", "Website Updated", str(soup))
-
-
-def send_email_confirmation_code(email, url):
-    subject = "Your email verification code for turbotin.com"
-    body = "Go to this url to verify your email address: {}".format(url)
-    send_email(email, subject, body)

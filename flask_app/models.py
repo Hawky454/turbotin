@@ -21,3 +21,5 @@ class User(UserMixin, db.Model):
     email_verified = db.Column(db.Boolean())
     email_code = db.Column(db.String(100))
     email_updates = db.Column(db.String(10000))
+    password_reset_code = db.Column(db.String(100))
+    latest_auth_email = db.Column(db.DateTime())
