@@ -13,10 +13,11 @@
 
 <body class="d-flex flex-column min-vh-100">
 {% set login_link =  "/email_updates" if current_user.is_authenticated else '#" data-bs-toggle="modal" data-bs-target="#exampleModal' %}
+{% set notification_name = "My Notifications" if current_user.is_authenticated else "Availability Notifications" %}
 {% set nav_items = [
     {"name": "Full Table", "link": "/full_table"},
     {"name": "Price History", "link": "/individual_blends"},
-    {"name": "Availability Notifications", "link": login_link},
+    {"name": notification_name, "link": login_link},
     {"name": "FAQ", "link": "/faq"}
 ] %}
 
