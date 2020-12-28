@@ -27,7 +27,7 @@ def login_post():
     # check if the user actually exists
     # take the user-supplied password, hash it, and compare it to the hashed password in the database
     if not user or not check_password_hash(user.password, password):
-        flash('Please check your login details and try again.')
+        flash('Please check your login details and try again.', "danger")
         return redirect(url_for('auth.login'))  # if the user doesn't exist or password is wrong, reload the page
 
     # if the above check passes, then we know the user has the right credentials
@@ -58,7 +58,7 @@ def signup_post():
 
     # if a user is found, we want to redirect back to signup page so user can try again
     if user:
-        flash('Email address already exists')
+        flash('Email address already exists', "danger")
         return redirect(url_for('auth.signup'))
 
     # create a new user with the form data. Hash the password so the plaintext version isn't saved.
@@ -74,9 +74,8 @@ def signup_post():
     # add the new user to the database
     db.session.add(new_user)
     db.session.commit()
-
-    send_email_confirmation_code(new_user.email, request.url_root + url_for("auth.verify_email", user_id=new_user.id,
-                                                                            email_code=new_user.email_code))
+    url = request.url_root + url_for("auth.verify_email", user_id=new_user.id, email_code=new_user.email_code)
+    send_email_confirmation_code(new_user.email, url)
 
     return redirect(url_for('auth.login'))
 
@@ -87,7 +86,7 @@ def verify_email(user_id, email_code):
     if email_code == user.email_code:
         user.email_verified = True
         db.session.commit()
-        flash('Email verified')
+        flash('Email verified', "success")
 
     return redirect("/email_updates")
 
@@ -95,8 +94,23 @@ def verify_email(user_id, email_code):
 @auth_blueprint.route('/resend_email')
 @login_required
 def resend_email():
-    send_email_confirmation_code(current_user.email,
-                                 request.url_root + url_for("auth.verify_email", user_id=current_user.id,
-                                                            email_code=current_user.email_code))
-    flash('Email sent')
+    url = request.url_root + url_for("auth.verify_email", user_id=current_user.id, email_code=current_user.email_code)
+    send_email_confirmation_code(current_user.email, url)
+    flash('Email sent', "success")
     return redirect("/email_updates")
+
+
+@auth_blueprint.route('/reset_password')
+def reset_password():
+    return render_template("reset_password.html")
+
+
+@auth_blueprint.route('/reset_password', methods=['POST'])
+def reset_password_post():
+    email = request.form.get('email')
+
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        flash('This email does not exist.', "danger")
+
+    return redirect(url_for('email_updates.main'))

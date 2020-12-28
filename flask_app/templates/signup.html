@@ -4,13 +4,7 @@
     <div class="container">
         <div class="col m-5 mx-auto text " style="max-width: 400px;">
             <h3 class="title">Sign Up</h3>
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <div class="alert alert-danger">
-                        {{ messages[0] }}
-                    </div>
-                {% endif %}
-            {% endwith %}
+            {% include 'elements/flashed_alert.html' %}
             <form method="POST" action="/signup">
                 <div class="mb-3">
                     <label for="InputEmailSignUp" class="form-label">Email address</label>
