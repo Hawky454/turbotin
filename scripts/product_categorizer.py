@@ -32,7 +32,7 @@ def simplify_string(item):
 
 def categorize(filename):
     # Variable allowing for relative paths
-    path = os.path.dirname(__file__)
+    path = os.path.dirname(os.path.dirname(__file__))
     with open(filename, "rb") as f:
         product_data = pickle.load(f)
     with open(os.path.join(path, "data/review_data.p"), "rb") as f:

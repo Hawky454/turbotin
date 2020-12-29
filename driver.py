@@ -1,15 +1,15 @@
 import pickle
-from review_scraper import get_reviews
+from scripts.review_scraper import get_reviews
 from datetime import datetime
 import pandas as pd
 import os
 from importlib import import_module
-from product_categorizer import categorize
-from html_generator import generate_html
+from scripts.product_categorizer import categorize
 from tqdm import tqdm
 import traceback
-from email_methods import send_log_email, send_update
-import sys
+from scripts.email_methods import send_log_email, send_update
+from flask_app import db
+from flask_app.models import Tobacco
 
 
 def run_safely(func, message, args=None):
@@ -32,7 +32,7 @@ def run_safely(func, message, args=None):
 
 
 def scrape_products(name, pbar=None):
-    module = import_module("product_scrapers." + name.replace(".py", ""))
+    module = import_module("scripts.product_scrapers." + name.replace(".py", ""))
     scrape_data = pd.DataFrame(module.scrape(pbar))
     return scrape_data
 
@@ -42,7 +42,15 @@ def get_review_data():
     return data
 
 
-def update_website(test=False):
+def df_to_sql(df):
+    tobacco_list = []
+    for index, data in df.iterrows():
+        tobacco_list.append(Tobacco(**data))
+    db.session.add_all(tobacco_list)
+    db.session.commit()
+
+
+def update_website():
     # Variable allowing for relative paths
     path = os.path.dirname(__file__)
 
@@ -51,7 +59,7 @@ def update_website(test=False):
     log_data = pd.DataFrame(columns=["name", "time", "products", "error"])
 
     # Scrape all product data
-    pbar = tqdm(os.listdir(os.path.join(path, "product_scrapers")), desc="Scraping products")
+    pbar = tqdm(os.listdir(os.path.join(path, "scripts/product_scrapers")), desc="Scraping products")
     for name in pbar:
         if name.startswith("__"):
             continue
@@ -79,47 +87,20 @@ def update_website(test=False):
     log_data = log_data.append(log, ignore_index=True)
     with open(os.path.join(path, "data/product_data.p"), "rb") as f:
         product_data = pickle.load(f)
-    with open(os.path.join(path, "archive/", "data" + datetime.now().strftime("_%m_%d_%Y_%H_%M") + ".p"), "wb") as f:
-        if "error" not in log:
-            pickle.dump(product_data, f)
-    product_data = None
+    product_data = product_data[product_data["item"] != ""]
+    product_data = product_data.dropna(subset=["item", "link", "time"], how="any")
+    product_data["time"] = pd.to_datetime(product_data["time"], format="%m/%d/%Y %H:%M")
+    product_data = product_data.drop_duplicates(subset=["item", "link", "time"])
 
-    # Load old data
-    archive_data = pd.DataFrame()
-    for file in tqdm(os.listdir(os.path.join(path, "archive")), desc="Loading archive"):
-        with open(os.path.join(path, "archive/", file), "rb") as f:
-            df = pickle.load(f)
-        df = clean_archive_data(df)
-        archive_data = archive_data.append(df)
-    archive_data = archive_data.drop_duplicates()
-
-    # Reload product data in case archive causes memory errors
-    with open(os.path.join(path, "data/product_data.p"), "rb") as f:
-        product_data = pickle.load(f)
-
-    # Generate the html files
-    _, log = run_safely(generate_html, "Generating HTML", [product_data, archive_data, path])
-    log_data = log_data.append(log, ignore_index=True)
+    df_to_sql(product_data)
 
     # Send the emil updates
-    _, log = run_safely(send_update, "Sending Updates", [test])
+    _, log = run_safely(send_update, "Sending Updates", [product_data, pd.read_sql("user", db.engine)])
     log_data = log_data.append(log, ignore_index=True)
 
     # Send results log as email
     run_safely(send_log_email, "Sending log", [log_data])
 
 
-def clean_archive_data(df):
-    df["date"] = df["time"].str.replace(r'(\d{2})\/(\d{2})\/(\d{4}).+', r'\3, \1, \2')
-    df = df[df["price"].str.contains(r"^\$\d{1,3}\.\d\d$")]
-    df = df[df.price != ""]
-    df = df[["date", "store", "price", "brand", "blend", "stock"]]
-    df["price"] = df["price"].str[1:]
-    return df
-
-
 if __name__ == "__main__":
-    test = False
-    if len(sys.argv) > 1 and sys.argv[1] == "test":
-        test = True
-    update_website(test)
+    update_website()
