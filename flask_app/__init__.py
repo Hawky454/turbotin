@@ -9,8 +9,10 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(16)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ["DATABASE_URL"]
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_POOL_RECYCLE'] = 280
 
-db = SQLAlchemy(app, engine_options={"pool_recycle": 280})
+# db = SQLAlchemy(app, engine_options={"pool_recycle": 280})
+db = SQLAlchemy(app)
 db.init_app(app)
 
 login_manager = LoginManager()
