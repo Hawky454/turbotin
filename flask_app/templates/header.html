@@ -47,11 +47,23 @@
                            href="{{ item.link|safe }}">{{ item.name }}</a>
                     </li>
                 {% endfor %}
+                <li class="nav-item me-3 mb-2 mb-lg-0">
+                    {% if current_user.is_authenticated %}
+                        <a class="btn btn-secondary" href="/logout">
+                            Log out
+                        </a>
+                    {% else %}
+                        {% if not request.path.startswith("/login") %}
+                            {% include 'elements/login_modal.html' %}
+                        {% endif %}
+                    {% endif %}
+                </li>
                 <li class="nav-item">
                     <a class="btn btn-turbotin-cyan" id="donate">
                         Donate
                     </a>
                 </li>
+
 
             </ul>
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-lg-flex d-none">
@@ -64,19 +76,6 @@
                         </a>
                     </li>
                 {% endfor %}
-                {% if current_user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="btn btn-secondary" href="/logout">
-                            Log out
-                        </a>
-                    </li>
-                {% else %}
-                    {% if not request.path.startswith("/login") %}
-                        <li class="nav-item">
-                            {% include 'elements/login_modal.html' %}
-                        </li>
-                    {% endif %}
-                {% endif %}
             </ul>
         </div>
     </div>
