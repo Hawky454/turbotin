@@ -14,10 +14,8 @@ df.loc[df["stock"] == "Out of stock", "item_class"] = "text-danger"
 df["stock"] = "<div class='" + df["item_class"] + "'>" + df["stock"] + "</div>"
 df["time"] = '''<script>document.write(moment.unix(''' + df["time"] + ''').fromNow());</script>'''
 
-# archive_df = pd.read_sql("tobacco", db.engine)
-# archive_df.to_feather("archive.feather")
 search_list = [{"link": "/individual_blends/{}".format(n), "text": ids[n]} for n in range(len(ids))]
-archive_df = pd.read_feather("archive.feather")
+archive_df = pd.read_sql("tobacco", db.engine)
 archive_df["price_num"] = archive_df["price"].str.extract(r'(\d+.\d+)')
 archive_df["price_num"] = pd.to_numeric(archive_df["price_num"], errors="coerce")
 archive_df = archive_df[archive_df["item"] != ""]
