@@ -57,7 +57,7 @@
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-lg-flex d-none">
                 {% for item in icons %}
                     <li class="nav-item">
-                        <a href="{{ item.link }}" class="nav-link" target="_blank">
+                        <a href="{{ item.link }}" class="nav-link d-flex align-items-center" target="_blank">
                             {% with width=20, height=20 %}
                                 {% include "icons/" + item.icon %}
                             {% endwith %}
