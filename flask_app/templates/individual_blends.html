@@ -38,8 +38,21 @@
                             <img src="{{ url_for('static', filename='TurboTinLogo.png') }}" class="img-fluid">
                         </div>
                         <div class="col">
-                            <h1>{{ blend }}</h1>
+                            <h1 class="d-flex align-items-center">
+                                {{ blend }}
+                                <span class="ms-auto"></span>
+                                <a type="button" class="btn btn-turbotin-cyan d-flex align-items-center"
+                                   title="Notify me when in stock." href="/email_updates/{{ brand }}/{{ blend }}">
+                                    {% with height=16, width=16 %}
+                                        {% include 'icons/bell.html' %}
+                                    {% endwith %}
+                                    <span class="d-none d-lg-block">&nbsp;Notify Me</span>
+                                </a>
+                            </h1>
+
+
                         </div>
+
                     </div>
                     <div class="mx-auto">
                         <ul class="list-group">

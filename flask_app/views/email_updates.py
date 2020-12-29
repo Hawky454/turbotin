@@ -1,11 +1,11 @@
 from .. import db
 from flask import render_template, Blueprint, request, redirect, url_for
 from .full_table import main_df
-from .individual_blends import blend_list, store_colors
+from .individual_blends import store_colors
 import pandas as pd
 import json
 from flask_login import login_required, current_user
-from scripts.email_methods import send_email
+from .full_table import ids
 
 email_updates_blueprint = Blueprint('email_updates', __name__, template_folder='templates')
 
@@ -19,16 +19,16 @@ store_list = list(pd.unique(df["store"]))
 
 @email_updates_blueprint.route('/email_updates')
 @login_required
-def main():
+def main(brand=None, blend=None):
     updates = json.loads(current_user.email_updates)
     for n in range(len(updates)):
         brand_blend = updates[n]["brand"] + " " + updates[n]["blend"]
-        if brand_blend in blend_list:
-            updates[n]["id"] = blend_list.index(updates[n]["brand"] + " " + updates[n]["blend"])
+        if brand_blend in ids:
+            updates[n]["id"] = ids.index(updates[n]["brand"] + " " + updates[n]["blend"])
         else:
             updates[n]["id"] = None
     return render_template("email_updates.html", brands=brands, blends=blends, stores=sorted(store_list),
-                           updates=updates, store_colors=store_colors)
+                           updates=updates, store_colors=store_colors, brand=brand, blend=blend)
 
 
 @email_updates_blueprint.route('/email_updates/add_notification', methods=['POST'])
@@ -66,6 +66,12 @@ def add_notification():
     current_user.email_updates = json.dumps(updates)
     db.session.commit()
     return json.dumps({"failed": False, "what": None})
+
+
+@email_updates_blueprint.route('/email_updates/<brand>/<blend>')
+@login_required
+def main_with_id(brand, blend):
+    return main(brand, blend)
 
 
 @email_updates_blueprint.route('/email_updates/remove_notification', methods=['POST'])

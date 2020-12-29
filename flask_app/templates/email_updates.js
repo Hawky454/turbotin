@@ -2,7 +2,6 @@ var brands = {{brands}};
 var brand_search_list = [];
 for (let brand of brands)
     brand_search_list.push({"link": `javascript:brand_clicked('${brand}')`, "text": brand});
-
 var blends = {{blends}};
 
 var brand_input = document.getElementById("brand_search_input");
@@ -82,4 +81,17 @@ function remove(i) {
             location.reload();
     });
 
+};
+
+function check_for_input() {
+    var brand = "{{ brand }}";
+    var blend = "{{ blend }}";
+    if (brands.includes(brand) && blends[brand].includes(blend)) {
+        brand_input.value = brand;
+        blend_input.value = blend;
+        blend_input.disabled = !brands.includes(brand_input.value);
+        update_search("brand_search", brand_search_list, new bootstrap.Dropdown(brand_input));
+        update_blends()
+    }
 }
+check_for_input();
