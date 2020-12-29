@@ -1,5 +1,5 @@
 from .. import db
-from .full_table import main_df
+from .full_table import main_df, ids
 from flask import render_template, Blueprint, redirect
 from ..models import Tobacco
 import pandas as pd
@@ -16,8 +16,7 @@ df["time"] = '''<script>document.write(moment.unix(''' + df["time"] + ''').fromN
 
 # archive_df = pd.read_sql("tobacco", db.engine)
 # archive_df.to_feather("archive.feather")
-blend_list = list(pd.unique(main_df["brand"] + " " + main_df["blend"]))
-search_list = [{"link": "/individual_blends/{}".format(n), "text": blend_list[n]} for n in range(len(blend_list))]
+search_list = [{"link": "/individual_blends/{}".format(n), "text": ids[n]} for n in range(len(ids))]
 archive_df = pd.read_feather("archive.feather")
 archive_df["price_num"] = archive_df["price"].str.extract(r'(\d+.\d+)')
 archive_df["price_num"] = pd.to_numeric(archive_df["price_num"], errors="coerce")
@@ -32,9 +31,9 @@ store_colors = {stores[n]: colors[divmod(n, len(colors))[1]] for n in range(len(
 @individual_blends_blueprint.route('/individual_blends/<blend>')
 def main(blend):
     blend = int(blend)
-    brand = main_df["brand"][(main_df["brand"] + " " + main_df["blend"]) == blend_list[blend]].iloc[0]
+    brand = main_df["brand"][(main_df["brand"] + " " + main_df["blend"]) == ids[blend]].iloc[0]
     blends = pd.unique(main_df["blend"][main_df["brand"] == brand])
-    blends = [{"name": n, "id": blend_list.index(brand + " " + n)} for n in blends]
+    blends = [{"name": n, "id": ids.index(brand + " " + n)} for n in blends]
     _, blends = zip(*sorted(zip([n["name"] for n in blends], blends)))
     blend_name = [n["name"] for n in blends if n["id"] == blend][0]
 
@@ -52,7 +51,7 @@ def main(blend):
 
 @individual_blends_blueprint.route('/individual_blends')
 def default():
-    return redirect("/individual_blends/{}".format(int(random.random() * len(blend_list))))
+    return redirect("/individual_blends/{}".format(int(random.random() * len(ids))))
 
 
 def get_plot_data(brand, blend):
