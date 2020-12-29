@@ -34,7 +34,8 @@
                                                 {{ updates[i].stores[n] }}
                                                 {% if n != updates[i].stores|length - 1 %}, {% endif %}
                                             {% elif n == 3 %}
-                                                <small class="link-secondary" title="{{ stores[3:]|join(", ") }}">
+                                                <small class="link-secondary"
+                                                       title="{{ updates[i].stores[3:]|join(", ") }}">
                                                     and {{ updates[i].stores|length - 3 }} more
                                                 </small>
                                             {% endif %}
