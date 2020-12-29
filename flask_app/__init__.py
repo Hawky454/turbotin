@@ -23,11 +23,15 @@ from .views.full_table import full_table_blueprint
 from .views.individual_blends import individual_blends_blueprint
 from .views.email_updates import email_updates_blueprint
 from .auth import auth_blueprint
+from .auth.email_verification import email_verification_blueprint
+from .auth.reset_password import reset_password_blueprint
 
 app.register_blueprint(full_table_blueprint)
 app.register_blueprint(individual_blends_blueprint)
 app.register_blueprint(email_updates_blueprint)
 app.register_blueprint(auth_blueprint)
+app.register_blueprint(email_verification_blueprint)
+app.register_blueprint(reset_password_blueprint)
 
 app.jinja_env.add_extension('jinja2.ext.do')
 
