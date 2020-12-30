@@ -1,7 +1,7 @@
-import pickle
 import re
 from tqdm import tqdm
 import os
+import pandas as pd
 
 
 def get_category(item, cat_data, review_data):
@@ -33,12 +33,9 @@ def simplify_string(item):
 def categorize(filename):
     # Variable allowing for relative paths
     path = os.path.dirname(os.path.dirname(__file__))
-    with open(filename, "rb") as f:
-        product_data = pickle.load(f)
-    with open(os.path.join(path, "data/review_data.p"), "rb") as f:
-        review_data = pickle.load(f)
-    with open(os.path.join(path, "data/cat_data.p"), "rb") as f:
-        cat_data = pickle.load(f)
+    product_data = pd.read_feather(filename)
+    review_data = pd.read_feather(os.path.join(path, "data/review_data.feather"))
+    cat_data = pd.read_feather(os.path.join(path, "data/cat_data.feather"))
     product_data["brand"] = ""
     product_data["blend"] = ""
     product_data = product_data.reset_index(drop=True)
@@ -49,7 +46,7 @@ def categorize(filename):
         if not contains_item:
             cat_data = cat_data.append({"item": row["item"], "brand": tobacco["brand"], "blend": tobacco["blend"]},
                                        ignore_index=True)
-    with open(os.path.join(path, filename), "wb") as f:
-        pickle.dump(product_data, f)
-    with open(os.path.join(path, "data/cat_data.p"), "wb") as f:
-        pickle.dump(cat_data, f)
+    product_data = product_data.reset_index(drop=True)
+    product_data.to_feather(filename)
+    cat_data = cat_data.reset_index(drop=True)
+    cat_data.to_feather(os.path.join(path, "data/cat_data.feather"))

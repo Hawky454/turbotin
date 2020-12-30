@@ -1,7 +1,5 @@
-from .. import db
-from .full_table import main_df, ids
+from .full_table import main_df, ids, archive
 from flask import render_template, Blueprint, redirect
-from ..models import Tobacco
 import pandas as pd
 import random
 
@@ -15,7 +13,7 @@ df["stock"] = "<div class='" + df["item_class"] + "'>" + df["stock"] + "</div>"
 df["time"] = '''<script>document.write(moment.unix(''' + df["time"] + ''').fromNow());</script>'''
 
 search_list = [{"link": "/individual_blends/{}".format(n), "text": ids[n]} for n in range(len(ids))]
-archive_df = pd.read_sql("tobacco", db.engine)
+archive_df = archive.copy()
 archive_df["price_num"] = archive_df["price"].str.extract(r'(\d+.\d+)')
 archive_df["price_num"] = pd.to_numeric(archive_df["price_num"], errors="coerce")
 archive_df = archive_df[archive_df["item"] != ""]

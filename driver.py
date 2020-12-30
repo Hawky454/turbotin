@@ -1,4 +1,3 @@
-import pickle
 from scripts.review_scraper import get_reviews
 from datetime import datetime
 import pandas as pd
@@ -71,28 +70,33 @@ def update_website():
         product_data = pd.concat([product_data, df])
 
     # Delete product data in case it could interfere with memory in remaining code
-    with open(os.path.join(path, "data/product_data.p"), "wb") as f:
-        pickle.dump(product_data, f)
+    product_data = product_data.reset_index(drop=True)
+    product_data.to_feather(os.path.join(path, "data/product_data.feather"))
     product_data = None
 
     # Scrape review data and delete review_data variable
     review_data, log = run_safely(get_review_data, "Scraping reviews")
     log_data = log_data.append(log, ignore_index=True)
-    with open(os.path.join(path, "data/review_data.p"), "wb") as f:
-        pickle.dump(review_data, f)
+    review_data = review_data.reset_index(drop=True)
+    review_data.to_feather(os.path.join(path, "data/review_data.feather"))
     review_data = None
 
     # Categorize products
-    _, log = run_safely(categorize, "Categorizing products", [os.path.join(path, "data/product_data.p")])
+    _, log = run_safely(categorize, "Categorizing products", [os.path.join(path, "data/product_data.feather")])
     log_data = log_data.append(log, ignore_index=True)
-    with open(os.path.join(path, "data/product_data.p"), "rb") as f:
-        product_data = pickle.load(f)
-    product_data = product_data[product_data["item"] != ""]
-    product_data = product_data.dropna(subset=["item", "link", "time"], how="any")
-    product_data["time"] = pd.to_datetime(product_data["time"], format="%m/%d/%Y %H:%M")
-    product_data = product_data.drop_duplicates(subset=["item", "link", "time"])
 
+    # Clean data so that it can be added to the sql db
+    product_data = pd.read_feather(os.path.join(path, "data/product_data.feather"))
+    product_data = clean_for_archive(product_data)
+    archive_filename = os.path.join(path, "archive/data{}.feather".format(datetime.now().strftime("_%m_%d_%Y_%H_%M")))
+    product_data.to_feather(archive_filename)
     df_to_sql(product_data)
+
+    # Concat it to the archive df
+    archive = pd.read_feather(os.path.join(path, "data/archive.feather"))
+    archive = pd.concat([archive, product_data])
+    archive = clean_for_archive(archive)
+    archive.to_feather(os.path.join(path, "data/archive.feather"))
 
     # Send the emil updates
     _, log = run_safely(send_update, "Sending Updates", [product_data, pd.read_sql("user", db.engine)])
@@ -100,6 +104,15 @@ def update_website():
 
     # Send results log as email
     run_safely(send_log_email, "Sending log", [log_data])
+
+
+def clean_for_archive(df):
+    df = df[df["item"] != ""]
+    df = df.dropna(subset=["item", "link", "time"], how="any")
+    df["time"] = pd.to_datetime(df["time"], format="%m/%d/%Y %H:%M")
+    df = df.drop_duplicates(subset=["item", "link", "time"])
+    df = df.reset_index(drop=True)
+    return df
 
 
 if __name__ == "__main__":
