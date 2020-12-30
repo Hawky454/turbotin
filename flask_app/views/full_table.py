@@ -3,12 +3,14 @@ from flask import render_template, Blueprint
 import pandas as pd
 from datetime import timedelta
 import os
+from datetime import timedelta
 
 full_table_blueprint = Blueprint('full_table', __name__, template_folder='templates')
 
 archive = pd.read_feather(os.path.join(os.path.dirname(path), "data/archive.feather"))
 main_df = archive[archive["time"] >= archive["time"].max() - timedelta(hours=10)].copy()
 main_df["time"] = pd.to_datetime(main_df["time"], format="%m/%d/%Y %H:%M", utc=True)
+main_df["time"] = main_df["time"] + timedelta(hours=6)
 main_df["time"] = main_df["time"].apply(lambda x: str(int(x.timestamp())))
 main_df["price_num"] = main_df["price"].str.extract(r'(\d+.\d+)')
 main_df["price_num"] = pd.to_numeric(main_df["price_num"], errors="coerce").fillna(10 ** 4)
