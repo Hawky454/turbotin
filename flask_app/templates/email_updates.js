@@ -1,19 +1,20 @@
 var brands = {{brands}};
 var brand_search_list = [];
-for (let brand of brands)
-    brand_search_list.push({"link": `javascript:brand_clicked('${brand}')`, "text": brand});
+for (var i = 1; i < brands.length; i++)
+    brand_search_list.push({"link": `javascript:brand_clicked(${i})`, "text": brands[i]});
 var blends = {{blends}};
 
 var brand_input = document.getElementById("brand_search_input");
 var blend_input = document.getElementById("blend_search_input");
 var invalid_input = document.getElementById("invalid_input");
-function brand_clicked(brand) {
-    brand_input.value = brand;
+function brand_clicked(i) {
+    brand_input.value = brands[i];
     blend_input.disabled = false;
     update_blends();
 }
-function blend_clicked(blend) {
-    blend_input.value = blend;
+function blend_clicked(i) {
+    var brand = brand_input.value;
+    blend_input.value = blends[brand][i];
     update_blends();
 }
 function update_blends() {
@@ -21,8 +22,8 @@ function update_blends() {
     if (!brands.includes(brand))
         return false;
     var blend_search_list = [];
-    for (let blend of blends[brand])
-        blend_search_list.push({"link": `javascript:blend_clicked('${blend}')`, "text": blend})
+    for (var i = 1; i < blends[brand].length; i++)
+        blend_search_list.push({"link": `javascript:blend_clicked(${i})`, "text": blends[brand][i]})
     update_search("blend_search", blend_search_list, new bootstrap.Dropdown(blend_input));
     invalid_input.classList.add("d-none");
 }
