@@ -13,7 +13,7 @@
   },
   {
     "question": "Which online retailers are included in your search?",
-    "answer": "McCranies, 4Noggins, BlackCatCigars, WatchCityCigar, SmokingPipes, TopHat, CountrySquire, EACarey, KingSmoking, WindyCityCigars, TheStoryTellers, PayLess, BnB, KBVentures, PipeandLeaf, TheBriary, NiceAshCigars, PipeNook, Just4Him, Wilke, TobaccoPipes, MarsCigars, IwanRies, Boswells, CupOJoes, LilBrown, OutWest, CigarsIntl, SmokersHaven, Milan, LJPeretti, Hilandcigars, CDMCigars, Pipesand Cigars"
+    "answer": "From the Full Table, click the Filter Stores button to see a list of the current retailers in our search."
   },
   {
     "question": "How do I request another retailer to be added?",
@@ -21,11 +21,11 @@
   },
   {
     "question": "Can I get notified on the status of my favorite blends?",
-    "answer": "Yes, click on the \"Email Updates\" link and provide your email address and select the blend or brand to receive email notifications."
+    "answer": "Yes, click on the \"Availability Notifications\" link to select the blend or brand to receive email notifications.  A login is required so that you can manage the notifications"
   },
   {
-    "question": "Is there different data on the homepage versus the Individual Blends page?",
-    "answer": "No, it is the same data, just grouped differently.  The homepage has a search bar to granularly sort the entire product list. The Individual Blends pages attempt to group blends together and provide price tracking over time."
+    "question": "Can I limit which stores I get notifications fron?",
+    "answer": "Yes, you can limit each notification to one or more stores."
   },
   {
     "question": "Why does TurboTin.com look different on my mobile devices?",
@@ -36,8 +36,8 @@
     "answer": "On smaller screen sizes, the entry will be highlighted in red if it is out of stock."
   },
   {
-    "question": "The main page is really long.  How do I find what I'm looking for?",
-    "answer": "Use the search box at the top of the columns to reduce the list.  Clicking on the column titles with change the sort order. You can also browse the \"Individual Blends\" page to find the blends you are looking for."
+    "question": "Can I set a price limit on notifications?",
+    "answer": "Yes, there is a Max Price option that you can use to limit notifications by price."
   },
   {
     "question": "Why are some tobacco's not categorized correctly?",
