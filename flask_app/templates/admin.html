@@ -1,0 +1,64 @@
+{% extends "header.html" %}
+{% block body %}
+    <div class="container mt-5 mb-5">
+        <div class="col-md">
+            <div class="m-3">
+                <ul class="list-group">
+                    {% for key, value in blends.items() %}
+                        <li class="list-group-item">
+                            {{ key|safe }}
+                            <span class="float-end">{{ value }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <h2 class="m-3">Number of users: {{ users|length }}</h2>
+            <div class="accordion" id="accordion">
+                {% for i in range(users|length) %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading{{ i }}">
+                            <button class="accordion-button collapsed custom-accordion-button" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#collapse{{ i }}">
+                                {{ users[i].email }}
+                            </button>
+                        </h2>
+                        <div id="collapse{{ i }}" class="accordion-collapse collapse"
+                             data-bs-parent="#accordion">
+                            <div class="accordion-body text-secondary">
+                                {% set updates=users[i].email_updates %}
+                                <ul class="list-group">
+                                    {% for i in range(updates|length) %}
+                                        <li class="list-group-item">
+                                            <a href="/individual_blends/{{ updates[i].id }}" class="link-secondary">
+                                                <span>{{ updates[i].blend }}</span>
+                                            </a>
+                                            <small class="text-dark">{{ updates[i].brand }}</small>
+                                            {% if updates[i].max_price %}
+                                                <small class="text-secondary">{{ "${:,.2f}".format(updates[i].max_price) }}</small>
+                                            {% endif %}
+                                            {% if updates[i].stores %}
+                                                {% for n in range(updates[i].stores|length) if not n > 3 %}
+                                                    <small style="color: {{ store_colors[updates[i].stores[n]] }};">
+                                                        {% if n < 3 %}
+                                                            {{ updates[i].stores[n] }}
+                                                            {% if n != updates[i].stores|length - 1 %}, {% endif %}
+                                                        {% elif n == 3 %}
+                                                            <small class="link-secondary"
+                                                                   title="{{ updates[i].stores[3:]|join(", ") }}">
+                                                                and {{ updates[i].stores|length - 3 }} more
+                                                            </small>
+                                                        {% endif %}
+                                                    </small>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
