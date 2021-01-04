@@ -9,7 +9,7 @@ def scrape(pbar=None):
     url = "https://www.lilbrown.com/c-202-pipe-tobacco.aspx"
 
     soup = get_html(url)
-    for category in soup.find("div", class_="tabbitTabWrap").find_all("td"):
+    for category in soup.find("div", class_="tabbitTabWrap").find_all("td", class_="subEntityCell"):
         new_soup = get_html("https://www.lilbrown.com/" + category.find("a").get("href"))
         for product in new_soup.find_all("div", class_="productGridCellContents"):
             price = product.find("div", class_="price-wrap").get_text()
