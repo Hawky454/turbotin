@@ -13,7 +13,7 @@ def scrape(pbar=None):
         soup = get_html(url + str(page_number))
         for product in soup.find_all("div", class_="item-box"):
             link = "https://paylesscigarsandpipes.com" + product.find("a").get("href")
-            item = product.find("h2", class_="product-title").get_text()
+            item = product.find("h3", class_="product-title").get_text()
             item = " ".join(item.split())
             price = product.find("span", class_="actual-price").get_text()
             if product.find_all("div", class_="out-of-stock"):
