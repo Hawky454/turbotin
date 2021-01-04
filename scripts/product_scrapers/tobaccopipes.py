@@ -21,10 +21,9 @@ def scrape(pbar=None):
                     stock = "Out of stock"
                 price = li.find("span", class_="price--withoutTax").text.strip()
                 link = li.find("h4", class_="card-title").find("a").get("href")
-                print([item, price, stock, link])
                 item, price, stock, link = add_item(data, name, item, price, stock, link, pbar)
             if soup.find_all("li", class_="pagination-item--next"):
-                soup = soup.find("li", class_="pagination-item--next").find("a").get("href")
+                soup = get_html(soup.find("li", class_="pagination-item--next").find("a").get("href"))
             else:
                 break
     return data
