@@ -1,4 +1,6 @@
 from . import get_html, add_item
+from bs4 import BeautifulSoup
+import json
 
 
 def scrape(pbar=None):
@@ -10,21 +12,17 @@ def scrape(pbar=None):
     soup = get_html(url)
     next_page = True
     while next_page:
-        for product in soup.find_all("li", class_="product"):
-            for element in product.find_all():
-                if element.get("class"):
-                    if " ".join(element.get("class")) == "woocommerce-Price-amount amount":
-                        price = element.get_text().strip()
-                    if " ".join(element.get("class")) == "product-category product-info":
-                        item = element.find('h6').get_text().strip()
-                        link = element.get("href")
-                    if " ".join(element.get("class")) == "out-of-stock-button-inner":
-                        if element.get_text().strip() == "Out of stock":
-                            stock = element.get_text().strip()
-                    if stock != "Out of stock":
-                        stock = "In Stock"
-
-            item, price, stock, link = add_item(data, name, item, price, stock, link, pbar)
+        for products in soup.find_all("script", type="text/template"):
+            if "product-col" in products.string:
+                products_soup = BeautifulSoup(json.loads(products.string), "lxml")
+                for product in products_soup.find_all("li"):
+                    item = product.find("h3").text
+                    price = product.find("span", class_="amount").text
+                    stock = "In stock"
+                    if product.find("div", class_="out-of-stock"):
+                        stock = "Out of stock"
+                    link = product.find("a").get("href")
+                    item, price, stock, link = add_item(data, name, item, price, stock, link, pbar)
         if soup.find("a", class_="next"):
             new_url = soup.find("a", class_="next").get("href")
             soup = get_html(new_url)
