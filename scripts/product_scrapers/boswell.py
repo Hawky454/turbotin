@@ -1,8 +1,8 @@
-from datetime import datetime
 import time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from bs4 import BeautifulSoup
+from . import add_item
 
 
 def scrape(pbar=None):
@@ -47,11 +47,7 @@ def scrape(pbar=None):
                     price = product.find(class_="woocommerce-Price-amount amount").get_text()
                     link = product.find("a", class_="woocommerce-LoopProduct-link").get("href")
                     stock = "In Stock"
-                    data.append({"store": name, "item": item, "price": price, "stock": stock, "link": link,
-                                 "time": datetime.now().strftime("%m/%d/%Y %H:%M")})
-                    if pbar is not None:
-                        pbar.set_description(", ".join([name, item]))
-                    item, price, stock, link = ["", "", "", ""]
+                    item, price, stock, link = add_item(data, name, item, price, stock, link, pbar)
         finally:
             # tidy-up
             browser.quit()

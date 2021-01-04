@@ -1,5 +1,4 @@
-from . import get_html
-from datetime import datetime
+from . import get_html, add_item
 
 
 def scrape(pbar=None):
@@ -25,11 +24,7 @@ def scrape(pbar=None):
                         if stock == "Out Of Stock":
                             stock = "Out of stock"
 
-            data.append({"store": name, "item": item, "price": price, "stock": stock, "link": link,
-                         "time": datetime.now().strftime("%m/%d/%Y %H:%M")})
-            if pbar is not None:
-                pbar.set_description(", ".join([name, item]))
-            item, price, stock, link = ["", "", "", ""]
+            item, price, stock, link = add_item(data, name, item, price, stock, link, pbar)
         if soup.find("ul", class_="ui-pagination"):
             status = soup.find("li", class_="ui-pagination-nav-next")
             if status.find("span", class_="link-disabled"):

@@ -99,11 +99,11 @@ def update_website():
     archive.to_feather(os.path.join(path, "data/archive.feather"))
 
     # Send the emil updates
-    _, log = run_safely(send_update, "Sending Updates", [product_data, pd.read_sql("user", db.engine)])
-    log_data = log_data.append(log, ignore_index=True)
+    # _, log = run_safely(send_update, "Sending Updates", [product_data, pd.read_sql("user", db.engine)])
+    # log_data = log_data.append(log, ignore_index=True)
 
     # Send results log as email
-    run_safely(send_log_email, "Sending log", [log_data])
+    # run_safely(send_log_email, "Sending log", [log_data])
 
 
 def clean_for_archive(df):

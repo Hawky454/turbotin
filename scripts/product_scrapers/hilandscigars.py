@@ -1,5 +1,4 @@
-from . import get_html
-from datetime import datetime
+from . import get_html, add_item
 import re
 import json
 
@@ -36,10 +35,7 @@ def scrape(pbar=None):
                         stock = "Out of stock"
                     link = main_link
                     price = "${:.2f}".format(sub_product["display_price"])
-                    data.append({"store": name, "item": item, "price": price, "stock": stock, "link": link,
-                                 "time": datetime.now().strftime("%m/%d/%Y %H:%M")})
-                    if pbar is not None:
-                        pbar.set_description(", ".join([name, item]))
+                    item, price, stock, link = add_item(data, name, item, price, stock, link, pbar)
 
             else:
                 if product.find_all("span", class_="stock-label"):
@@ -54,10 +50,6 @@ def scrape(pbar=None):
                 price = product.find(class_="price").get_text()
                 if re.match(r"\$\d{2}\.\d{2} \$\d{2}\.\d{2}", price):
                     price = re.findall(r"\$\d{2}\.\d{2} (\$\d{2}\.\d{2})", price)[0]
-                data.append({"store": name, "item": item, "price": price, "stock": stock, "link": link,
-                             "time": datetime.now().strftime("%m/%d/%Y %H:%M")})
-                if pbar is not None:
-                    pbar.set_description(", ".join([name, item]))
-                item, price, stock, link = ["", "", "", ""]
+                item, price, stock, link = add_item(data, name, item, price, stock, link, pbar)
 
     return data

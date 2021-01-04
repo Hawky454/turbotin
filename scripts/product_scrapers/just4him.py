@@ -1,5 +1,4 @@
-from . import get_html
-from datetime import datetime
+from . import get_html, add_item
 import re
 
 
@@ -20,10 +19,6 @@ def scrape(pbar=None):
                 price = re.findall(r"\$\d+\.\d{2}", product.find_all(class_="productListing-data")[-1].get_text())[0]
                 stock = "In stock"
                 link = product.find("a").get("href")
-                data.append({"store": name, "item": item, "price": price, "stock": stock, "link": link,
-                             "time": datetime.now().strftime("%m/%d/%Y %H:%M")})
-                if pbar is not None:
-                    pbar.set_description(", ".join([name, item]))
-                item, price, stock, link = ["", "", "", ""]
+                item, price, stock, link = add_item(data, name, item, price, stock, link, pbar)
 
     return data

@@ -1,5 +1,4 @@
-from . import get_html
-from datetime import datetime
+from . import get_html, add_item
 import re
 import time
 
@@ -39,10 +38,6 @@ def scrape(pbar=None):
                             link = "https://www.smokingpipes.com" + items.get("href")
                 if element.get("src") and not element.get("class"):
                     item = element.get("alt")
-            data.append({"store": name, "item": item, "price": price, "stock": stock, "link": link,
-                         "time": datetime.now().strftime("%m/%d/%Y %H:%M")})
-            if pbar is not None:
-                pbar.set_description(", ".join([name, item]))
-            item, price, stock, link = ["", "", "", ""]
+            item, price, stock, link = add_item(data, name, item, price, stock, link, pbar)
 
     return data
