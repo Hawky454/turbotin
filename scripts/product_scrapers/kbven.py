@@ -3,7 +3,7 @@ import time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from bs4 import BeautifulSoup
-
+from . import add_item
 
 def scrape(pbar=None):
     item, price, stock, link = ["", "", "", ""]
