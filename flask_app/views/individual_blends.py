@@ -1,5 +1,5 @@
 from .full_table import main_df, ids, archive
-from flask import render_template, Blueprint, redirect
+from flask import render_template, Blueprint, redirect, url_for
 import pandas as pd
 import random
 
@@ -24,25 +24,30 @@ stores = list(pd.unique(archive_df["store"]))
 store_colors = {stores[n]: colors[divmod(n, len(colors))[1]] for n in range(len(stores))}
 
 
-@individual_blends_blueprint.route('/individual_blends/<blend>')
-def main(blend):
-    blend = int(blend)
-    brand = main_df["brand"][(main_df["brand"] + " " + main_df["blend"]) == ids[blend]].iloc[0]
+@individual_blends_blueprint.route('/individual_blends/<brand>/<blend>')
+def main(brand, blend):
+    blend_id = ids.index(brand + " " + blend)
     blends = pd.unique(main_df["blend"][main_df["brand"] == brand])
     blends = [{"name": n, "id": ids.index(brand + " " + n)} for n in blends]
     _, blends = zip(*sorted(zip([n["name"] for n in blends], blends)))
-    blend_name = [n["name"] for n in blends if n["id"] == blend][0]
 
     global df
     table_df = df.copy()
-    table_df = table_df[(table_df["brand"] == brand) & (table_df["blend"] == blend_name)]
+    table_df = table_df[(table_df["brand"] == brand) & (table_df["blend"] == blend)]
     table_df = table_df.sort_values("price_num")
     cols = ["store", "item", "stock", "price", "time", "link"]
     table_df = table_df[cols]
+    return render_template("individual_blends.html", brand=brand, blends=blends, search_list=search_list, id=blend_id,
+                           blend=blend, items=list(table_df.T.to_dict().values()), store_colors=store_colors,
+                           plot_data=get_plot_data(brand, blend))
 
-    return render_template("individual_blends.html", brand=brand, blends=blends, search_list=search_list, id=blend,
-                           blend=blend_name, items=list(table_df.T.to_dict().values()), store_colors=store_colors,
-                           plot_data=get_plot_data(brand, blend_name))
+
+@individual_blends_blueprint.route('/individual_blends/<blend_id>')
+def main_id(blend_id):
+    blend_id = int(blend_id)
+    brand = main_df["brand"][(main_df["brand"] + " " + main_df["blend"]) == ids[blend_id]].iloc[0]
+    blend = main_df["blend"][(main_df["brand"] + " " + main_df["blend"]) == ids[blend_id]].iloc[0]
+    return redirect(url_for("individual_blends.main", brand=brand, blend=blend))
 
 
 @individual_blends_blueprint.route('/individual_blends')
