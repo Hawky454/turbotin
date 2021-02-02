@@ -3,6 +3,7 @@ import smtplib
 from email.mime.text import MIMEText
 import pandas as pd
 import json
+from urllib.parse import quote
 
 # Variable allowing for relative paths
 path = os.path.dirname(os.path.dirname(__file__))
@@ -41,8 +42,11 @@ def send_update(data, users):
                 filtered_data = filtered_data[filtered_data["price_num"] < update["max_price"]]
             if not filtered_data.empty:
                 subject = "{brand} {blend} is in stock".format(brand=brand, blend=blend)
-                body = "See where {blend} is in stock, or manage your notifications on <a " \
-                       "href='turbotin.com/email_updates'>TurboTin.com</a>".format(blend=blend)
+                blend_url = "turbotin.com/individual_blends/{brand}/{blend}'".format(brand=quote(brand),
+                                                                                     blend=quote(blend))
+                body = "See where <a href='{blend_url}'>{blend}</a> is in stock, or manage your <a " \
+                       "href='turbotin.com/email_updates'>notifications</a> on TurboTin.com".format(blend=blend,
+                                                                                                    blend_url=blend_url)
                 send_email(row["email"], subject, body)
 
 
